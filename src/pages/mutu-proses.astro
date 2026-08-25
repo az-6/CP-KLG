@@ -1,0 +1,74 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import ProofCard from '../components/ProofCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { company } from '../data/company';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getMeetingHref } from '../lib/whatsapp';
+
+const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+---
+
+<BaseLayout
+  title="Mutu dan Proses Penanganan Ikan"
+  description="Pelajari pendekatan mutu, penanganan higienis, sortasi, cold chain, pengemasan, dan distribusi PT Katalis Lintas Global."
+  canonicalPath="/mutu-proses"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Standar operasional</span>
+      <h1>Mutu dan Proses</h1>
+      <p>Konsistensi produk dimulai dari proses yang jelas, kebersihan penanganan, serta perhatian pada rantai dingin.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container process-layout">
+      <div>
+        <SectionHeading
+          eyebrow="Dari awal hingga pengiriman"
+          title="Alur Penanganan Produk"
+          description="Tahapan berikut menggambarkan prinsip proses kami. Detail teknis dan dokumentasi dapat dibahas bersama calon buyer."
+        />
+      </div>
+      <ProcessTimeline steps={company.process} />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Kontrol mutu"
+        title="Tiga Fokus Utama"
+        description="Bukti operasional mendukung klaim kualitas, fleksibilitas spesifikasi, dan kebersihan."
+      />
+      <div class="grid grid--3">{company.proofs.map((proof) => <ProofCard {...proof} />)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container evidence-grid">
+      <div class="evidence-card"><span>01</span><h2>Fasilitas & Cold Chain</h2><p>Dokumentasi fasilitas dan penyimpanan dingin tersedia untuk proses evaluasi bisnis.</p></div>
+      <div class="evidence-card"><span>02</span><h2>Legalitas & Sertifikasi</h2><p>Dokumen perusahaan dan sertifikasi yang relevan dapat ditunjukkan dalam komunikasi resmi.</p></div>
+      <div class="evidence-card"><span>03</span><h2>Traceability</h2><p>Informasi ketertelusuran dibahas berdasarkan produk dan kebutuhan buyer.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container cta-panel">
+      <div><h2>Perlu Mendalami Standar Kami?</h2><p>Jadwalkan pertemuan untuk membahas proses, dokumentasi, dan spesifikasi yang dibutuhkan bisnis Anda.</p></div>
+      <ButtonLink href={meetingHref} label="Jadwalkan Pertemuan" analyticsSource="quality-final" external={meetingHref.startsWith('https://wa.me/')} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .process-layout { display: grid; grid-template-columns: 0.9fr 1fr; gap: clamp(3rem, 8vw, 7rem); }
+  .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .evidence-card { padding: 2rem; border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .evidence-card > span { color: var(--ocean-600); font-size: 0.75rem; font-weight: 800; }
+  .evidence-card h2 { margin-top: 3rem; font-size: 1.4rem; }
+  .evidence-card p { margin-bottom: 0; color: var(--slate); }
+  @media (max-width: 780px) { .process-layout, .evidence-grid { grid-template-columns: 1fr; } }
+</style>

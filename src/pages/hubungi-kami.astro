@@ -1,0 +1,77 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import { company } from '../data/company';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getMeetingHref } from '../lib/whatsapp';
+
+const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+const whatsappReady = meetingHref.startsWith('https://wa.me/');
+---
+
+<BaseLayout
+  title="Hubungi Kami"
+  description="Jadwalkan pertemuan bisnis dengan PT Katalis Lintas Global untuk membahas kebutuhan pasokan tuna dan ikan dasar."
+  canonicalPath="/hubungi-kami"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Kontak bisnis</span>
+      <h1>Mari Diskusikan Kebutuhan Pasokan Anda</h1>
+      <p>Pertemuan awal membantu kami memahami jenis produk, spesifikasi, volume, dan kebutuhan distribusi bisnis Anda.</p>
+    </div>
+  </section>
+
+  <section id="kontak" class="section">
+    <div class="container contact-grid">
+      <div class="contact-primary">
+        <span class="eyebrow">Jadwalkan pertemuan</span>
+        <h2>Mulai Percakapan melalui WhatsApp</h2>
+        <p>Pesan perkenalan sudah disiapkan agar pembicaraan dapat dimulai dengan konteks yang jelas. Anda tetap dapat mengedit pesan sebelum mengirim.</p>
+        {whatsappReady ? (
+          <ButtonLink href={meetingHref} label="Buka WhatsApp" analyticsSource="contact-primary" external />
+        ) : (
+          <p class="empty-note">Nomor WhatsApp resmi belum dikonfigurasi pada environment website.</p>
+        )}
+      </div>
+
+      <aside class="contact-details" aria-label="Informasi perusahaan">
+        <h2>Informasi Perusahaan</h2>
+        <dl>
+          <div><dt>Perusahaan</dt><dd>{company.name}</dd></div>
+          {company.contact.email && <div><dt>Email</dt><dd><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></dd></div>}
+          {company.contact.address && <div><dt>Alamat</dt><dd>{company.contact.address}</dd></div>}
+          {company.contact.operatingHours && <div><dt>Jam operasional</dt><dd>{company.contact.operatingHours}</dd></div>}
+        </dl>
+        {!company.contact.email && !company.contact.address && (
+          <p class="empty-note">Email dan alamat publik akan tampil setelah data resmi dikonfigurasi.</p>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container meeting-steps">
+      <div><span>01</span><h2>Perkenalan</h2><p>Sampaikan nama, perusahaan, dan jenis usaha Anda.</p></div>
+      <div><span>02</span><h2>Kebutuhan</h2><p>Berikan gambaran produk, volume, dan spesifikasi yang dicari.</p></div>
+      <div><span>03</span><h2>Pertemuan</h2><p>Sepakati waktu untuk membahas kebutuhan dan kemampuan pasokan.</p></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr .8fr; gap: clamp(2rem,7vw,7rem); }
+  .contact-primary h2 { max-width: 14ch; }
+  .contact-primary > p { max-width: 40rem; color: var(--slate); font-size: 1.08rem; }
+  .contact-details { padding: 2rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--ice-50); }
+  .contact-details h2 { font-size: 1.35rem; }
+  .contact-details dl { margin: 0; }
+  .contact-details dl div { padding-block: 1rem; border-bottom: 1px solid var(--line); }
+  .contact-details dt { margin-bottom: .25rem; color: var(--slate); font-size: .78rem; font-weight: 700; text-transform: uppercase; }
+  .contact-details dd { margin: 0; color: var(--navy-950); font-weight: 600; }
+  .meeting-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  .meeting-steps > div { padding: 2rem; background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .meeting-steps span { color: var(--ocean-600); font-size: .75rem; font-weight: 800; }
+  .meeting-steps h2 { margin-top: 3rem; font-size: 1.4rem; }
+  .meeting-steps p { margin: 0; color: var(--slate); }
+  @media(max-width:760px){.contact-grid,.meeting-steps{grid-template-columns:1fr}}
+</style>

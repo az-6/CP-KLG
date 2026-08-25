@@ -1,0 +1,33 @@
+{
+  "name": "pt-klg-company-profile",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "latest",
+    "@vercel/analytics": "^2.0.0",
+    "astro": "^7.2.6",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@axe-core/playwright": "latest",
+    "@playwright/test": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

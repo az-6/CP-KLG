@@ -1,0 +1,108 @@
+---
+import ProductCard from '../components/ProductCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { products } from '../data/products';
+import { company } from '../data/company';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildProductJsonLd } from '../lib/seo';
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const schemas = products.map((product) => buildProductJsonLd(product, company, site));
+---
+
+<BaseLayout
+  title="Produk Ikan untuk Distributor dan Pedagang Besar"
+  description="Jelajahi kategori tuna dan ikan dasar dari PT Katalis Lintas Global. Spesifikasi produk dapat dibahas sesuai kebutuhan buyer."
+  canonicalPath="/produk"
+  jsonLd={schemas}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Katalog produk</span>
+      <h1>Produk untuk Kebutuhan Pasokan B2B</h1>
+      <p>Temukan kategori produk utama kami. Informasi harga dan stok dibahas setelah kebutuhan, volume, serta spesifikasi buyer dipahami.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Pilihan tersedia"
+        title="Katalog Produk"
+        description="Produk tersedia relatif stabil sepanjang tahun, dengan rincian akhir mengikuti hasil komunikasi bisnis."
+      />
+
+      <div class="filters" role="group" aria-label="Filter kategori produk">
+        <button type="button" data-filter="all" aria-pressed="true">Semua</button>
+        <button type="button" data-filter="tuna" aria-pressed="false">Tuna</button>
+        <button type="button" data-filter="ikan-dasar" aria-pressed="false">Ikan Dasar</button>
+      </div>
+
+      <div class="products-grid" aria-live="polite">
+        {products.map((product) => <div id={product.slug}><ProductCard product={product} /></div>)}
+      </div>
+
+      <p class="catalog-note">Harga dan ketersediaan aktual tidak ditampilkan secara real-time. Silakan jadwalkan pertemuan untuk mendiskusikan kebutuhan pasokan Anda.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-product-category]');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.filter;
+      buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      cards.forEach((card) => {
+        card.hidden = selected !== 'all' && card.dataset.productCategory !== selected;
+      });
+    });
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters button {
+    min-height: 2.85rem;
+    padding-inline: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--slate);
+    background: var(--white);
+    cursor: pointer;
+  }
+
+  .filters button[aria-pressed='true'] {
+    color: var(--white);
+    border-color: var(--navy-950);
+    background: var(--navy-950);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .catalog-note {
+    margin-top: 2rem;
+    padding: 1.2rem;
+    border-left: 3px solid var(--ocean-500);
+    color: var(--slate);
+    background: var(--ice-50);
+  }
+
+  @media (max-width: 720px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

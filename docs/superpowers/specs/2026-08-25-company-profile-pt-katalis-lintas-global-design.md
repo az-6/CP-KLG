@@ -173,7 +173,7 @@ Bagian dalam kurung siku tetap berada dalam pesan sebagai petunjuk yang dapat di
 
 ## 10. Arsitektur teknis
 
-Website dibuat sebagai situs statis responsif dengan Astro dan TypeScript, tanpa database, backend aplikasi, atau CMS. Astro menghasilkan halaman statis dengan JavaScript klien minimal dan komponen yang dapat digunakan ulang untuk menjaga konsistensi antarlaman.
+Website dibuat sebagai situs statis responsif dengan Astro 7 dan TypeScript, tanpa database, backend aplikasi, atau CMS. Astro menghasilkan halaman statis dengan JavaScript klien minimal dan komponen yang dapat digunakan ulang untuk menjaga konsistensi antarlaman.
 
 Target deployment adalah Vercel melalui integrasi repository GitHub. Setiap perubahan pada branch utama menghasilkan deployment produksi, sementara pull request dapat menggunakan preview deployment. Situs tetap menggunakan static rendering; server-side rendering dan Vercel Functions tidak diperlukan pada versi pertama.
 

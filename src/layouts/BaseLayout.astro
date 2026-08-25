@@ -1,0 +1,50 @@
+---
+import { company } from '../data/company';
+import { buildOrganizationJsonLd, serializeJsonLd, type PageMetadata } from '../lib/seo';
+import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+interface Props extends PageMetadata {
+  jsonLd?: unknown[];
+}
+
+const { title, description, canonicalPath, image = '/social-card.svg', jsonLd = [] } = Astro.props;
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(canonicalPath, site);
+const socialImage = new URL(image, site);
+const fullTitle = title.includes(company.shortName) ? title : `${title} | ${company.shortName}`;
+const schemas = [buildOrganizationJsonLd(company, site), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#061a2f" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{fullTitle}</title>
+    {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <Analytics />
+  </body>
+</html>

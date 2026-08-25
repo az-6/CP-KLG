@@ -1,0 +1,105 @@
+---
+import { company } from '../data/company';
+import { navigation } from '../data/navigation';
+import { getMeetingHref } from '../lib/whatsapp';
+
+const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <span class="footer__brand">PT Katalis Lintas Global</span>
+      <p>{company.slogan}</p>
+      <p class="footer__description">Pemasok ikan B2B untuk distributor dan pedagang besar di Indonesia.</p>
+    </div>
+
+    <div>
+      <h2>Navigasi</h2>
+      <ul>
+        {navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2>Kontak Bisnis</h2>
+      <ul>
+        {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
+        {company.contact.address && <li>{company.contact.address}</li>}
+        <li><a href={meetingHref} data-whatsapp-source="footer">Jadwalkan pertemuan</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span>© {new Date().getFullYear()} PT Katalis Lintas Global</span>
+    <span>Informasi produk mengikuti hasil diskusi dan kesepakatan bisnis.</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-top: 4.5rem;
+    color: rgba(255, 255, 255, 0.68);
+    background: #041321;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 0.7fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .footer__brand {
+    color: var(--white);
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .footer__description {
+    max-width: 25rem;
+  }
+
+  .footer h2 {
+    color: var(--white);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .footer ul {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer a:hover {
+    color: #7ce0f2;
+  }
+
+  .footer__bottom {
+    display: flex;
+    min-height: 5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 760px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: 1.25rem;
+    }
+  }
+</style>

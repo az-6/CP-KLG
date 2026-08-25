@@ -1,0 +1,28 @@
+---
+import Analytics from '@vercel/analytics/astro';
+---
+
+<Analytics />
+
+<script>
+  import { track } from '@vercel/analytics';
+
+  document.addEventListener('click', (event) => {
+    const element = (event.target as Element | null)?.closest<HTMLAnchorElement>('[data-whatsapp-source]');
+    if (!element) return;
+
+    const detail = {
+      name: 'WhatsAppMeeting',
+      source: element.dataset.whatsappSource ?? 'unknown',
+      product: element.dataset.productSlug ?? null,
+    };
+
+    window.dispatchEvent(new CustomEvent('klg:analytics', { detail }));
+
+    try {
+      track(detail.name, { source: detail.source, product: detail.product });
+    } catch {
+      // Analytics must never block the outbound WhatsApp link.
+    }
+  });
+</script>

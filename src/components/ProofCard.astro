@@ -1,0 +1,60 @@
+---
+import type { ProofItem } from '../types/content';
+
+interface Props extends ProofItem {}
+
+const { title, description, evidence, icon } = Astro.props;
+const icons = { quality: '01', specification: '02', hygiene: '03', supply: '04' };
+---
+
+<article class="proof-card">
+  <div class="proof-card__icon" aria-hidden="true">{icons[icon]}</div>
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <div class="proof-card__evidence">
+    <span aria-hidden="true">✓</span>
+    <span>{evidence}</span>
+  </div>
+</article>
+
+<style>
+  .proof-card {
+    height: 100%;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .proof-card__icon {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--ocean-600);
+    background: var(--ocean-100);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+  }
+
+  .proof-card p {
+    color: var(--slate);
+  }
+
+  .proof-card__evidence {
+    display: flex;
+    gap: 0.65rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--navy-800);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .proof-card__evidence > span:first-child {
+    color: var(--success);
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Halaman Tidak Ditemukan" description="Halaman yang Anda cari tidak tersedia." canonicalPath="/404">
+  <section class="not-found">
+    <div class="container">
+      <span>404</span>
+      <h1>Halaman Tidak Ditemukan</h1>
+      <p>Tautan mungkin sudah berubah atau alamat yang dimasukkan tidak tepat.</p>
+      <div class="not-found__actions">
+        <ButtonLink href="/" label="Kembali ke Beranda" />
+        <ButtonLink href="/produk" label="Lihat Produk" variant="secondary" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found { display: grid; min-height: 65vh; place-items: center; padding-block: 5rem; text-align: center; }
+  .not-found span { color: var(--ocean-600); font-family: 'Manrope',sans-serif; font-weight: 800; letter-spacing: .2em; }
+  .not-found h1 { margin-block: 1rem; font-size: clamp(2.5rem,6vw,4.5rem); }
+  .not-found p { color: var(--slate); }
+  .not-found__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 2rem; }
+</style>

@@ -4,9 +4,9 @@
 
 **Goal:** Build a fast, accessible, trust-led B2B company profile that turns Indonesian seafood distributors and wholesalers into qualified WhatsApp meeting conversations.
 
-**Architecture:** Astro 6 statically renders five Indonesian-language pages from typed company and product data. Shared Astro components own navigation, proof blocks, product cards, metadata, and contextual WhatsApp links; small client scripts handle only the mobile menu, product filter, analytics, and image fallbacks. GitHub is the source of truth and Vercel builds the static output from `main` with preview deployments for pull requests.
+**Architecture:** Astro 7 statically renders five Indonesian-language pages from typed company and product data. Shared Astro components own navigation, proof blocks, product cards, metadata, and contextual WhatsApp links; small client scripts handle only the mobile menu, product filter, analytics, and image fallbacks. GitHub is the source of truth and Vercel builds the static output from `main` with preview deployments for pull requests.
 
-**Tech Stack:** Node.js 22.12+, npm, Astro 6, TypeScript strict mode, plain CSS with design tokens, Astro Image, `@astrojs/sitemap`, `@vercel/analytics`, Vitest, Playwright, and `@axe-core/playwright`.
+**Tech Stack:** Node.js 22.12+, npm, Astro 7.2.6+, TypeScript strict mode, plain CSS with design tokens, Astro Image with Sharp 0.35.3+, `@astrojs/sitemap`, `@vercel/analytics`, Vitest, Playwright, and `@axe-core/playwright`.
 
 **Spec:** `docs/superpowers/specs/2026-08-25-company-profile-pt-katalis-lintas-global-design.md`
 
@@ -20,7 +20,7 @@
 - Publish only owner-approved content; omit unapproved optional facts instead of substituting marketing claims.
 - Use portrait phone photography without stretching; crop around the subject and provide meaningful alternative text.
 - Keep essential content and navigation usable if analytics or enhancement scripts fail.
-- Node.js must be `>=22.12.0`; use Astro 6 with TypeScript strict mode.
+- Node.js must be `>=22.12.0`; use Astro 7.2.6 or newer with TypeScript strict mode.
 - Deploy the static build to Vercel from the connected GitHub repository.
 
 ## File Structure
@@ -31,6 +31,7 @@
 ├── package.json                    # Runtime, checks, unit tests, E2E tests
 ├── playwright.config.ts            # Local preview server and browser projects
 ├── tsconfig.json                   # Astro strict TypeScript settings
+├── vitest.config.ts                # Unit-test-only file matching
 ├── public/
 │   ├── favicon.svg                 # Brand favicon derived from approved logo
 │   └── social-card.jpg             # Approved Open Graph image
@@ -119,7 +120,7 @@
   "dependencies": {
     "@astrojs/sitemap": "latest",
     "@vercel/analytics": "^2.0.0",
-    "astro": "^6.0.0"
+    "astro": "^7.2.6"
   },
   "devDependencies": {
     "@astrojs/check": "latest",

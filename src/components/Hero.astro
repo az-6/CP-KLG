@@ -1,0 +1,211 @@
+---
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  primaryHref: string;
+}
+
+const { eyebrow, title, description, primaryHref } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <span class="hero__eyebrow">{eyebrow}</span>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      <div class="hero__actions">
+        <ButtonLink href={primaryHref} label="Jadwalkan Pertemuan" analyticsSource="hero" external={primaryHref.startsWith('https://wa.me/')} />
+        <ButtonLink href="/produk" label="Lihat Produk Kami" variant="secondary" />
+      </div>
+    </div>
+
+    <div class="hero__visual" aria-label="Kategori produk utama: Tuna dan Ikan Dasar">
+      <div class="hero__ring hero__ring--one"></div>
+      <div class="hero__ring hero__ring--two"></div>
+      <div class="hero__card hero__card--tuna">
+        <span class="hero__card-index">01</span>
+        <strong>Tuna</strong>
+        <small>Pasokan B2B</small>
+      </div>
+      <div class="hero__card hero__card--ground">
+        <span class="hero__card-index">02</span>
+        <strong>Ikan Dasar</strong>
+        <small>Beragam pilihan</small>
+      </div>
+      <div class="hero__stamp">
+        <span>Higienis</span>
+        <span>•</span>
+        <span>Konsisten</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(52rem, calc(100vh - 5rem));
+    color: rgba(255, 255, 255, 0.76);
+    background:
+      radial-gradient(circle at 72% 20%, rgba(11, 159, 195, 0.35), transparent 28rem),
+      linear-gradient(125deg, var(--navy-950), var(--navy-800));
+  }
+
+  .hero__grid {
+    display: grid;
+    min-height: inherit;
+    grid-template-columns: 1.08fr 0.92fr;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+    padding-block: 5rem;
+  }
+
+  .hero__copy {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero__eyebrow {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    color: #7ce0f2;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    max-width: 12ch;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  .hero__copy > p {
+    max-width: 39rem;
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .hero__visual {
+    position: relative;
+    min-height: 36rem;
+  }
+
+  .hero__ring {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+  }
+
+  .hero__ring--one {
+    inset: 3rem 0 0 2rem;
+  }
+
+  .hero__ring--two {
+    inset: 8rem 5rem 4rem 6rem;
+  }
+
+  .hero__card {
+    position: absolute;
+    display: flex;
+    width: min(15rem, 52%);
+    aspect-ratio: 4 / 5;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8rem 8rem 1.25rem 1.25rem;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero__card::before {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    background: repeating-radial-gradient(circle at 50% 25%, transparent 0 20px, rgba(255, 255, 255, 0.12) 21px 22px);
+    content: '';
+  }
+
+  .hero__card > * {
+    position: relative;
+  }
+
+  .hero__card--tuna {
+    top: 2rem;
+    left: 0;
+    background: linear-gradient(160deg, #188fb2, #0b476f);
+    transform: rotate(-4deg);
+  }
+
+  .hero__card--ground {
+    right: 0;
+    bottom: 2.5rem;
+    background: linear-gradient(160deg, #1e5978, #081d33);
+    transform: rotate(5deg);
+  }
+
+  .hero__card strong {
+    color: var(--white);
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.4rem;
+  }
+
+  .hero__card small,
+  .hero__card-index {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .hero__card-index {
+    margin-bottom: auto;
+    font-weight: 700;
+  }
+
+  .hero__stamp {
+    position: absolute;
+    z-index: 3;
+    right: 31%;
+    bottom: 22%;
+    display: grid;
+    width: 7rem;
+    height: 7rem;
+    place-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    color: var(--white);
+    background: rgba(6, 26, 47, 0.72);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-align: center;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+
+  @media (max-width: 840px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      padding-top: 4rem;
+    }
+
+    .hero__visual {
+      min-height: 28rem;
+    }
+
+    .hero__card {
+      max-width: 13rem;
+    }
+  }
+</style>

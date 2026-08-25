@@ -1,0 +1,172 @@
+---
+import { company } from '../data/company';
+import { productCategoryLabels } from '../data/products';
+import { getMeetingHref } from '../lib/whatsapp';
+import type { Product } from '../types/content';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const meetingHref = getMeetingHref(company.contact.whatsappNumber, product.name);
+const facts = [
+  product.sizes?.length ? ['Ukuran / grade', product.sizes.join(', ')] : null,
+  product.forms?.length ? ['Bentuk produk', product.forms.join(', ')] : null,
+  product.condition?.length ? ['Kondisi', product.condition.join(', ')] : null,
+  product.packaging?.length ? ['Pengemasan', product.packaging.join(', ')] : null,
+  product.volume ? ['Volume', product.volume] : null,
+].filter(Boolean) as [string, string][];
+---
+
+<article class="product-card" data-product-category={product.category} data-product-slug={product.slug}>
+  <div class="product-card__media">
+    {product.image ? (
+      <img src={product.image.src.src} alt={product.image.alt} style={`object-position:${product.image.position ?? 'center'}`} loading="lazy" />
+    ) : (
+      <div class="product-card__fallback" aria-hidden="true">
+        <span>{product.name.slice(0, 1)}</span>
+        <svg viewBox="0 0 180 80">
+          <path d="M15 40c28-30 75-32 112-8l23-17-4 25 4 25-23-17C90 72 43 70 15 40Z" fill="none" stroke="currentColor" stroke-width="2" />
+          <circle cx="112" cy="34" r="2.5" fill="currentColor" />
+        </svg>
+      </div>
+    )}
+    <span class="product-card__category">{productCategoryLabels[product.category]}</span>
+  </div>
+
+  <div class="product-card__body">
+    <div>
+      <h2>{product.name}</h2>
+      {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
+    </div>
+    <p>{product.description}</p>
+
+    {facts.length > 0 ? (
+      <dl>
+        {facts.map(([label, value]) => <><dt>{label}</dt><dd>{value}</dd></>)}
+      </dl>
+    ) : (
+      <p class="product-card__custom">Ukuran, bentuk, kondisi, dan pengemasan dibahas sesuai kebutuhan buyer.</p>
+    )}
+
+    <ButtonLink
+      href={meetingHref}
+      label="Diskusikan Produk Ini"
+      variant="text"
+      external={meetingHref.startsWith('https://wa.me/')}
+      analyticsSource="product"
+      productSlug={product.slug}
+    />
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .product-card[hidden] {
+    display: none;
+  }
+
+  .product-card__media {
+    position: relative;
+    min-height: 18rem;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.65);
+    background: linear-gradient(150deg, var(--ocean-600), var(--navy-900));
+  }
+
+  .product-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-card__fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .product-card__fallback > span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.08);
+    font-family: 'Manrope', sans-serif;
+    font-size: 15rem;
+    font-weight: 800;
+  }
+
+  .product-card__fallback svg {
+    position: relative;
+    width: 65%;
+  }
+
+  .product-card__category {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    color: var(--white);
+    background: rgba(6, 26, 47, 0.7);
+    font-size: 0.72rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+  }
+
+  .product-card__body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+  }
+
+  .product-card__body > p {
+    color: var(--slate);
+  }
+
+  .product-card__scientific {
+    margin: -0.5rem 0 1rem;
+    color: var(--slate);
+    font-style: italic;
+  }
+
+  .product-card dl {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    margin-block: 1rem;
+    font-size: 0.88rem;
+  }
+
+  .product-card dt,
+  .product-card dd {
+    margin: 0;
+    padding-block: 0.65rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .product-card dt {
+    color: var(--slate);
+  }
+
+  .product-card dd {
+    color: var(--navy-950);
+    font-weight: 600;
+  }
+
+  .product-card__custom {
+    padding: 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--ice-50);
+    font-size: 0.88rem;
+  }
+</style>
