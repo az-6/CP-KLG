@@ -13,6 +13,20 @@ export const products: Product[] = [
     category: 'ikan-dasar',
     description: 'Beragam ikan dasar untuk kebutuhan perdagangan dalam volume besar.',
   },
+  {
+    slug: 'udang',
+    name: 'Udang',
+    category: 'lainnya',
+    description: 'Contoh kategori produk untuk pembahasan awal dengan calon buyer.',
+    isPlaceholder: true,
+  },
+  {
+    slug: 'kakap',
+    name: 'Kakap',
+    category: 'ikan-dasar',
+    description: 'Contoh kategori ikan dasar; ketersediaan dan spesifikasi perlu dikonfirmasi.',
+    isPlaceholder: true,
+  },
 ];
 
 export const productCategoryLabels = {

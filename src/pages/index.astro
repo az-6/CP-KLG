@@ -45,12 +45,13 @@ const trustFacts = [
       <SectionHeading
         eyebrow="Produk utama"
         title="Produk untuk Kebutuhan Bisnis Anda"
-        description="Katalog kami berfokus pada kategori yang tersedia secara relatif stabil sepanjang tahun. Detail ukuran, bentuk, dan pengemasan dibahas sesuai kebutuhan operasional buyer."
+        description="Tuna dan ikan dasar merupakan kategori utama kami. Kategori tambahan berlabel contoh ditampilkan sebagai gambaran awal dan perlu dikonfirmasi."
       />
       <div class="category-grid">
         {products.map((product, index) => (
           <a class="category-card" href={`/produk#${product.slug}`}>
             <span class="category-card__index">0{index + 1}</span>
+            {product.isPlaceholder && <span class="category-card__status">Contoh katalog</span>}
             <div>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
@@ -212,6 +213,19 @@ const trustFacts = [
   .category-card > div,
   .category-card__index {
     position: relative;
+  }
+
+  .category-card__status {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    padding: .35rem .65rem;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 999px;
+    color: var(--white);
+    background: rgba(4,19,33,.45);
+    font-size: .7rem;
+    font-weight: 700;
   }
 
   .category-card__index {

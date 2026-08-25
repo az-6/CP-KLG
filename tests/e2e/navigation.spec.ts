@@ -27,9 +27,21 @@ for (const [path, heading] of [
 test('mobile menu exposes navigation state', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  const menu = page.getByRole('banner').getByRole('button', { name: 'Menu' });
+  const menu = page.locator('.menu-toggle');
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByRole('navigation', { name: 'Navigasi utama' })).toBeVisible();
+});
+
+test('mobile menu clears its scroll lock at the desktop breakpoint', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const menu = page.locator('.menu-toggle');
+  await menu.click();
+  await expect(page.locator('body')).toHaveClass(/menu-open/);
+
+  await page.setViewportSize({ width: 1200, height: 844 });
+  await expect(menu).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('body')).not.toHaveClass(/menu-open/);
 });

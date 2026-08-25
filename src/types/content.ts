@@ -20,6 +20,7 @@ export interface Product {
   condition?: Array<'Segar' | 'Beku'>;
   packaging?: string[];
   volume?: string;
+  isPlaceholder?: boolean;
 }
 
 export interface ProofItem {
@@ -37,6 +38,9 @@ export interface ProcessStep {
 
 export interface ContactDetails {
   whatsappNumber: string;
+  primaryContactName?: string;
+  secondaryWhatsAppNumber?: string;
+  secondaryContactName?: string;
   email?: string;
   address?: string;
   operatingHours?: string;

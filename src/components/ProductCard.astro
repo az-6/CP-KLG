@@ -33,7 +33,7 @@ const facts = [
         </svg>
       </div>
     )}
-    <span class="product-card__category">{productCategoryLabels[product.category]}</span>
+    <span class="product-card__category">{product.isPlaceholder ? 'Contoh katalog' : productCategoryLabels[product.category]}</span>
   </div>
 
   <div class="product-card__body">
@@ -42,6 +42,7 @@ const facts = [
       {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
     </div>
     <p>{product.description}</p>
+    {product.isPlaceholder && <p class="product-card__status">Ketersediaan belum dipublikasikan dan perlu dikonfirmasi.</p>}
 
     {facts.length > 0 ? (
       <dl>
@@ -168,5 +169,12 @@ const facts = [
     border-radius: var(--radius-sm);
     background: var(--ice-50);
     font-size: 0.88rem;
+  }
+
+  .product-card__status {
+    margin-top: 0;
+    color: var(--ocean-600) !important;
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 </style>

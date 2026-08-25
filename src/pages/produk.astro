@@ -7,12 +7,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { buildProductJsonLd } from '../lib/seo';
 
 const site = Astro.site ?? new URL('http://localhost:4321');
-const schemas = products.map((product) => buildProductJsonLd(product, company, site));
+const schemas = products.filter((product) => !product.isPlaceholder).map((product) => buildProductJsonLd(product, company, site));
 ---
 
 <BaseLayout
   title="Produk Ikan untuk Distributor dan Pedagang Besar"
-  description="Jelajahi kategori tuna dan ikan dasar dari PT Katalis Lintas Global. Spesifikasi produk dapat dibahas sesuai kebutuhan buyer."
+  description="Jelajahi kategori tuna, ikan dasar, dan contoh kategori produk PT Katalis Lintas Global. Spesifikasi dibahas sesuai kebutuhan buyer."
   canonicalPath="/produk"
   jsonLd={schemas}
 >
@@ -29,17 +29,22 @@ const schemas = products.map((product) => buildProductJsonLd(product, company, s
       <SectionHeading
         eyebrow="Pilihan tersedia"
         title="Katalog Produk"
-        description="Produk tersedia relatif stabil sepanjang tahun, dengan rincian akhir mengikuti hasil komunikasi bisnis."
+        description="Tuna dan ikan dasar merupakan kategori utama. Kategori berlabel contoh perlu dikonfirmasi terlebih dahulu melalui komunikasi bisnis."
       />
 
       <div class="filters" role="group" aria-label="Filter kategori produk">
         <button type="button" data-filter="all" aria-pressed="true">Semua</button>
         <button type="button" data-filter="tuna" aria-pressed="false">Tuna</button>
         <button type="button" data-filter="ikan-dasar" aria-pressed="false">Ikan Dasar</button>
+        <button type="button" data-filter="lainnya" aria-pressed="false">Lainnya</button>
       </div>
 
       <div class="products-grid" aria-live="polite">
-        {products.map((product) => <div id={product.slug}><ProductCard product={product} /></div>)}
+        {products.map((product) => (
+          <div id={product.slug} data-product-filter-item data-product-category={product.category}>
+            <ProductCard product={product} />
+          </div>
+        ))}
       </div>
 
       <p class="catalog-note">Harga dan ketersediaan aktual tidak ditampilkan secara real-time. Silakan jadwalkan pertemuan untuk mendiskusikan kebutuhan pasokan Anda.</p>
@@ -49,7 +54,7 @@ const schemas = products.map((product) => buildProductJsonLd(product, company, s
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const cards = document.querySelectorAll<HTMLElement>('[data-product-category]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-product-filter-item]');
 
   buttons.forEach((button) => {
     button.addEventListener('click', () => {

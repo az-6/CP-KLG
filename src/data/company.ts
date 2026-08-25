@@ -10,9 +10,12 @@ export const company: CompanyProfile = {
   about:
     'PT Katalis Lintas Global melayani kebutuhan pasokan ikan skala besar bagi distributor dan pedagang besar di Indonesia dengan fokus pada konsistensi mutu, kebersihan penanganan, dan spesifikasi buyer.',
   contact: {
-    whatsappNumber: import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '',
+    whatsappNumber: import.meta.env.PUBLIC_WHATSAPP_NUMBER || '6281319426006',
+    primaryContactName: import.meta.env.PUBLIC_WHATSAPP_CONTACT || 'Zuhud',
+    secondaryWhatsAppNumber: import.meta.env.PUBLIC_SECONDARY_WHATSAPP_NUMBER || '628151931083',
+    secondaryContactName: import.meta.env.PUBLIC_SECONDARY_WHATSAPP_CONTACT || 'Hanggi',
     email: import.meta.env.PUBLIC_COMPANY_EMAIL || undefined,
-    address: import.meta.env.PUBLIC_COMPANY_ADDRESS || undefined,
+    address: import.meta.env.PUBLIC_COMPANY_ADDRESS || 'Muara Baru, Jakarta Utara',
     operatingHours: import.meta.env.PUBLIC_OPERATING_HOURS || undefined,
     mapUrl: import.meta.env.PUBLIC_MAP_URL || undefined,
   },

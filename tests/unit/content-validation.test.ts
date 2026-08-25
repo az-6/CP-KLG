@@ -25,6 +25,13 @@ describe('validateCompanyProfile', () => {
       contact: { whatsappNumber: '+62 812' },
     })).toContain('whatsappNumber must contain international digits only');
   });
+
+  it('rejects a non-numeric secondary WhatsApp number', () => {
+    expect(validateCompanyProfile({
+      ...validCompany,
+      contact: { whatsappNumber: '628123456789', secondaryWhatsAppNumber: '+62 815' },
+    })).toContain('secondaryWhatsAppNumber must contain international digits only');
+  });
 });
 
 describe('validateProducts', () => {

@@ -4,8 +4,22 @@ test('generic CTA uses official configured number and meeting context', async ({
   await page.goto('/');
   const link = page.locator('[data-whatsapp-source="hero"]');
   const href = await link.getAttribute('href');
-  expect(href).toMatch(/^https:\/\/wa\.me\/628123456789\?text=/);
+  expect(href).toMatch(/^https:\/\/wa\.me\/6281319426006\?text=/);
   expect(decodeURIComponent(href!)).toContain('menjadwalkan pertemuan');
+});
+
+test('contact page exposes both official WhatsApp contacts', async ({ page }) => {
+  await page.goto('/hubungi-kami');
+
+  const contactSection = page.locator('#kontak');
+  const primary = contactSection.getByRole('link', { name: 'WhatsApp Zuhud' });
+  const secondary = contactSection.getByRole('link', { name: 'WhatsApp Hanggi' });
+  await expect(primary).toHaveAttribute('href', /^https:\/\/wa\.me\/6281319426006\?text=/);
+  await expect(secondary).toHaveAttribute('href', /^https:\/\/wa\.me\/628151931083\?text=/);
+  await expect(contactSection.getByText('Muara Baru, Jakarta Utara')).toBeVisible();
+
+  const secondaryHref = await secondary.getAttribute('href');
+  expect(decodeURIComponent(secondaryHref!)).toContain('menjadwalkan pertemuan');
 });
 
 test('product CTA carries product context', async ({ page }) => {

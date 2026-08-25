@@ -10,6 +10,9 @@ export function validateCompanyProfile(profile: CompanyProfile): string[] {
   if (!phonePattern.test(profile.contact.whatsappNumber)) {
     errors.push('whatsappNumber must contain international digits only');
   }
+  if (profile.contact.secondaryWhatsAppNumber && !phonePattern.test(profile.contact.secondaryWhatsAppNumber)) {
+    errors.push('secondaryWhatsAppNumber must contain international digits only');
+  }
   if (profile.contact.email && !emailPattern.test(profile.contact.email)) {
     errors.push('email must be valid');
   }

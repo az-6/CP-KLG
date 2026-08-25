@@ -2,6 +2,7 @@
 import { company } from '../data/company';
 import { navigation } from '../data/navigation';
 import { getMeetingHref } from '../lib/whatsapp';
+import logoFull from '../assets/logo-klg-transparent.png';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 ---
@@ -9,7 +10,7 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 <footer class="footer">
   <div class="container footer__grid">
     <div>
-      <span class="footer__brand">PT Katalis Lintas Global</span>
+      <span class="footer__brand"><img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt="PT Katalis Lintas Global" /></span>
       <p>{company.slogan}</p>
       <p class="footer__description">Pemasok ikan B2B untuk distributor dan pedagang besar di Indonesia.</p>
     </div>
@@ -26,7 +27,7 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
       <ul>
         {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
         {company.contact.address && <li>{company.contact.address}</li>}
-        <li><a href={meetingHref} data-whatsapp-source="footer">Jadwalkan pertemuan</a></li>
+        <li><a href={meetingHref} data-whatsapp-source="footer">WhatsApp {company.contact.primaryContactName ?? 'utama'}</a></li>
       </ul>
     </div>
   </div>
@@ -51,10 +52,15 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
   }
 
   .footer__brand {
-    color: var(--white);
-    font-family: 'Manrope', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 800;
+    display: inline-flex;
+    padding: 0.65rem 0.8rem;
+    border-radius: var(--radius-sm);
+    background: var(--white);
+  }
+
+  .footer__brand img {
+    width: min(13rem, 100%);
+    height: auto;
   }
 
   .footer__description {
