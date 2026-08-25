@@ -173,7 +173,9 @@ Bagian dalam kurung siku tetap berada dalam pesan sebagai petunjuk yang dapat di
 
 ## 10. Arsitektur teknis
 
-Website dibuat sebagai situs statis responsif dengan keluaran halaman yang dapat dirender tanpa database, backend aplikasi, atau CMS. Framework harus mengikuti kondisi repository saat implementasi; bila repository belum memiliki stack, rencana implementasi memilih stack yang menghasilkan halaman statis, mudah dipelihara, dan memiliki ketergantungan minimal.
+Website dibuat sebagai situs statis responsif dengan Astro dan TypeScript, tanpa database, backend aplikasi, atau CMS. Astro menghasilkan halaman statis dengan JavaScript klien minimal dan komponen yang dapat digunakan ulang untuk menjaga konsistensi antarlaman.
+
+Target deployment adalah Vercel melalui integrasi repository GitHub. Setiap perubahan pada branch utama menghasilkan deployment produksi, sementara pull request dapat menggunakan preview deployment. Situs tetap menggunakan static rendering; server-side rendering dan Vercel Functions tidak diperlukan pada versi pertama.
 
 Konten produk, kategori, sertifikasi, kontak, dan profil disimpan sebagai data terstruktur di dalam proyek. Nomor WhatsApp, identitas kontak, dan template pesan memiliki satu sumber konfigurasi.
 
