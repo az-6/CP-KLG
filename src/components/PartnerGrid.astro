@@ -1,0 +1,21 @@
+---
+import type { PartnerDocument } from '../types/sanity';
+import SanityImage from './SanityImage.astro';
+
+interface Props { partners: PartnerDocument[] }
+const { partners } = Astro.props;
+---
+
+<div class="partner-grid">
+  {partners.map((partner) => (
+    <div class="partner-grid__item">
+      <SanityImage image={partner.logo} alt={partner.logo.alt || `Logo ${partner.name}`} width={320} height={180} widths={[240, 320]} sizes="(max-width: 600px) 50vw, 240px" />
+    </div>
+  ))}
+</div>
+
+<style>
+  .partner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem; }
+  .partner-grid__item { display: grid; min-height: 8rem; place-items: center; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+  .partner-grid__item :global(img) { width: 100%; height: 5.5rem; object-fit: contain; }
+</style>

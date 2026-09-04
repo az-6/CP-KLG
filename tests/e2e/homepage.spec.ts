@@ -13,3 +13,11 @@ test('homepage presents the trust-led narrative', async ({ page }) => {
   ]));
   await expect(page.getByRole('link', { name: 'Jadwalkan Pertemuan' }).last()).toBeVisible();
 });
+
+test('homepage shows non-clickable partners and three-or-fewer latest articles', async ({ page }) => {
+  await page.goto('/');
+  const partners = page.getByRole('region', { name: 'Mitra Kerja' });
+  await expect(partners).toBeVisible();
+  await expect(partners.locator('a,button')).toHaveCount(0);
+  expect(await page.locator('[data-latest-news] article').count()).toBeLessThanOrEqual(3);
+});

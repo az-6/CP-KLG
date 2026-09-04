@@ -1,0 +1,26 @@
+---
+import type { CompanyFactDocument } from '../types/sanity';
+
+interface Props { facts: CompanyFactDocument[]; label: string }
+const { facts, label } = Astro.props;
+---
+
+<div class="company-facts" role="region" aria-label={label}>
+  {facts.map((fact) => (
+    <div class="company-facts__item">
+      <strong>{fact.value}</strong>
+      <span>{fact.label}</span>
+      {fact.description && <small>{fact.description}</small>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .company-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+  .company-facts__item { display: grid; gap: 0.25rem; padding: 1.75rem clamp(1rem, 4vw, 3rem); border: 1px solid var(--line); border-right: 0; background: var(--white); }
+  .company-facts__item:last-child { border-right: 1px solid var(--line); }
+  .company-facts strong { color: var(--navy-950); font-family: 'Manrope', sans-serif; font-size: 1.25rem; }
+  .company-facts span, .company-facts small { color: var(--slate); }
+  .company-facts small { font-size: 0.75rem; }
+  @media (max-width: 600px) { .company-facts__item { border-right: 1px solid var(--line); border-bottom: 0; } .company-facts__item:last-child { border-bottom: 1px solid var(--line); } }
+</style>

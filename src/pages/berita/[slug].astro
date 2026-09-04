@@ -1,0 +1,84 @@
+---
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import PortableContent from '../../components/PortableContent.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import { company } from '../../data/company';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSanityImageSet } from '../../lib/sanity/image';
+import { getPublishedNews } from '../../lib/sanity/news-partner-repository';
+import { buildBreadcrumbJsonLd, buildNewsArticleJsonLd } from '../../lib/seo';
+import type { NewsDocument } from '../../types/sanity';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedNews();
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article, articles } }));
+}
+
+interface Props { article: NewsDocument; articles: NewsDocument[] }
+const { article, articles } = Astro.props as Props;
+const site = Astro.site ?? new URL('http://localhost:4321');
+const breadcrumbItems = [
+  { name: 'Beranda', path: '/' },
+  { name: 'Berita', path: '/berita' },
+  { name: article.title, path: `/berita/${article.slug}` },
+];
+const schemas = [
+  buildNewsArticleJsonLd(article, company, site),
+  buildBreadcrumbJsonLd(breadcrumbItems, site),
+];
+const relatedArticles = articles.filter((item) => item._id !== article._id).slice(0, 3);
+const publishedLabel = new Intl.DateTimeFormat('id-ID', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+}).format(new Date(article.publishedAt));
+const socialImage = article.seo?.socialImage ?? article.coverImage;
+---
+
+<BaseLayout
+  title={article.seo?.title ?? article.title}
+  description={article.seo?.description ?? article.excerpt}
+  canonicalPath={`/berita/${article.slug}`}
+  image={getSanityImageSet(socialImage, [1200]).src}
+  jsonLd={schemas}
+>
+  <article class="article section">
+    <div class="container article__container">
+      <Breadcrumbs items={breadcrumbItems.map(({ name, path }, index) => ({ name, href: index < breadcrumbItems.length - 1 ? path : undefined }))} />
+      <header class="article__header">
+        <span class="eyebrow">Berita perusahaan</span>
+        <h1>{article.title}</h1>
+        <time datetime={article.publishedAt}>{publishedLabel}</time>
+        <p class="lead">{article.excerpt}</p>
+      </header>
+      <figure class="article__cover">
+        <SanityImage image={article.coverImage} width={1200} height={800} widths={[480, 768, 1200]} sizes="(max-width: 900px) 100vw, 800px" loading="eager" />
+        {article.coverImage.caption && <figcaption>{article.coverImage.caption}</figcaption>}
+      </figure>
+      <PortableContent value={article.body} />
+    </div>
+  </article>
+
+  {relatedArticles.length > 0 && (
+    <section class="section section--soft" aria-labelledby="related-news-title">
+      <div class="container">
+        <h2 id="related-news-title">Berita Lainnya</h2>
+        <div class="related-news">
+          {relatedArticles.map((related) => <NewsCard article={related} headingLevel="h3" />)}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .article { padding-top: clamp(2rem, 6vw, 5rem); }
+  .article__container { max-width: 54rem; }
+  .article__header h1 { margin-block: 0.75rem 1rem; font-size: clamp(2.4rem, 7vw, 4.7rem); }
+  .article__header time { color: var(--ocean-600); font-size: 0.88rem; font-weight: 700; }
+  .article__header .lead { margin-top: 1.5rem; }
+  .article__cover { margin: 2.5rem 0; }
+  .article__cover :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+  .article__cover figcaption { margin-top: 0.5rem; color: var(--slate); font-size: 0.85rem; }
+  .related-news { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  @media (max-width: 760px) { .related-news { grid-template-columns: 1fr; } }
+</style>

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { buildOrganizationJsonLd, serializeJsonLd } from '../../src/lib/seo';
+import {
+  buildBreadcrumbJsonLd,
+  buildNewsArticleJsonLd,
+  buildOrganizationJsonLd,
+  buildProductJsonLd,
+  serializeJsonLd,
+} from '../../src/lib/seo';
+import { sanityFixtures } from '../../src/data/sanity-fixtures';
 import type { CompanyProfile } from '../../src/types/content';
 
 const company: CompanyProfile = {
@@ -23,5 +30,35 @@ describe('SEO helpers', () => {
 
   it('escapes opening tags in JSON-LD', () => {
     expect(serializeJsonLd({ value: '</script>' })).not.toContain('</script>');
+  });
+
+  it('builds factual product and breadcrumb schemas without fake offers', () => {
+    const schema = buildProductJsonLd(sanityFixtures.products[0], company, new URL('https://example.com'));
+
+    expect(schema.url).toBe('https://example.com/produk/tuna');
+    expect(schema).not.toHaveProperty('offers');
+    expect(schema).not.toHaveProperty('aggregateRating');
+    expect(schema.image).toBeInstanceOf(Array);
+
+    const breadcrumb = buildBreadcrumbJsonLd(
+      [{ name: 'Beranda', path: '/' }, { name: 'Tuna', path: '/produk/tuna' }],
+      new URL('https://example.com'),
+    );
+    expect(breadcrumb['@type']).toBe('BreadcrumbList');
+    expect(breadcrumb.itemListElement.map((item) => item.position)).toEqual([1, 2]);
+  });
+
+  it('builds complete NewsArticle data from visible article facts', () => {
+    const article = sanityFixtures.news[0];
+    const schema = buildNewsArticleJsonLd(article, company, new URL('https://example.com'));
+
+    expect(schema).toMatchObject({
+      '@type': 'NewsArticle',
+      headline: article.title,
+      datePublished: article.publishedAt,
+      author: { '@type': 'Organization', name: company.name },
+      publisher: { '@type': 'Organization', name: company.name },
+    });
+    expect(schema.mainEntityOfPage).toBe('https://example.com/berita/test-berita');
   });
 });

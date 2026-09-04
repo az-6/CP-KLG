@@ -24,7 +24,7 @@ npm run test:e2e
 ## Konten perusahaan
 
 - `src/data/company.ts` menyimpan identitas, pesan utama, bukti, proses, dan informasi kontak.
-- `src/data/products.ts` menyimpan kategori utama dan contoh katalog; item placeholder harus memakai `isPlaceholder: true`.
+- Kategori dan produk publik dikelola melalui Sanity; fixture lokal hanya digunakan saat pengujian otomatis.
 - `src/assets/` digunakan untuk foto produk, fasilitas, proses, tim, dan dokumen publik.
 - Jangan menambahkan klaim, kapasitas, sertifikasi, nama ilmiah, atau wilayah distribusi yang belum disetujui perusahaan.
 
@@ -44,13 +44,71 @@ SITE_URL=https://domain-produksi-anda.example
 
 Nomor WhatsApp menggunakan format internasional berupa angka saja. Kontak Zuhud, Hanggi, dan alamat Muara Baru sudah menjadi nilai resmi bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
 
+## Sanity CMS
+
+Sanity Studio berada di folder `studio/` dan dideploy terpisah dari website. Tambahkan konfigurasi berikut ke `.env` lokal serta environment deployment yang sesuai:
+
+```dotenv
+PUBLIC_SANITY_PROJECT_ID=id-project-sanity
+PUBLIC_SANITY_DATASET=production
+PUBLIC_SANITY_API_VERSION=2026-09-04
+SANITY_STUDIO_PROJECT_ID=id-project-sanity
+SANITY_STUDIO_DATASET=production
+```
+
+Jalankan Studio untuk penyuntingan konten:
+
+```bash
+npm run studio:dev
+```
+
+Validasi build Studio dengan:
+
+```bash
+npm run studio:build
+```
+
+Panduan operasional:
+
+- [Panduan editor Sanity](docs/sanity-editor-guide.md)
+- [Runbook Sanity ke Vercel](docs/sanity-vercel-runbook.md)
+
+Dataset `production` harus bersifat publik agar website statis dapat membaca konten tanpa token rahasia. `SANITY_DATA_MODE=fixture` hanya digunakan oleh pengujian browser otomatis dan tidak boleh diaktifkan pada deployment produksi.
+
+> Semua aset dalam dataset Free bersifat publik; jangan unggah data pribadi, tanda tangan, kontrak, atau dokumen internal.
+
+### Seed katalog awal yang disetujui
+
+Script seed hanya membuat kategori serta draft Tuna dan Ikan Dasar. Script memakai `createIfNotExists`, sehingga dapat dijalankan ulang tanpa membuat duplikat atau menimpa perubahan editor. Produk tetap nonaktif dan belum dapat dipublikasikan sampai foto resmi ditambahkan serta seluruh isinya diperiksa.
+
+1. Buat token Editor sementara di Sanity Manage.
+2. Atur variabel hanya pada sesi PowerShell aktif:
+
+   ```powershell
+   $env:SANITY_STUDIO_PROJECT_ID='id-project-asli'
+   $env:SANITY_STUDIO_DATASET='production'
+   $env:SANITY_WRITE_TOKEN='token-sementara'
+   npm --prefix studio run seed:approved
+   ```
+
+3. Jalankan perintah yang sama untuk kedua kali bila ingin memastikan tidak ada duplikat.
+4. Periksa keempat dokumen di Studio, tambahkan foto resmi dan alt text, lalu terbitkan produk hanya setelah disetujui.
+5. Hapus variabel lokal dan segera cabut token di Sanity Manage:
+
+   ```powershell
+   Remove-Item Env:SANITY_WRITE_TOKEN
+   ```
+
+Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platform hosting website.
+
 ## Deployment Vercel
 
 1. Import repository `az-6/CP-KLG` di Vercel.
 2. Gunakan framework preset **Astro**.
 3. Gunakan build command `npm run build` dan output directory `dist`.
 4. Pilih Node.js 22.x atau lebih baru.
-5. Atur `SITE_URL` ke domain produksi. Tambahkan environment variables lain hanya bila ingin mengganti nilai resmi bawaan.
+5. Atur `SITE_URL`, `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, dan `PUBLIC_SANITY_API_VERSION=2026-09-04` untuk Production dan Preview. Jangan memakai ID pengujian atau domain contoh di Production.
 6. Aktifkan Vercel Web Analytics jika diperlukan.
 
 Setiap pull request dapat menggunakan Preview Deployment. Branch `main` digunakan untuk deployment produksi.
+Setelah Deploy Hook dan webhook dikonfigurasi sesuai runbook, Publish atau Unpublish di Sanity akan memicu rebuild otomatis; staf tidak perlu melakukan push Git untuk perubahan konten.

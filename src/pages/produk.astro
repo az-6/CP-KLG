@@ -1,20 +1,16 @@
 ---
 import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { products } from '../data/products';
-import { company } from '../data/company';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { buildProductJsonLd } from '../lib/seo';
+import { getProductCatalog } from '../lib/sanity/product-repository';
 
-const site = Astro.site ?? new URL('http://localhost:4321');
-const schemas = products.filter((product) => !product.isPlaceholder).map((product) => buildProductJsonLd(product, company, site));
+const { categories, products } = await getProductCatalog();
 ---
 
 <BaseLayout
   title="Produk Ikan untuk Distributor dan Pedagang Besar"
   description="Jelajahi kategori tuna, ikan dasar, dan contoh kategori produk PT Katalis Lintas Global. Spesifikasi dibahas sesuai kebutuhan buyer."
   canonicalPath="/produk"
-  jsonLd={schemas}
 >
   <section class="page-hero">
     <div class="container">
@@ -29,19 +25,19 @@ const schemas = products.filter((product) => !product.isPlaceholder).map((produc
       <SectionHeading
         eyebrow="Pilihan tersedia"
         title="Katalog Produk"
-        description="Tuna dan ikan dasar merupakan kategori utama. Kategori berlabel contoh perlu dikonfirmasi terlebih dahulu melalui komunikasi bisnis."
+        description="Jelajahi kategori aktif dan buka detail produk untuk membahas spesifikasi sesuai kebutuhan bisnis Anda."
       />
 
       <div class="filters" role="group" aria-label="Filter kategori produk">
         <button type="button" data-filter="all" aria-pressed="true">Semua</button>
-        <button type="button" data-filter="tuna" aria-pressed="false">Tuna</button>
-        <button type="button" data-filter="ikan-dasar" aria-pressed="false">Ikan Dasar</button>
-        <button type="button" data-filter="lainnya" aria-pressed="false">Lainnya</button>
+        {categories.map((category) => (
+          <button type="button" data-filter={category.slug} aria-pressed="false">{category.name}</button>
+        ))}
       </div>
 
       <div class="products-grid" aria-live="polite">
         {products.map((product) => (
-          <div id={product.slug} data-product-filter-item data-product-category={product.category}>
+          <div data-product-filter-item data-product-category={product.categorySlug}>
             <ProductCard product={product} />
           </div>
         ))}

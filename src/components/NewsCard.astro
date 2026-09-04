@@ -1,0 +1,32 @@
+---
+import type { NewsDocument } from '../types/sanity';
+import ButtonLink from './ButtonLink.astro';
+import SanityImage from './SanityImage.astro';
+
+interface Props { article: NewsDocument; headingLevel?: 'h2' | 'h3' }
+const { article, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+const publishedLabel = new Intl.DateTimeFormat('id-ID', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+}).format(new Date(article.publishedAt));
+---
+
+<article class="news-card">
+  <SanityImage image={article.coverImage} width={720} height={480} widths={[480, 720]} sizes="(max-width: 760px) 100vw, 33vw" />
+  <div class="news-card__body">
+    <time datetime={article.publishedAt}>{publishedLabel}</time>
+    <Heading>{article.title}</Heading>
+    <p>{article.excerpt}</p>
+    <ButtonLink href={`/berita/${article.slug}`} label={`Baca ${article.title}`} variant="text" />
+  </div>
+</article>
+
+<style>
+  .news-card { display: grid; height: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--white); box-shadow: var(--shadow-sm); }
+  .news-card > :global(img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: 1.4rem; }
+  .news-card time { color: var(--ocean-600); font-size: 0.78rem; font-weight: 700; }
+  .news-card h2, .news-card h3 { margin-top: 0.55rem; }
+  .news-card p { color: var(--slate); }
+  .news-card :global(.button-link) { margin-top: auto; }
+</style>

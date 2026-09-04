@@ -1,20 +1,29 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
+import CompanyFacts from '../components/CompanyFacts.astro';
 import Hero from '../components/Hero.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PartnerGrid from '../components/PartnerGrid.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import ProofCard from '../components/ProofCard.astro';
+import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
-import { products } from '../data/products';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { hasItems } from '../lib/optional-sections';
+import { getHomeFacts } from '../lib/sanity/evidence-repository';
+import { getActivePartners, getLatestNews } from '../lib/sanity/news-partner-repository';
+import { getProductCatalog } from '../lib/sanity/product-repository';
 import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
-const trustFacts = [
-  { value: 'B2B', label: 'Fokus distributor & pedagang besar' },
-  { value: 'Tonase', label: 'Orientasi pasokan skala besar' },
-  { value: 'Custom', label: 'Spesifikasi mengikuti kebutuhan buyer' },
-];
+const [{ products }, latestNews, partners, homeFacts] = await Promise.all([
+  getProductCatalog(),
+  getLatestNews(3),
+  getActivePartners(),
+  getHomeFacts(),
+]);
+const featuredProducts = products.slice(0, 4);
 ---
 
 <BaseLayout
@@ -29,36 +38,31 @@ const trustFacts = [
     primaryHref={meetingHref}
   />
 
-  <section class="trust-strip" aria-label="Ringkasan kemampuan perusahaan">
-    <div class="container trust-strip__grid">
-      {trustFacts.map((fact) => (
-        <div class="trust-strip__item">
-          <strong>{fact.value}</strong>
-          <span>{fact.label}</span>
-        </div>
-      ))}
-    </div>
-  </section>
+  {hasItems(homeFacts) && (
+    <section class="trust-strip">
+      <div class="container"><CompanyFacts facts={homeFacts} label="Ringkasan perusahaan" /></div>
+    </section>
+  )}
+
+  {hasItems(partners) && (
+    <section class="section section--soft" aria-labelledby="partners-title">
+      <div class="container">
+        <SectionHeading eyebrow="Kolaborasi" title="Mitra Kerja" description="Perusahaan yang bekerja sama dengan PT Katalis Lintas Global." />
+        <span id="partners-title" class="visually-hidden">Mitra Kerja</span>
+        <PartnerGrid {partners} />
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container">
       <SectionHeading
         eyebrow="Produk utama"
         title="Produk untuk Kebutuhan Bisnis Anda"
-        description="Tuna dan ikan dasar merupakan kategori utama kami. Kategori tambahan berlabel contoh ditampilkan sebagai gambaran awal dan perlu dikonfirmasi."
+        description="Lihat produk aktif kami dan buka detailnya untuk membahas kebutuhan pasokan Anda."
       />
       <div class="category-grid">
-        {products.map((product, index) => (
-          <a class="category-card" href={`/produk#${product.slug}`}>
-            <span class="category-card__index">0{index + 1}</span>
-            {product.isPlaceholder && <span class="category-card__status">Contoh katalog</span>}
-            <div>
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <span class="category-card__link">Lihat kategori <span aria-hidden="true">→</span></span>
-            </div>
-          </a>
-        ))}
+        {featuredProducts.map((product) => <ProductCard product={product} headingLevel="h3" />)}
       </div>
     </div>
   </section>
@@ -123,6 +127,19 @@ const trustFacts = [
     </div>
   </section>
 
+  {hasItems(latestNews) && (
+    <section class="section section--soft" aria-labelledby="latest-news-title" data-latest-news>
+      <div class="container">
+        <SectionHeading eyebrow="Aktivitas terbaru" title="Berita Terbaru" description="Kabar terbaru dari aktivitas PT Katalis Lintas Global." />
+        <span id="latest-news-title" class="visually-hidden">Berita Terbaru</span>
+        <div class="latest-news-grid">
+          {latestNews.map((article) => <NewsCard {article} headingLevel="h3" />)}
+        </div>
+        <div class="section-link"><ButtonLink href="/berita" label="Lihat Semua Berita" variant="text" /></div>
+      </div>
+    </section>
+  )}
+
   <section class="section">
     <div class="container cta-panel">
       <div>
@@ -173,6 +190,12 @@ const trustFacts = [
   .category-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .latest-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
   }
 
@@ -330,6 +353,7 @@ const trustFacts = [
   @media (max-width: 780px) {
     .trust-strip__grid,
     .category-grid,
+    .latest-news-grid,
     .specification__grid,
     .about-preview {
       grid-template-columns: 1fr;

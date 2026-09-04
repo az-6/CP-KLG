@@ -1,0 +1,26 @@
+---
+import type { OperationalMediaDocument } from '../types/sanity';
+import SanityImage from './SanityImage.astro';
+
+interface Props { items: OperationalMediaDocument[]; label: string }
+const { items, label } = Astro.props;
+---
+
+<section class="media-gallery" aria-label={label}>
+  <div class="media-gallery__grid">
+    {items.map((item) => (
+      <figure>
+        <SanityImage image={item.image} width={720} height={480} widths={[480, 720]} sizes="(max-width: 720px) 100vw, 50vw" />
+        {item.image.caption && <figcaption>{item.image.caption}</figcaption>}
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .media-gallery__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .media-gallery figure { margin: 0; overflow: hidden; border-radius: var(--radius-md); background: var(--ice-50); }
+  .media-gallery :global(img) { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .media-gallery figcaption { padding: 0.75rem; color: var(--slate); font-size: 0.85rem; }
+  @media (max-width: 620px) { .media-gallery__grid { grid-template-columns: 1fr; } }
+</style>
