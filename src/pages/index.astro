@@ -1,17 +1,25 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
 import Hero from '../components/Hero.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PartnerGrid from '../components/PartnerGrid.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import ProofCard from '../components/ProofCard.astro';
 import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { hasItems } from '../lib/optional-sections';
+import { getActivePartners, getLatestNews } from '../lib/sanity/news-partner-repository';
 import { getProductCatalog } from '../lib/sanity/product-repository';
 import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
-const { products } = await getProductCatalog();
+const [{ products }, latestNews, partners] = await Promise.all([
+  getProductCatalog(),
+  getLatestNews(3),
+  getActivePartners(),
+]);
 const featuredProducts = products.slice(0, 4);
 const trustFacts = [
   { value: 'B2B', label: 'Fokus distributor & pedagang besar' },
@@ -42,6 +50,16 @@ const trustFacts = [
       ))}
     </div>
   </section>
+
+  {hasItems(partners) && (
+    <section class="section section--soft" aria-labelledby="partners-title">
+      <div class="container">
+        <SectionHeading eyebrow="Kolaborasi" title="Mitra Kerja" description="Perusahaan yang bekerja sama dengan PT Katalis Lintas Global." />
+        <span id="partners-title" class="visually-hidden">Mitra Kerja</span>
+        <PartnerGrid {partners} />
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container">
@@ -116,6 +134,19 @@ const trustFacts = [
     </div>
   </section>
 
+  {hasItems(latestNews) && (
+    <section class="section section--soft" aria-labelledby="latest-news-title" data-latest-news>
+      <div class="container">
+        <SectionHeading eyebrow="Aktivitas terbaru" title="Berita Terbaru" description="Kabar terbaru dari aktivitas PT Katalis Lintas Global." />
+        <span id="latest-news-title" class="visually-hidden">Berita Terbaru</span>
+        <div class="latest-news-grid">
+          {latestNews.map((article) => <NewsCard {article} headingLevel="h3" />)}
+        </div>
+        <div class="section-link"><ButtonLink href="/berita" label="Lihat Semua Berita" variant="text" /></div>
+      </div>
+    </section>
+  )}
+
   <section class="section">
     <div class="container cta-panel">
       <div>
@@ -166,6 +197,12 @@ const trustFacts = [
   .category-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .latest-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
   }
 
@@ -323,6 +360,7 @@ const trustFacts = [
   @media (max-width: 780px) {
     .trust-strip__grid,
     .category-grid,
+    .latest-news-grid,
     .specification__grid,
     .about-preview {
       grid-template-columns: 1fr;
