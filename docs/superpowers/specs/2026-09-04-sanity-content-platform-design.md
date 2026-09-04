@@ -247,7 +247,7 @@ Path: `/produk/[slug]`
 
 - Profil dan nilai inti yang sudah ada tetap digunakan.
 - Fakta perusahaan dengan placement Tentang Kami ditampilkan sesuai urutan.
-- Dokumentasi `team` dan `fleet` ditempatkan secara kontekstual.
+- Dokumentasi `team`, `fleet`, dan `activity` ditempatkan secara kontekstual.
 - Legalitas dan sertifikasi tampil sebagai kartu pratinjau gambar tanpa unduhan.
 - Section yang tidak mempunyai konten aktif disembunyikan.
 
@@ -399,4 +399,3 @@ Rujukan implementasi: [Google image SEO best practices](https://developers.googl
 - Dokumentasi operasional ditempatkan secara kontekstual dan tidak memiliki halaman Galeri.
 - Legalitas hanya memiliki pratinjau gambar tanpa PDF atau tombol unduh.
 - Tuna dan Ikan Dasar menjadi konten migrasi awal; Udang dan Kakap tidak dipublikasikan.
-
