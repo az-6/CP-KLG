@@ -1,13 +1,18 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
+import MediaGallery from '../components/MediaGallery.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import ProofCard from '../components/ProofCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { hasItems } from '../lib/optional-sections';
+import { getProcessEvidence } from '../lib/sanity/evidence-repository';
 import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+const evidence = await getProcessEvidence();
+const processMedia = [...evidence.process, ...evidence.facilities];
 ---
 
 <BaseLayout
@@ -25,35 +30,26 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 
   <section class="section">
     <div class="container process-layout">
-      <div>
-        <SectionHeading
-          eyebrow="Dari awal hingga pengiriman"
-          title="Alur Penanganan Produk"
-          description="Tahapan berikut menggambarkan prinsip proses kami. Detail teknis dan dokumentasi dapat dibahas bersama calon buyer."
-        />
-      </div>
+      <div><SectionHeading eyebrow="Dari awal hingga pengiriman" title="Alur Penanganan Produk" description="Tahapan berikut menggambarkan prinsip proses kami. Detail teknis dan dokumentasi dapat dibahas bersama calon buyer." /></div>
       <ProcessTimeline steps={company.process} />
     </div>
   </section>
 
   <section class="section section--soft">
     <div class="container">
-      <SectionHeading
-        eyebrow="Fokus mutu"
-        title="Tiga Fokus Utama"
-        description="Pendekatan kami berfokus pada kualitas, fleksibilitas spesifikasi, dan kebersihan penanganan."
-      />
+      <SectionHeading eyebrow="Fokus mutu" title="Tiga Fokus Utama" description="Pendekatan kami berfokus pada kualitas, fleksibilitas spesifikasi, dan kebersihan penanganan." />
       <div class="grid grid--3">{company.proofs.map((proof) => <ProofCard {...proof} />)}</div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container evidence-grid">
-      <div class="evidence-card"><span>01 · Informasi menyusul</span><h2>Fasilitas & Cold Chain</h2><p>Rincian fasilitas dan dokumentasi pendukung akan ditambahkan setelah materi publik disetujui.</p></div>
-      <div class="evidence-card"><span>02 · Informasi menyusul</span><h2>Legalitas & Sertifikasi</h2><p>Nama dokumen legalitas dan sertifikasi akan ditampilkan setelah datanya diverifikasi.</p></div>
-      <div class="evidence-card"><span>03 · Informasi menyusul</span><h2>Kapasitas & Jangkauan</h2><p>Angka kapasitas serta cakupan distribusi akan dipublikasikan setelah informasi resmi tersedia.</p></div>
-    </div>
-  </section>
+  {hasItems(processMedia) && (
+    <section class="section">
+      <div class="container">
+        <SectionHeading eyebrow="Dokumentasi operasional" title="Proses dan Fasilitas" />
+        <MediaGallery items={processMedia} label="Dokumentasi proses dan fasilitas" />
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container cta-panel">
@@ -65,10 +61,5 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 
 <style>
   .process-layout { display: grid; grid-template-columns: 0.9fr 1fr; gap: clamp(3rem, 8vw, 7rem); }
-  .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .evidence-card { padding: 2rem; border: 1px solid var(--line); border-radius: var(--radius-md); }
-  .evidence-card > span { color: var(--ocean-600); font-size: 0.75rem; font-weight: 800; }
-  .evidence-card h2 { margin-top: 3rem; font-size: 1.4rem; }
-  .evidence-card p { margin-bottom: 0; color: var(--slate); }
-  @media (max-width: 780px) { .process-layout, .evidence-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 780px) { .process-layout { grid-template-columns: 1fr; } }
 </style>

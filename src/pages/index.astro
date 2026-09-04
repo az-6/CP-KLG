@@ -1,5 +1,6 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
+import CompanyFacts from '../components/CompanyFacts.astro';
 import Hero from '../components/Hero.astro';
 import NewsCard from '../components/NewsCard.astro';
 import PartnerGrid from '../components/PartnerGrid.astro';
@@ -10,22 +11,19 @@ import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { hasItems } from '../lib/optional-sections';
+import { getHomeFacts } from '../lib/sanity/evidence-repository';
 import { getActivePartners, getLatestNews } from '../lib/sanity/news-partner-repository';
 import { getProductCatalog } from '../lib/sanity/product-repository';
 import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
-const [{ products }, latestNews, partners] = await Promise.all([
+const [{ products }, latestNews, partners, homeFacts] = await Promise.all([
   getProductCatalog(),
   getLatestNews(3),
   getActivePartners(),
+  getHomeFacts(),
 ]);
 const featuredProducts = products.slice(0, 4);
-const trustFacts = [
-  { value: 'B2B', label: 'Fokus distributor & pedagang besar' },
-  { value: 'Tonase', label: 'Orientasi pasokan skala besar' },
-  { value: 'Custom', label: 'Spesifikasi mengikuti kebutuhan buyer' },
-];
 ---
 
 <BaseLayout
@@ -40,16 +38,11 @@ const trustFacts = [
     primaryHref={meetingHref}
   />
 
-  <section class="trust-strip" aria-label="Ringkasan kemampuan perusahaan">
-    <div class="container trust-strip__grid">
-      {trustFacts.map((fact) => (
-        <div class="trust-strip__item">
-          <strong>{fact.value}</strong>
-          <span>{fact.label}</span>
-        </div>
-      ))}
-    </div>
-  </section>
+  {hasItems(homeFacts) && (
+    <section class="trust-strip">
+      <div class="container"><CompanyFacts facts={homeFacts} label="Ringkasan perusahaan" /></div>
+    </section>
+  )}
 
   {hasItems(partners) && (
     <section class="section section--soft" aria-labelledby="partners-title">

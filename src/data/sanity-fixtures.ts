@@ -106,10 +106,17 @@ const partners: PartnerDocument[] = [
 ];
 
 const documentationTypes: DocumentationType[] = ['process', 'facility', 'team', 'fleet', 'activity'];
+const documentationAlt: Record<DocumentationType, string> = {
+  process: 'Test foto proses',
+  facility: 'Test foto fasilitas',
+  team: 'Test foto tim',
+  fleet: 'Test foto armada',
+  activity: 'Test foto aktivitas',
+};
 const operationalMedia: OperationalMediaDocument[] = documentationTypes.map((documentationType, order) => ({
   _id: `operational-media-${documentationType}`,
   title: `Test Dokumentasi ${documentationType}`,
-  image: image(documentationType, `Foto pengujian dokumentasi ${documentationType}`),
+  image: image(documentationType, documentationAlt[documentationType]),
   documentationType,
   order,
   isActive: true,
@@ -129,7 +136,7 @@ const credentials: CredentialDocument[] = [
 const companyFacts: CompanyFactDocument[] = [
   {
     _id: 'fact-home-test',
-    label: 'Test Fakta Beranda',
+    label: 'Test fakta Beranda',
     value: 'Data pengujian',
     description: 'Bukan klaim produksi.',
     placement: 'home',
@@ -138,7 +145,7 @@ const companyFacts: CompanyFactDocument[] = [
   },
   {
     _id: 'fact-about-test',
-    label: 'Test Fakta Tentang Kami',
+    label: 'Test fakta Tentang Kami',
     value: 'Data pengujian',
     description: 'Bukan klaim produksi.',
     placement: 'about',
