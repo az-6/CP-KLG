@@ -18,4 +18,8 @@ describe('Sanity configuration', () => {
     expect(isSanityFixtureMode({ SANITY_DATA_MODE: 'fixture' })).toBe(true);
     expect(isSanityFixtureMode({})).toBe(false);
   });
+
+  it('can read fixture mode from the server process environment during prerender', () => {
+    expect(isSanityFixtureMode({}, { SANITY_DATA_MODE: 'fixture' })).toBe(true);
+  });
 });

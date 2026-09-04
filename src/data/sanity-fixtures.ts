@@ -15,7 +15,7 @@ const image = (name: string, alt: string): SanityImage => ({
   _type: 'image',
   asset: {
     _type: 'reference',
-    _ref: `image-${name.padEnd(40, 'a').slice(0, 40)}-1200x800-jpg`,
+    _ref: `image-${name.replace(/[^A-Za-z0-9]/g, '').padEnd(40, 'a').slice(0, 40)}-1200x800-jpg`,
   },
   alt,
 });

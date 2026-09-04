@@ -77,7 +77,7 @@ export function normalizeCatalog(
 }
 
 export async function getProductCatalog(): Promise<ProductCatalog> {
-  const catalog = isSanityFixtureMode(import.meta.env)
+  const catalog = isSanityFixtureMode(import.meta.env, process.env)
     ? { categories: sanityFixtures.categories, products: sanityFixtures.products }
     : await sanityClient.fetch<ProductCatalog>(PRODUCT_CATALOG_QUERY);
 

@@ -1,6 +1,7 @@
 ---
 import type { SanityImage as SanityImageData } from '../types/sanity';
 import { getSanityImageSet } from '../lib/sanity/image';
+import { isSanityFixtureMode } from '../lib/sanity/config';
 
 interface Props {
   image: SanityImageData;
@@ -24,7 +25,7 @@ const {
   class: className,
 } = Astro.props;
 
-const fixtureMode = import.meta.env.SANITY_DATA_MODE === 'fixture';
+const fixtureMode = isSanityFixtureMode(import.meta.env, process.env);
 const imageSet = fixtureMode
   ? { src: '/social-card.svg', srcset: undefined }
   : getSanityImageSet(image, widths);

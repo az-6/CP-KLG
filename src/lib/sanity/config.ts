@@ -6,7 +6,8 @@ export interface SanityRuntimeConfig {
 
 type Env = Record<string, string | undefined>;
 
-export const isSanityFixtureMode = (env: Env) => env.SANITY_DATA_MODE === 'fixture';
+export const isSanityFixtureMode = (env: Env, runtimeEnv: Env = {}) =>
+  env.SANITY_DATA_MODE === 'fixture' || runtimeEnv.SANITY_DATA_MODE === 'fixture';
 
 export function getSanityConfig(env: Env): SanityRuntimeConfig {
   const projectId = env.PUBLIC_SANITY_PROJECT_ID;
