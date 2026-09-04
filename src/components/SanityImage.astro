@@ -1,0 +1,43 @@
+---
+import type { SanityImage as SanityImageData } from '../types/sanity';
+import { getSanityImageSet } from '../lib/sanity/image';
+
+interface Props {
+  image: SanityImageData;
+  alt?: string;
+  widths?: number[];
+  sizes?: string;
+  width: number;
+  height: number;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const {
+  image,
+  alt = image.alt,
+  widths = [480, 768, 1200],
+  sizes = '100vw',
+  width,
+  height,
+  loading = 'lazy',
+  class: className,
+} = Astro.props;
+
+const fixtureMode = import.meta.env.SANITY_DATA_MODE === 'fixture';
+const imageSet = fixtureMode
+  ? { src: '/social-card.svg', srcset: undefined }
+  : getSanityImageSet(image, widths);
+---
+
+<img
+  src={imageSet.src}
+  srcset={imageSet.srcset}
+  sizes={imageSet.srcset ? sizes : undefined}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class={className}
+/>
