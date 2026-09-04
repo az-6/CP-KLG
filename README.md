@@ -24,7 +24,7 @@ npm run test:e2e
 ## Konten perusahaan
 
 - `src/data/company.ts` menyimpan identitas, pesan utama, bukti, proses, dan informasi kontak.
-- `src/data/products.ts` menyimpan kategori utama dan contoh katalog; item placeholder harus memakai `isPlaceholder: true`.
+- Kategori dan produk publik dikelola melalui Sanity; fixture lokal hanya digunakan saat pengujian otomatis.
 - `src/assets/` digunakan untuk foto produk, fasilitas, proses, tim, dan dokumen publik.
 - Jangan menambahkan klaim, kapasitas, sertifikasi, nama ilmiah, atau wilayah distribusi yang belum disetujui perusahaan.
 
@@ -71,6 +71,30 @@ npm run studio:build
 Dataset `production` harus bersifat publik agar website statis dapat membaca konten tanpa token rahasia. `SANITY_DATA_MODE=fixture` hanya digunakan oleh pengujian browser otomatis dan tidak boleh diaktifkan pada deployment produksi.
 
 > Semua aset dalam dataset Free bersifat publik; jangan unggah data pribadi, tanda tangan, kontrak, atau dokumen internal.
+
+### Seed katalog awal yang disetujui
+
+Script seed hanya membuat kategori serta draft Tuna dan Ikan Dasar. Script memakai `createIfNotExists`, sehingga dapat dijalankan ulang tanpa membuat duplikat atau menimpa perubahan editor. Produk tetap nonaktif dan belum dapat dipublikasikan sampai foto resmi ditambahkan serta seluruh isinya diperiksa.
+
+1. Buat token Editor sementara di Sanity Manage.
+2. Atur variabel hanya pada sesi PowerShell aktif:
+
+   ```powershell
+   $env:SANITY_STUDIO_PROJECT_ID='id-project-asli'
+   $env:SANITY_STUDIO_DATASET='production'
+   $env:SANITY_WRITE_TOKEN='token-sementara'
+   npm --prefix studio run seed:approved
+   ```
+
+3. Jalankan perintah yang sama untuk kedua kali bila ingin memastikan tidak ada duplikat.
+4. Periksa keempat dokumen di Studio, tambahkan foto resmi dan alt text, lalu terbitkan produk hanya setelah disetujui.
+5. Hapus variabel lokal dan segera cabut token di Sanity Manage:
+
+   ```powershell
+   Remove-Item Env:SANITY_WRITE_TOKEN
+   ```
+
+Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platform hosting website.
 
 ## Deployment Vercel
 

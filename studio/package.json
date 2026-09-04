@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "sanity dev",
     "build": "sanity build",
-    "deploy": "sanity deploy"
+    "deploy": "sanity deploy",
+    "seed:approved": "node scripts/seed-approved-content.mjs"
   },
   "dependencies": {
     "@sanity/vision": "latest",
