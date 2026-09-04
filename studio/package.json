@@ -1,0 +1,24 @@
+{
+  "name": "pt-klg-sanity-studio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "latest",
+    "@sanity/client": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "sanity": "latest",
+    "styled-components": "^6.5.3"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}
