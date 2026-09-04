@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const contentPaths = ['/', '/produk', '/produk/tuna', '/mutu-proses', '/tentang-kami', '/hubungi-kami'];
+const contentPaths = ['/', '/produk', '/produk/tuna', '/berita', '/berita/test-berita', '/mutu-proses', '/tentang-kami', '/hubungi-kami'];
 
 for (const viewport of [
   { width: 360, height: 800 },

@@ -14,6 +14,12 @@ test('crawler endpoints are generated', async ({ request }) => {
   expect(await robots.text()).toContain('Sitemap: http://localhost:4321/sitemap-index.xml');
 });
 
+test('published news URL appears in generated sitemap', async ({ request }) => {
+  const response = await request.get('/sitemap-0.xml');
+  expect(response.ok()).toBe(true);
+  expect(await response.text()).toContain('/berita/test-berita');
+});
+
 test('unknown route offers recovery links', async ({ page }) => {
   await page.goto('/tidak-ada');
   await expect(page.getByRole('link', { name: 'Kembali ke Beranda' })).toBeVisible();
