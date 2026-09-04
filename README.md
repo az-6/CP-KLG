@@ -68,6 +68,11 @@ Validasi build Studio dengan:
 npm run studio:build
 ```
 
+Panduan operasional:
+
+- [Panduan editor Sanity](docs/sanity-editor-guide.md)
+- [Runbook Sanity ke Vercel](docs/sanity-vercel-runbook.md)
+
 Dataset `production` harus bersifat publik agar website statis dapat membaca konten tanpa token rahasia. `SANITY_DATA_MODE=fixture` hanya digunakan oleh pengujian browser otomatis dan tidak boleh diaktifkan pada deployment produksi.
 
 > Semua aset dalam dataset Free bersifat publik; jangan unggah data pribadi, tanda tangan, kontrak, atau dokumen internal.
@@ -102,7 +107,8 @@ Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platf
 2. Gunakan framework preset **Astro**.
 3. Gunakan build command `npm run build` dan output directory `dist`.
 4. Pilih Node.js 22.x atau lebih baru.
-5. Atur `SITE_URL` ke domain produksi. Tambahkan environment variables lain hanya bila ingin mengganti nilai resmi bawaan.
+5. Atur `SITE_URL`, `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, dan `PUBLIC_SANITY_API_VERSION=2026-09-04` untuk Production dan Preview. Jangan memakai ID pengujian atau domain contoh di Production.
 6. Aktifkan Vercel Web Analytics jika diperlukan.
 
 Setiap pull request dapat menggunakan Preview Deployment. Branch `main` digunakan untuk deployment produksi.
+Setelah Deploy Hook dan webhook dikonfigurasi sesuai runbook, Publish atau Unpublish di Sanity akan memicu rebuild otomatis; staf tidak perlu melakukan push Git untuk perubahan konten.
