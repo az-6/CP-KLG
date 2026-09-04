@@ -19,4 +19,9 @@ test('credential preview opens accessibly and exposes no downloads', async ({ pa
   await page.getByRole('button', { name: 'Tutup pratinjau' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(opener).toBeFocused();
+
+  await opener.click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(opener).toBeFocused();
 });
