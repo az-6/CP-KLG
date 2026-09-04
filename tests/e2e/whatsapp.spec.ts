@@ -23,8 +23,8 @@ test('contact page exposes both official WhatsApp contacts', async ({ page }) =>
 });
 
 test('product CTA carries product context', async ({ page }) => {
-  await page.goto('/produk');
-  const link = page.locator('[data-whatsapp-source="product"]').first();
+  await page.goto('/produk/tuna');
+  const link = page.locator('[data-whatsapp-source="product-detail"]');
   const href = await link.getAttribute('href');
   expect(decodeURIComponent(href!)).toContain('produk Tuna');
 });
