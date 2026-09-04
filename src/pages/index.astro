@@ -3,13 +3,16 @@ import ButtonLink from '../components/ButtonLink.astro';
 import Hero from '../components/Hero.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import ProofCard from '../components/ProofCard.astro';
+import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
-import { products } from '../data/products';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProductCatalog } from '../lib/sanity/product-repository';
 import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+const { products } = await getProductCatalog();
+const featuredProducts = products.slice(0, 4);
 const trustFacts = [
   { value: 'B2B', label: 'Fokus distributor & pedagang besar' },
   { value: 'Tonase', label: 'Orientasi pasokan skala besar' },
@@ -45,20 +48,10 @@ const trustFacts = [
       <SectionHeading
         eyebrow="Produk utama"
         title="Produk untuk Kebutuhan Bisnis Anda"
-        description="Tuna dan ikan dasar merupakan kategori utama kami. Kategori tambahan berlabel contoh ditampilkan sebagai gambaran awal dan perlu dikonfirmasi."
+        description="Lihat produk aktif kami dan buka detailnya untuk membahas kebutuhan pasokan Anda."
       />
       <div class="category-grid">
-        {products.map((product, index) => (
-          <a class="category-card" href={`/produk#${product.slug}`}>
-            <span class="category-card__index">0{index + 1}</span>
-            {product.isPlaceholder && <span class="category-card__status">Contoh katalog</span>}
-            <div>
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <span class="category-card__link">Lihat kategori <span aria-hidden="true">→</span></span>
-            </div>
-          </a>
-        ))}
+        {featuredProducts.map((product) => <ProductCard product={product} headingLevel="h3" />)}
       </div>
     </div>
   </section>
