@@ -81,13 +81,16 @@ const products: ProductDocument[] = [
 const news: NewsDocument[] = [
   {
     _id: 'news-test-activity',
-    title: 'Test Aktivitas Perusahaan',
-    slug: 'test-aktivitas-perusahaan',
+    title: 'Test Berita',
+    slug: 'test-berita',
     publishedAt: '2026-09-04T08:00:00.000Z',
     _updatedAt: '2026-09-04T08:00:00.000Z',
     excerpt: 'Konten pengujian untuk memastikan daftar dan detail berita tampil dengan benar.',
     coverImage: image('news', 'Foto pengujian aktivitas perusahaan'),
-    body: [paragraph('news-body', 'Isi berita pengujian untuk pemeriksaan tampilan website.')],
+    body: [
+      paragraph('news-body', 'Isi berita pengujian untuk pemeriksaan tampilan website.'),
+      image('news-inline', 'Foto pengujian di dalam artikel'),
+    ],
     isActive: true,
   },
 ];

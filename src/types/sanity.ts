@@ -1,7 +1,7 @@
 import type { PortableTextBlock } from '@portabletext/types';
 
 export interface SanityImage {
-  _type?: 'image';
+  _type: 'image';
   asset: { _ref: string; _type: 'reference' };
   alt: string;
   caption?: string;
@@ -33,7 +33,7 @@ export interface ProductDocument {
   categorySlug: string;
   scientificName?: string;
   excerpt: string;
-  description: PortableTextBlock[];
+  description: Array<PortableTextBlock | SanityImage>;
   images: SanityImage[];
   sizes?: string[];
   forms?: string[];
@@ -54,7 +54,7 @@ export interface NewsDocument {
   _updatedAt: string;
   excerpt: string;
   coverImage: SanityImage;
-  body: PortableTextBlock[];
+  body: Array<PortableTextBlock | SanityImage>;
   seo?: SeoFields;
   isActive: boolean;
 }

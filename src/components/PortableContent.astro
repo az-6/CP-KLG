@@ -1,11 +1,12 @@
 ---
 import { PortableText } from 'astro-portabletext';
 import type { PortableTextBlock } from '@portabletext/types';
+import type { SanityImage } from '../types/sanity';
 import PortableLink from './PortableLink.astro';
 import PortableSanityImage from './PortableSanityImage.astro';
 
 interface Props {
-  value: PortableTextBlock[];
+  value: Array<PortableTextBlock | SanityImage>;
 }
 
 const { value } = Astro.props;

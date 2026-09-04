@@ -1,0 +1,41 @@
+---
+import NewsCard from '../../components/NewsCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedNews } from '../../lib/sanity/news-partner-repository';
+
+const articles = await getPublishedNews();
+---
+
+<BaseLayout
+  title="Berita"
+  description="Berita dan aktivitas terbaru PT Katalis Lintas Global."
+  canonicalPath="/berita"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Aktivitas perusahaan</span>
+      <h1>Berita</h1>
+      <p>Ikuti kabar dan aktivitas terbaru PT Katalis Lintas Global.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading eyebrow="Terbaru" title="Kabar Perusahaan" description="Informasi aktivitas yang dipublikasikan oleh tim kami." />
+      {articles.length ? (
+        <div class="news-grid">
+          {articles.map((article) => <NewsCard {article} />)}
+        </div>
+      ) : (
+        <p>Belum ada berita yang dipublikasikan.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .news-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  @media (max-width: 900px) { .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .news-grid { grid-template-columns: 1fr; } }
+</style>
