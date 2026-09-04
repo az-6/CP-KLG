@@ -1,6 +1,7 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
 import CompanyFacts from '../components/CompanyFacts.astro';
+import CredentialGallery from '../components/CredentialGallery.astro';
 import MediaGallery from '../components/MediaGallery.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
@@ -81,15 +82,14 @@ const evidence = await getAboutEvidence();
     </section>
   )}
 
-  <section class="section">
-    <div class="container company-evidence">
-      <div><span class="eyebrow">Kredibilitas</span><h2>Informasi Pendukung untuk Keputusan Buyer</h2></div>
-      <div>
-        <p>Detail legalitas dan sertifikasi publik sedang disiapkan dan akan ditambahkan setelah datanya diverifikasi.</p>
-        <p>Angka kapasitas serta jangkauan distribusi juga belum dipublikasikan. Calon buyer dapat mendiskusikan kebutuhan awal melalui kontak resmi kami.</p>
+  {hasItems(evidence.credentials) && (
+    <section class="section section--soft">
+      <div class="container">
+        <SectionHeading eyebrow="Kredibilitas" title="Legalitas dan Sertifikasi" description="Pratinjau dokumen publik yang telah disetujui untuk ditampilkan." />
+        <CredentialGallery credentials={evidence.credentials} />
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <section class="section">
     <div class="container cta-panel">
