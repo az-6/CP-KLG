@@ -1,0 +1,99 @@
+---
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ButtonLink from '../../components/ButtonLink.astro';
+import PortableContent from '../../components/PortableContent.astro';
+import ProductGallery from '../../components/ProductGallery.astro';
+import { company } from '../../data/company';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSanityImageSet } from '../../lib/sanity/image';
+import { getActiveProducts } from '../../lib/sanity/product-repository';
+import { buildBreadcrumbJsonLd, buildProductJsonLd } from '../../lib/seo';
+import { getMeetingHref } from '../../lib/whatsapp';
+import type { ProductDocument } from '../../types/sanity';
+
+export async function getStaticPaths() {
+  const products = await getActiveProducts();
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+interface Props { product: ProductDocument }
+const { product } = Astro.props as Props;
+const site = Astro.site ?? new URL('http://localhost:4321');
+const breadcrumbs = [
+  { name: 'Beranda', path: '/' },
+  { name: 'Produk', path: '/produk' },
+  { name: product.name, path: `/produk/${product.slug}` },
+];
+const schemas = [buildProductJsonLd(product, company, site), buildBreadcrumbJsonLd(breadcrumbs, site)];
+const meetingHref = getMeetingHref(company.contact.whatsappNumber, product.name);
+const socialImage = product.seo?.socialImage ?? product.images[0];
+const socialImageUrl = socialImage ? getSanityImageSet(socialImage, [1200]).src : undefined;
+const facts = [
+  product.sizes?.length ? ['Ukuran / grade', product.sizes.join(', ')] : null,
+  product.forms?.length ? ['Bentuk produk', product.forms.join(', ')] : null,
+  product.condition?.length ? ['Kondisi', product.condition.join(', ')] : null,
+  product.packaging?.length ? ['Pengemasan', product.packaging.join(', ')] : null,
+  product.volume ? ['Volume', product.volume] : null,
+].filter(Boolean) as [string, string][];
+---
+
+<BaseLayout
+  title={product.seo?.title ?? product.name}
+  description={product.seo?.description ?? product.excerpt}
+  canonicalPath={`/produk/${product.slug}`}
+  image={socialImageUrl}
+  jsonLd={schemas}
+>
+  <section class="section product-detail">
+    <div class="container">
+      <Breadcrumbs items={breadcrumbs.map(({ name, path }, index) => ({ name, href: index < breadcrumbs.length - 1 ? path : undefined }))} />
+      <div class="product-detail__grid">
+        <ProductGallery images={product.images} productName={product.name} />
+        <div class="product-detail__content">
+          <span class="eyebrow">{product.categoryName}</span>
+          <h1>{product.name}</h1>
+          {product.scientificName && <p class="scientific-name">{product.scientificName}</p>}
+          <p class="lead">{product.excerpt}</p>
+          <p class="availability">{product.availabilityStatus}</p>
+
+          {facts.length > 0 && (
+            <dl>
+              {facts.map(([label, value]) => <><dt>{label}</dt><dd>{value}</dd></>)}
+            </dl>
+          )}
+
+          <ButtonLink
+            href={meetingHref}
+            label={`Diskusikan produk ${product.name}`}
+            external={meetingHref.startsWith('https://wa.me/')}
+            analyticsSource="product-detail"
+            productSlug={product.slug}
+          />
+        </div>
+      </div>
+
+      <div class="product-detail__description">
+        <h2>Informasi Produk</h2>
+        <PortableContent value={product.description} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .product-detail { padding-top: clamp(2rem, 6vw, 5rem); }
+  .product-detail__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.8fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .product-detail__content { position: sticky; top: 7rem; }
+  .product-detail h1 { margin-bottom: 0.75rem; font-size: clamp(2.4rem, 6vw, 4.8rem); }
+  .scientific-name { margin-top: -0.25rem; color: var(--slate); font-style: italic; }
+  .availability { display: inline-flex; padding: 0.45rem 0.75rem; border-radius: 999px; color: var(--ocean-600); background: var(--ice-50); font-size: 0.82rem; font-weight: 700; }
+  .product-detail dl { display: grid; grid-template-columns: 1fr 1.35fr; margin-block: 1.5rem; }
+  .product-detail dt, .product-detail dd { margin: 0; padding: 0.75rem 0; border-bottom: 1px solid var(--line); }
+  .product-detail dt { color: var(--slate); }
+  .product-detail dd { color: var(--navy-950); font-weight: 700; }
+  .product-detail__description { max-width: 50rem; margin-top: clamp(3rem, 8vw, 7rem); }
+  @media (max-width: 860px) {
+    .product-detail__grid { grid-template-columns: 1fr; }
+    .product-detail__content { position: static; }
+  }
+</style>

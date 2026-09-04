@@ -1,0 +1,29 @@
+---
+import { PortableText } from 'astro-portabletext';
+import type { PortableTextBlock } from '@portabletext/types';
+import PortableLink from './PortableLink.astro';
+import PortableSanityImage from './PortableSanityImage.astro';
+
+interface Props {
+  value: PortableTextBlock[];
+}
+
+const { value } = Astro.props;
+const components = {
+  type: { imageWithAlt: PortableSanityImage, image: PortableSanityImage },
+  mark: { link: PortableLink },
+};
+---
+
+<div class="portable-content">
+  <PortableText {value} {components} />
+</div>
+
+<style>
+  .portable-content { color: var(--slate); }
+  .portable-content :global(h2), .portable-content :global(h3) { margin-top: 2rem; color: var(--navy-950); }
+  .portable-content :global(a) { color: var(--ocean-600); text-decoration: underline; text-underline-offset: 0.2em; }
+  .portable-content :global(figure) { margin: 2rem 0; }
+  .portable-content :global(figure img) { width: 100%; height: auto; border-radius: var(--radius-md); }
+  .portable-content :global(figcaption) { margin-top: 0.5rem; font-size: 0.85rem; }
+</style>

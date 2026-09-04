@@ -1,0 +1,13 @@
+---
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import type { SanityImage as SanityImageData } from '../types/sanity';
+import SanityImage from './SanityImage.astro';
+
+const { node } = Astro.props as TypedObjectProps;
+const image = node as SanityImageData;
+---
+
+<figure>
+  <SanityImage image={image} width={1200} height={800} widths={[480, 768, 1200]} sizes="(max-width: 860px) 100vw, 760px" />
+  {image.caption && <figcaption>{image.caption}</figcaption>}
+</figure>

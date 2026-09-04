@@ -1,0 +1,24 @@
+---
+import type { SanityImage as SanityImageData } from '../types/sanity';
+import SanityImage from './SanityImage.astro';
+
+interface Props { images: SanityImageData[]; productName: string }
+const { images, productName } = Astro.props;
+---
+
+<div class="product-gallery" aria-label={`Foto produk ${productName}`}>
+  {images.map((image, index) => (
+    <figure class:list={{ 'product-gallery__primary': index === 0 }}>
+      <SanityImage image={image} width={1200} height={800} widths={[480, 768, 1200]} sizes={index === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 50vw, 30vw'} loading={index === 0 ? 'eager' : 'lazy'} />
+      {image.caption && <figcaption>{image.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .product-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .product-gallery figure { margin: 0; overflow: hidden; border-radius: var(--radius-md); background: var(--ice-50); }
+  .product-gallery__primary { grid-column: 1 / -1; }
+  .product-gallery :global(img) { display: block; width: 100%; height: 100%; max-height: 38rem; object-fit: cover; }
+  .product-gallery figcaption { padding: 0.75rem; color: var(--slate); font-size: 0.85rem; }
+</style>
