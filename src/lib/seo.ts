@@ -1,5 +1,5 @@
 import type { CompanyProfile } from '../types/content';
-import type { ProductDocument } from '../types/sanity';
+import type { NewsDocument, ProductDocument } from '../types/sanity';
 import { getSanityImageSet } from './sanity/image';
 
 export interface PageMetadata {
@@ -52,6 +52,22 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], site: URL) {
       name: item.name,
       item: new URL(item.path, site).toString(),
     })),
+  };
+}
+
+export function buildNewsArticleJsonLd(article: NewsDocument, company: CompanyProfile, site: URL) {
+  const organization = { '@type': 'Organization', name: company.name };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.seo?.description ?? article.excerpt,
+    datePublished: article.publishedAt,
+    dateModified: article._updatedAt,
+    mainEntityOfPage: new URL(`/berita/${article.slug}`, site).toString(),
+    author: organization,
+    publisher: organization,
+    ...(article.coverImage ? { image: getSanityImageSet(article.coverImage, [1200]).src } : {}),
   };
 }
 

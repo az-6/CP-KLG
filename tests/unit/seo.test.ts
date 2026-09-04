@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildBreadcrumbJsonLd,
+  buildNewsArticleJsonLd,
   buildOrganizationJsonLd,
   buildProductJsonLd,
   serializeJsonLd,
@@ -45,5 +46,19 @@ describe('SEO helpers', () => {
     );
     expect(breadcrumb['@type']).toBe('BreadcrumbList');
     expect(breadcrumb.itemListElement.map((item) => item.position)).toEqual([1, 2]);
+  });
+
+  it('builds complete NewsArticle data from visible article facts', () => {
+    const article = sanityFixtures.news[0];
+    const schema = buildNewsArticleJsonLd(article, company, new URL('https://example.com'));
+
+    expect(schema).toMatchObject({
+      '@type': 'NewsArticle',
+      headline: article.title,
+      datePublished: article.publishedAt,
+      author: { '@type': 'Organization', name: company.name },
+      publisher: { '@type': 'Organization', name: company.name },
+    });
+    expect(schema.mainEntityOfPage).toBe('https://example.com/berita/test-berita');
   });
 });
