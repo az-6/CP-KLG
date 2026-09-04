@@ -44,6 +44,34 @@ SITE_URL=https://domain-produksi-anda.example
 
 Nomor WhatsApp menggunakan format internasional berupa angka saja. Kontak Zuhud, Hanggi, dan alamat Muara Baru sudah menjadi nilai resmi bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
 
+## Sanity CMS
+
+Sanity Studio berada di folder `studio/` dan dideploy terpisah dari website. Tambahkan konfigurasi berikut ke `.env` lokal serta environment deployment yang sesuai:
+
+```dotenv
+PUBLIC_SANITY_PROJECT_ID=id-project-sanity
+PUBLIC_SANITY_DATASET=production
+PUBLIC_SANITY_API_VERSION=2026-09-04
+SANITY_STUDIO_PROJECT_ID=id-project-sanity
+SANITY_STUDIO_DATASET=production
+```
+
+Jalankan Studio untuk penyuntingan konten:
+
+```bash
+npm run studio:dev
+```
+
+Validasi build Studio dengan:
+
+```bash
+npm run studio:build
+```
+
+Dataset `production` harus bersifat publik agar website statis dapat membaca konten tanpa token rahasia. `SANITY_DATA_MODE=fixture` hanya digunakan oleh pengujian browser otomatis dan tidak boleh diaktifkan pada deployment produksi.
+
+> Semua aset dalam dataset Free bersifat publik; jangan unggah data pribadi, tanda tangan, kontrak, atau dokumen internal.
+
 ## Deployment Vercel
 
 1. Import repository `az-6/CP-KLG` di Vercel.
