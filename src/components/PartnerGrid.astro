@@ -15,7 +15,7 @@ const { partners } = Astro.props;
 </div>
 
 <style>
-  .partner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem; }
-  .partner-grid__item { display: grid; min-height: 8rem; place-items: center; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
-  .partner-grid__item :global(img) { width: 100%; height: 5.5rem; object-fit: contain; }
+  .partner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 12rem)); gap: 1rem; justify-content: start; }
+  .partner-grid__item { display: grid; min-height: 7rem; place-items: center; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+  .partner-grid__item :global(img) { width: 100%; height: 4rem; object-fit: contain; }
 </style>

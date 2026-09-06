@@ -2,110 +2,39 @@
 import { company } from '../data/company';
 import { navigation } from '../data/navigation';
 import { getMeetingHref } from '../lib/whatsapp';
-import logoFull from '../assets/logo-klg-transparent.png';
-
+import logoMark from '../assets/logo-mark-transparent.png';
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 ---
-
 <footer class="footer">
   <div class="container footer__grid">
-    <div>
-      <span class="footer__brand"><img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt="PT Katalis Lintas Global" /></span>
-      <p>{company.slogan}</p>
-      <p class="footer__description">Pemasok ikan B2B untuk distributor dan pedagang besar di Indonesia.</p>
+    <div class="footer__identity">
+      <a class="footer__brand" href="/" aria-label="PT Katalis Lintas Global — Beranda"><img src={logoMark.src} width={logoMark.width} height={logoMark.height} alt="" /><span>PT KATALIS<br />LINTAS GLOBAL</span></a>
+      <p>Pemasok ikan B2B untuk distributor dan pedagang besar di Indonesia.</p>
+      <span class="footer__slogan">{company.slogan}</span>
     </div>
-
-    <div>
-      <h2>Navigasi</h2>
-      <ul>
-        {navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-      </ul>
-    </div>
-
-    <div>
-      <h2>Kontak Bisnis</h2>
-      <ul>
-        {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
-        {company.contact.address && <li>{company.contact.address}</li>}
-        <li><a href={meetingHref} data-whatsapp-source="footer">WhatsApp {company.contact.primaryContactName ?? 'utama'}</a></li>
-      </ul>
-    </div>
+    <div><h2>Jelajahi KLG</h2><ul>{navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul></div>
+    <div><h2>Mari Terhubung</h2><ul>
+      {company.contact.address && <li class="footer__address">{company.contact.address}</li>}
+      {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
+      <li><a class="footer__contact" href={meetingHref} data-whatsapp-source="footer">WhatsApp {company.contact.primaryContactName ?? 'utama'} <span aria-hidden="true">↗</span></a></li>
+    </ul></div>
   </div>
-  <div class="container footer__bottom">
-    <span>© {new Date().getFullYear()} PT Katalis Lintas Global</span>
-    <span>Informasi produk mengikuti hasil diskusi dan kesepakatan bisnis.</span>
-  </div>
+  <div class="container footer__bottom"><span>© {new Date().getFullYear()} PT Katalis Lintas Global</span><span>Berakar di Indonesia. Tumbuh bersama mitra.</span></div>
 </footer>
-
 <style>
-  .footer {
-    padding-top: 4.5rem;
-    color: rgba(255, 255, 255, 0.68);
-    background: #041321;
-  }
-
-  .footer__grid {
-    display: grid;
-    grid-template-columns: 1.5fr 0.7fr 1fr;
-    gap: 3rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .footer__brand {
-    display: inline-flex;
-    padding: 0.65rem 0.8rem;
-    border-radius: var(--radius-sm);
-    background: var(--white);
-  }
-
-  .footer__brand img {
-    width: min(13rem, 100%);
-    height: auto;
-  }
-
-  .footer__description {
-    max-width: 25rem;
-  }
-
-  .footer h2 {
-    color: var(--white);
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .footer ul {
-    display: grid;
-    gap: 0.55rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .footer a:hover {
-    color: #7ce0f2;
-  }
-
-  .footer__bottom {
-    display: flex;
-    min-height: 5rem;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.78rem;
-  }
-
-  @media (max-width: 760px) {
-    .footer__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .footer__bottom {
-      align-items: flex-start;
-      flex-direction: column;
-      justify-content: center;
-      padding-block: 1.25rem;
-    }
-  }
+  .footer { padding-top: 4.5rem; color: #bccfce; background: #06262e; }
+  .footer__grid { display: grid; grid-template-columns: 1.5fr 0.65fr 1fr; gap: 4rem; padding-bottom: 4rem; }
+  .footer__brand { display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem; color: var(--white); }
+  .footer__brand img { width: 3.2rem; height: auto; padding: 0.2rem; border-radius: 50%; background: var(--white); }
+  .footer__brand > span { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600; line-height: 1.5; letter-spacing: 0.1em; }
+  .footer__identity p { max-width: 23rem; font-size: 0.92rem; }
+  .footer__slogan { display: block; margin-top: 1.6rem; color: var(--mint); font-size: 0.75rem; }
+  .footer h2 { margin-bottom: 1.7rem; color: #d8e7e3; font-family: var(--font-body); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; }
+  .footer ul { display: grid; gap: 0.65rem; margin: 0; padding: 0; list-style: none; font-size: 0.85rem; }
+  .footer a:hover { color: var(--white); }
+  .footer :focus-visible { outline-color: var(--mint); }
+  .footer__address { max-width: 19rem; margin-bottom: 0.7rem; }
+  .footer__contact { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: space-between; gap: 2rem; border-bottom: 1px solid #607f7d; color: var(--mint); }
+  .footer__bottom { display: flex; min-height: 5rem; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid #36565c; font-size: 0.7rem; }
+  @media (max-width: 760px) { .footer { padding-top: 3rem; } .footer__grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; padding-bottom: 3rem; } .footer__identity { grid-column: 1 / -1; } .footer__bottom { align-items: flex-start; flex-direction: column; justify-content: center; gap: 0.5rem; padding-block: 1.5rem; } }
 </style>

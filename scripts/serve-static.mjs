@@ -3,8 +3,8 @@ import { readFile, stat } from 'node:fs/promises';
 import { extname, join, resolve, sep } from 'node:path';
 
 const host = '127.0.0.1';
-const port = 4321;
-const root = resolve('dist');
+const port = Number(process.env.PORT || 4321);
+const root = resolve(process.env.STATIC_ROOT || 'dist');
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -14,6 +14,7 @@ const mimeTypes = {
   '.svg': 'image/svg+xml',
   '.txt': 'text/plain; charset=utf-8',
   '.webp': 'image/webp',
+  '.woff2': 'font/woff2',
   '.xml': 'application/xml; charset=utf-8',
 };
 

@@ -69,20 +69,21 @@ const secondaryMeetingHref = company.contact.secondaryWhatsAppNumber
 </BaseLayout>
 
 <style>
-  .contact-grid { display: grid; grid-template-columns: 1fr .8fr; gap: clamp(2rem,7vw,7rem); }
-  .contact-primary h2 { max-width: 14ch; }
-  .contact-primary > p { max-width: 40rem; color: var(--slate); font-size: 1.08rem; }
-  .contact-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
-  .contact-details { padding: 2rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--ice-50); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 0.85fr; gap: clamp(2rem, 7vw, 6rem); align-items: start; }
+  .contact-primary h2 { max-width: 17ch; }
+  .contact-primary > p { max-width: 37rem; color: var(--slate); font-size: 1rem; }
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .contact-details { padding: 2.25rem; border: 1px solid var(--line); border-top: 3px solid var(--ocean-600); border-radius: var(--radius-sm); background: var(--ice-50); }
   .contact-details h2 { font-size: 1.35rem; }
   .contact-details dl { margin: 0; }
   .contact-details dl div { padding-block: 1rem; border-bottom: 1px solid var(--line); }
-  .contact-details dt { margin-bottom: .25rem; color: var(--slate); font-size: .78rem; font-weight: 700; text-transform: uppercase; }
-  .contact-details dd { margin: 0; color: var(--navy-950); font-weight: 600; }
-  .meeting-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-  .meeting-steps > div { padding: 2rem; background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
-  .meeting-steps span { color: var(--ocean-600); font-size: .75rem; font-weight: 800; }
-  .meeting-steps h2 { margin-top: 3rem; font-size: 1.4rem; }
-  .meeting-steps p { margin: 0; color: var(--slate); }
-  @media(max-width:760px){.contact-grid,.meeting-steps{grid-template-columns:1fr}}
+  .contact-details dl div:last-child { border-bottom: 0; }
+  .contact-details dt { margin-bottom: 0.4rem; color: var(--slate); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; }
+  .contact-details dd { margin: 0; color: var(--navy-950); font-size: 0.95rem; font-weight: 500; overflow-wrap: anywhere; }
+  .meeting-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; }
+  .meeting-steps > div { padding-top: 1.25rem; border-top: 1px solid #a5beba; }
+  .meeting-steps span { color: var(--ocean-600); font-size: 0.75rem; font-weight: 500; }
+  .meeting-steps h2 { margin-block: 1.75rem 1rem; font-size: 1.6rem; }
+  .meeting-steps p { margin: 0; color: var(--slate); font-size: 0.95rem; }
+  @media(max-width:760px) { .contact-grid, .meeting-steps { grid-template-columns: 1fr; } .contact-details { padding: 1.5rem; } }
 </style>

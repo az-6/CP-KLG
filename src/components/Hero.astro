@@ -1,211 +1,66 @@
 ---
 import ButtonLink from './ButtonLink.astro';
-
-interface Props {
-  eyebrow: string;
-  title: string;
-  description: string;
-  primaryHref: string;
-}
-
+interface Props { eyebrow: string; title: string; description: string; primaryHref: string }
 const { eyebrow, title, description, primaryHref } = Astro.props;
 ---
-
 <section class="hero">
-  <div class="container hero__grid">
+  <picture class="hero__image" aria-hidden="true">
+    <source media="(max-width: 640px)" srcset="/images/ocean-mobile.webp" />
+    <img src="/images/ocean-aerial.webp" width="2000" height="1300" alt="" fetchpriority="high" />
+  </picture>
+  <div class="container hero__inner">
     <div class="hero__copy">
-      <span class="hero__eyebrow">{eyebrow}</span>
-      <h1>{title}</h1>
+      <span class="hero__eyebrow"><span></span>{eyebrow}</span>
+      <h1>{title}<span>Kemitraan<br />jangka panjang.</span></h1>
       <p>{description}</p>
       <div class="hero__actions">
         <ButtonLink href={primaryHref} label="Jadwalkan Pertemuan" analyticsSource="hero" external={primaryHref.startsWith('https://wa.me/')} />
-        <ButtonLink href="/produk" label="Lihat Produk Kami" variant="secondary" />
+        <ButtonLink href="/produk" label="Jelajahi Produk" variant="secondary" />
       </div>
     </div>
-
-    <div class="hero__visual" aria-label="Kategori produk utama: Tuna dan Ikan Dasar">
-      <div class="hero__ring hero__ring--one"></div>
-      <div class="hero__ring hero__ring--two"></div>
-      <div class="hero__card hero__card--tuna">
-        <span class="hero__card-index">01</span>
-        <strong>Tuna</strong>
-        <small>Pasokan B2B</small>
-      </div>
-      <div class="hero__card hero__card--ground">
-        <span class="hero__card-index">02</span>
-        <strong>Ikan Dasar</strong>
-        <small>Beragam pilihan</small>
-      </div>
-      <div class="hero__stamp">
-        <span>Higienis</span>
-        <span>•</span>
-        <span>Konsisten</span>
-      </div>
-    </div>
+    <div class="hero__annotation" aria-hidden="true"><span class="hero__cross">+</span><span>Kualitas terjaga.<br />Spesifikasi untuk bisnis Anda.</span></div>
+  </div>
+  <div class="container hero__bottom">
+    <span>Tuna & ikan dasar <i></i> Pasokan B2B</span>
+    <a href="#kenali-klg">Kenali KLG <span aria-hidden="true">↓</span></a>
   </div>
 </section>
-
 <style>
-  .hero {
-    position: relative;
-    overflow: hidden;
-    min-height: min(52rem, calc(100vh - 5rem));
-    color: rgba(255, 255, 255, 0.76);
-    background:
-      radial-gradient(circle at 72% 20%, rgba(11, 159, 195, 0.35), transparent 28rem),
-      linear-gradient(125deg, var(--navy-950), var(--navy-800));
-  }
-
-  .hero__grid {
-    display: grid;
-    min-height: inherit;
-    grid-template-columns: 1.08fr 0.92fr;
-    align-items: center;
-    gap: clamp(2rem, 6vw, 6rem);
-    padding-block: 5rem;
-  }
-
-  .hero__copy {
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero__eyebrow {
-    display: inline-block;
-    margin-bottom: 1.25rem;
-    color: #7ce0f2;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  .hero h1 {
-    max-width: 12ch;
-    margin-bottom: 1.5rem;
-    color: var(--white);
-  }
-
-  .hero__copy > p {
-    max-width: 39rem;
-    font-size: clamp(1.05rem, 2vw, 1.2rem);
-  }
-
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    margin-top: 2rem;
-  }
-
-  .hero__visual {
-    position: relative;
-    min-height: 36rem;
-  }
-
-  .hero__ring {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 50%;
-  }
-
-  .hero__ring--one {
-    inset: 3rem 0 0 2rem;
-  }
-
-  .hero__ring--two {
-    inset: 8rem 5rem 4rem 6rem;
-  }
-
-  .hero__card {
-    position: absolute;
-    display: flex;
-    width: min(15rem, 52%);
-    aspect-ratio: 4 / 5;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.5rem;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 8rem 8rem 1.25rem 1.25rem;
-    box-shadow: var(--shadow-lg);
-  }
-
-  .hero__card::before {
-    position: absolute;
-    inset: 0;
-    opacity: 0.55;
-    background: repeating-radial-gradient(circle at 50% 25%, transparent 0 20px, rgba(255, 255, 255, 0.12) 21px 22px);
-    content: '';
-  }
-
-  .hero__card > * {
-    position: relative;
-  }
-
-  .hero__card--tuna {
-    top: 2rem;
-    left: 0;
-    background: linear-gradient(160deg, #188fb2, #0b476f);
-    transform: rotate(-4deg);
-  }
-
-  .hero__card--ground {
-    right: 0;
-    bottom: 2.5rem;
-    background: linear-gradient(160deg, #1e5978, #081d33);
-    transform: rotate(5deg);
-  }
-
-  .hero__card strong {
-    color: var(--white);
-    font-family: 'Manrope', sans-serif;
-    font-size: 1.4rem;
-  }
-
-  .hero__card small,
-  .hero__card-index {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .hero__card-index {
-    margin-bottom: auto;
-    font-weight: 700;
-  }
-
-  .hero__stamp {
-    position: absolute;
-    z-index: 3;
-    right: 31%;
-    bottom: 22%;
-    display: grid;
-    width: 7rem;
-    height: 7rem;
-    place-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 50%;
-    color: var(--white);
-    background: rgba(6, 26, 47, 0.72);
-    font-size: 0.67rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-align: center;
-    text-transform: uppercase;
-    backdrop-filter: blur(8px);
-  }
-
-  @media (max-width: 840px) {
-    .hero__grid {
-      grid-template-columns: 1fr;
-      padding-top: 4rem;
-    }
-
-    .hero__visual {
-      min-height: 28rem;
-    }
-
-    .hero__card {
-      max-width: 13rem;
-    }
+  .hero { position: relative; isolation: isolate; overflow: hidden; color: #d1dfe0; background: var(--navy-950); }
+  .hero__image { position: absolute; z-index: -2; inset: 0; }
+  .hero__image img { width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
+  .hero::before { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgb(4 32 39 / 96%) 0%, rgb(4 32 39 / 88%) 32%, rgb(4 32 39 / 45%) 66%, rgb(4 32 39 / 18%) 100%); content: ''; }
+  .hero__inner { display: grid; grid-template-columns: minmax(0, 1.5fr) 1fr; min-height: 40rem; align-items: center; gap: 3rem; padding-block: 4.5rem; }
+  .hero__copy { max-width: 43rem; }
+  .hero__eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; color: #d1e5df; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+  .hero__eyebrow > span { width: 0.4rem; height: 0.4rem; background: var(--mint); }
+  .hero h1 { margin-bottom: 1.6rem; color: var(--white); font-size: clamp(3rem, 5.35vw, 5rem); font-weight: 500; line-height: 1.12; letter-spacing: -0.05em; }
+  .hero h1 > span { display: block; color: var(--mint); }
+  .hero__copy > p { max-width: 32rem; margin-bottom: 0; font-size: 1.03rem; line-height: 1.85; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  .hero__actions :global(.button-link--primary) { color: var(--navy-950); background: var(--mint); }
+  .hero__actions :global(.button-link--primary:hover) { background: #d6ebe2; }
+  .hero__actions :global(.button-link--secondary) { color: var(--white); border-color: #7b999a; background: rgb(8 45 53 / 36%); }
+  .hero__actions :global(.button-link--secondary:hover) { background: var(--navy-950); border-color: var(--mint); }
+  .hero__actions :global(:focus-visible), .hero__bottom a:focus-visible { outline-color: var(--mint); }
+  .hero__annotation { display: flex; align-items: flex-start; align-self: end; justify-self: end; gap: 1rem; margin-bottom: 1rem; padding: 1rem; color: var(--white); background: rgb(4 32 39 / 85%); font-size: 0.8rem; line-height: 1.6; }
+  .hero__cross { display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border: 1px solid rgb(255 255 255 / 55%); font-size: 1.5rem; font-weight: 400; }
+  .hero__bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 5rem; border-top: 1px solid rgb(255 255 255 / 22%); color: #d0e0df; font-size: 0.72rem; letter-spacing: 0.07em; }
+  .hero__bottom > span { display: flex; align-items: center; gap: 1.1rem; }
+  .hero__bottom i { width: 1px; height: 0.8rem; background: #86a3a4; }
+  .hero__bottom a { display: inline-flex; min-height: 3rem; align-items: center; gap: 1.5rem; }
+  .hero__bottom a span { font-size: 1.25rem; }
+  @media (min-width: 1600px) { .hero__inner { min-height: 44rem; } }
+  @media (max-width: 900px) { .hero__inner { grid-template-columns: 1fr; min-height: auto; padding-block: 4rem; } .hero__annotation { display: none; } .hero__copy { max-width: 38rem; } }
+  @media (max-width: 600px) {
+    .hero__inner { padding-block: 3.5rem; }
+    .hero::before { background: linear-gradient(90deg, rgb(4 32 39 / 93%), rgb(4 32 39 / 73%)); }
+    .hero h1 { font-size: clamp(2.65rem, 10.1vw, 3.8rem); }
+    .hero__eyebrow { font-size: 0.63rem; letter-spacing: 0.1em; margin-bottom: 1.6rem; }
+    .hero__copy > p { font-size: 0.95rem; }
+    .hero__actions { display: grid; grid-template-columns: 1fr; max-width: 23rem; }
+    .hero__bottom { min-height: 4.5rem; font-size: 0.62rem; letter-spacing: 0; }
+    .hero__bottom > span { gap: 0.65rem; }
+    .hero__bottom a { gap: 0.5rem; }
   }
 </style>

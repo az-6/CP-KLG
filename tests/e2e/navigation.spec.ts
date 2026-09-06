@@ -4,7 +4,7 @@ test('homepage identifies the company and exposes primary navigation', async ({ 
   await page.goto('/');
 
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Pasokan Ikan Berkualitas Konsisten',
+    'Pasokan ikan.',
   );
 
   const nav = page.getByRole('navigation', { name: 'Navigasi utama' });
