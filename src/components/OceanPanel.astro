@@ -1,0 +1,21 @@
+---
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class:list={['ocean-panel', { 'ocean-panel--compact': compact }]}>
+  <img src="/images/ocean-mobile.webp" alt="" width="800" height="1000" loading="lazy" />
+  <div class="ocean-panel__top"><span>KATALIS LINTAS GLOBAL</span><span aria-hidden="true">↗</span></div>
+  <div class="ocean-panel__bottom"><span class="ocean-panel__line"></span><p>Berakar di Indonesia.<br />Tumbuh bersama mitra.</p><span>PASOKAN IKAN UNTUK BISNIS</span></div>
+</div>
+<style>
+  .ocean-panel { position: relative; isolation: isolate; display: flex; min-height: 34rem; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 2.25rem; border-radius: var(--radius-sm); color: var(--white); background: var(--navy-950); }
+  .ocean-panel > img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ocean-panel::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgb(3 29 36 / 65%), rgb(3 29 36 / 12%) 40%, rgb(3 29 36 / 92%)); content: ''; }
+  .ocean-panel__top { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.64rem; letter-spacing: 0.15em; }
+  .ocean-panel__top > span:last-child { font-size: 1.4rem; line-height: 1; }
+  .ocean-panel__bottom p { margin-block: 1.2rem; font-family: var(--font-heading); font-size: clamp(1.6rem, 2.7vw, 2.5rem); line-height: 1.35; letter-spacing: -0.04em; }
+  .ocean-panel__bottom > span:last-child { font-size: 0.65rem; letter-spacing: 0.14em; color: #d0e4e0; }
+  .ocean-panel__line { display: block; width: 2.5rem; height: 2px; background: var(--mint); }
+  .ocean-panel--compact { min-height: 29rem; }
+  @media (max-width: 780px) { .ocean-panel, .ocean-panel--compact { min-height: 24rem; padding: 1.5rem; } }
+</style>

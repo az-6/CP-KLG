@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "preview:compare": "node scripts/compare-designs.mjs",
     "check": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",

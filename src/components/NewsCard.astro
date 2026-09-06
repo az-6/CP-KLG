@@ -22,11 +22,11 @@ const publishedLabel = new Intl.DateTimeFormat('id-ID', {
 </article>
 
 <style>
-  .news-card { display: grid; height: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--white); box-shadow: var(--shadow-sm); }
-  .news-card > :global(img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-  .news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: 1.4rem; }
-  .news-card time { color: var(--ocean-600); font-size: 0.78rem; font-weight: 700; }
-  .news-card h2, .news-card h3 { margin-top: 0.55rem; }
-  .news-card p { color: var(--slate); }
-  .news-card :global(.button-link) { margin-top: auto; }
+.news-card { display: grid; grid-template-rows: auto 1fr; height: 100%; overflow: hidden; border-bottom: 1px solid var(--line); background: transparent; }
+  .news-card > :global(img) { width: 100%; aspect-ratio: 1.5; object-fit: cover; border-radius: var(--radius-sm); }
+  .news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: 1.5rem 0 1rem; }
+  .news-card time { color: var(--ocean-600); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em; }
+  .news-card h2, .news-card h3 { margin-block: 0.85rem; font-size: 1.3rem; line-height: 1.4; }
+  .news-card p { color: var(--slate); font-size: 0.9rem; }
+  .news-card :global(.button-link) { width: 100%; margin-top: auto; font-size: 0.78rem; }
 </style>

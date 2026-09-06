@@ -3,6 +3,7 @@ import ButtonLink from '../components/ButtonLink.astro';
 import CompanyFacts from '../components/CompanyFacts.astro';
 import CredentialGallery from '../components/CredentialGallery.astro';
 import MediaGallery from '../components/MediaGallery.astro';
+import OceanPanel from '../components/OceanPanel.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -29,7 +30,7 @@ const evidence = await getAboutEvidence();
 
   <section class="section">
     <div class="container story-grid">
-      <div class="story-visual" aria-hidden="true"><span>KLG</span><i></i></div>
+      <OceanPanel compact />
       <div>
         <SectionHeading eyebrow="Siapa kami" title="Mitra Pasokan untuk Pertumbuhan Bisnis" />
         <p class="lead">{company.about}</p>
@@ -100,16 +101,14 @@ const evidence = await getAboutEvidence();
 </BaseLayout>
 
 <style>
-  .story-grid { display: grid; grid-template-columns: 0.8fr 1fr; align-items: center; gap: clamp(3rem, 8vw, 7rem); }
-  .story-visual { position: relative; display: grid; min-height: 34rem; place-items: center; overflow: hidden; border-radius: 12rem 12rem var(--radius-md) var(--radius-md); color: rgba(255,255,255,.12); background: linear-gradient(145deg,var(--ocean-500),var(--navy-950)); }
-  .story-visual span { font-family: 'Manrope',sans-serif; font-size: clamp(6rem,15vw,10rem); font-weight: 800; }
-  .story-visual i { position: absolute; width: 65%; aspect-ratio: 1; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; box-shadow: 0 0 0 3rem rgba(255,255,255,.04); }
-  .values { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-  .values article { padding: 2rem; border-radius: var(--radius-md); background: var(--white); box-shadow: var(--shadow-sm); }
-  .values span { color: var(--ocean-600); font-size: .75rem; font-weight: 800; }
-  .values h2 { margin-top: 3.5rem; font-size: 1.5rem; }
-  .values p { margin-bottom: 0; color: var(--slate); }
-  .company-evidence { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding-block: 3rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .company-evidence p { color: var(--slate); font-size: 1.1rem; }
-  @media(max-width:780px){.story-grid,.values,.company-evidence{grid-template-columns:1fr}.story-visual{min-height:25rem}}
+  .story-grid { display: grid; grid-template-columns: 0.85fr 1fr; align-items: center; gap: clamp(2.5rem, 7vw, 6rem); }
+  .story-grid :global(.section-heading) { margin-bottom: 1.5rem; }
+  .story-grid p { color: var(--slate); }
+  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .values article { padding: 2rem; border-right: 1px solid var(--line); }
+  .values article:last-child { border-right: 0; }
+  .values span { color: var(--ocean-600); font-size: 0.75rem; font-weight: 600; }
+  .values h2 { margin-block: 2rem 1rem; font-size: 1.7rem; }
+  .values p { margin-bottom: 0; color: var(--slate); font-size: 0.95rem; }
+  @media(max-width:780px) { .story-grid, .values { grid-template-columns: 1fr; } .values article { border-right: 0; border-bottom: 1px solid var(--line); padding-inline: 0; } .values article:last-child { border-bottom: 0; } }
 </style>

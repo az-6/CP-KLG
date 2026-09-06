@@ -1,13 +1,13 @@
 ---
 import type { ProofItem } from '../types/content';
 
-interface Props extends ProofItem {}
+interface Props extends ProofItem { compact?: boolean }
 
-const { title, description, evidence, icon } = Astro.props;
+const { title, description, evidence, icon, compact = false } = Astro.props;
 const icons = { quality: '01', specification: '02', hygiene: '03', supply: '04' };
 ---
 
-<article class="proof-card">
+<article class:list={['proof-card', { 'proof-card--compact': compact }]}>
   <div class="proof-card__icon" aria-hidden="true">{icons[icon]}</div>
   <h3>{title}</h3>
   <p>{description}</p>
@@ -18,43 +18,15 @@ const icons = { quality: '01', specification: '02', hygiene: '03', supply: '04' 
 </article>
 
 <style>
-  .proof-card {
-    height: 100%;
-    padding: 2rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--white);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .proof-card__icon {
-    display: grid;
-    width: 3rem;
-    height: 3rem;
-    margin-bottom: 2.5rem;
-    place-items: center;
-    border-radius: 50%;
-    color: var(--ocean-600);
-    background: var(--ocean-100);
-    font-family: 'Manrope', sans-serif;
-    font-weight: 800;
-  }
-
-  .proof-card p {
-    color: var(--slate);
-  }
-
-  .proof-card__evidence {
-    display: flex;
-    gap: 0.65rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-    color: var(--navy-800);
-    font-size: 0.92rem;
-    font-weight: 600;
-  }
-
-  .proof-card__evidence > span:first-child {
-    color: var(--success);
-  }
+.proof-card { height: 100%; padding: 2rem; border: 1px solid var(--line); border-top: 2px solid var(--ocean-600); border-radius: var(--radius-sm); background: var(--white); }
+  .proof-card__icon { margin-bottom: 2rem; color: var(--ocean-600); font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600; }
+  .proof-card h3 { margin-bottom: 0.8rem; }
+  .proof-card p { color: var(--slate); font-size: 0.95rem; }
+  .proof-card__evidence { display: flex; gap: 0.7rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--navy-800); font-size: 0.82rem; }
+  .proof-card__evidence > span:first-child { color: var(--success); }
+  .proof-card--compact { display: grid; grid-template-columns: 2.3rem 1fr; column-gap: 0.5rem; padding: 1.25rem 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+  .proof-card--compact .proof-card__icon { grid-row: 1 / 4; margin: 0.25rem 0 0; }
+  .proof-card--compact h3 { margin-bottom: 0.35rem; font-size: 1.12rem; }
+  .proof-card--compact p { margin-bottom: 0.6rem; font-size: 0.9rem; }
+  .proof-card--compact .proof-card__evidence { padding: 0; border: 0; font-size: 0.8rem; }
 </style>
