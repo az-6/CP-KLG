@@ -13,6 +13,7 @@ const company: CompanyProfile = {
   name: 'PT Katalis Lintas Global',
   shortName: 'Katalis Lintas Global',
   slogan: 'Kualitas Terjaga, Spesifikasi Anda.',
+  establishedYear: 2020,
   heroTitle: 'Title',
   heroDescription: 'Description',
   about: 'About',

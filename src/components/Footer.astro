@@ -27,12 +27,12 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
       <ul>
         {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
         {company.contact.address && <li>{company.contact.address}</li>}
-        <li><a href={meetingHref} data-whatsapp-source="footer">WhatsApp {company.contact.primaryContactName ?? 'utama'}</a></li>
+        <li><a href={meetingHref} data-whatsapp-source="footer">WhatsApp</a></li>
       </ul>
     </div>
   </div>
   <div class="container footer__bottom">
-    <span>© {new Date().getFullYear()} PT Katalis Lintas Global</span>
+    <span>© {new Date().getFullYear()} PT Katalis Lintas Global · Est. {company.establishedYear}</span>
     <span>Informasi produk mengikuti hasil diskusi dan kesepakatan bisnis.</span>
   </div>
 </footer>

@@ -8,18 +8,18 @@ test('generic CTA uses official configured number and meeting context', async ({
   expect(decodeURIComponent(href!)).toContain('menjadwalkan pertemuan');
 });
 
-test('contact page exposes both official WhatsApp contacts', async ({ page }) => {
+test('contact page exposes a single WhatsApp contact without a personal name', async ({ page }) => {
   await page.goto('/hubungi-kami');
 
   const contactSection = page.locator('#kontak');
-  const primary = contactSection.getByRole('link', { name: 'WhatsApp Zuhud' });
-  const secondary = contactSection.getByRole('link', { name: 'WhatsApp Hanggi' });
-  await expect(primary).toHaveAttribute('href', /^https:\/\/wa\.me\/6281319426006\?text=/);
-  await expect(secondary).toHaveAttribute('href', /^https:\/\/wa\.me\/628151931083\?text=/);
+  const whatsapp = contactSection.getByRole('link', { name: 'WhatsApp' });
+  await expect(whatsapp).toHaveCount(1);
+  await expect(whatsapp).toHaveAttribute('href', /^https:\/\/wa\.me\/6281319426006\?text=/);
   await expect(contactSection.getByText('Muara Baru, Jakarta Utara')).toBeVisible();
+  await expect(contactSection.getByText('Est. 2020')).toBeVisible();
 
-  const secondaryHref = await secondary.getAttribute('href');
-  expect(decodeURIComponent(secondaryHref!)).toContain('menjadwalkan pertemuan');
+  const href = await whatsapp.getAttribute('href');
+  expect(decodeURIComponent(href!)).toContain('menjadwalkan pertemuan');
 });
 
 test('product CTA carries product context', async ({ page }) => {

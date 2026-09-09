@@ -48,7 +48,7 @@ const facts = [
     <div class="container">
       <Breadcrumbs items={breadcrumbs.map(({ name, path }, index) => ({ name, href: index < breadcrumbs.length - 1 ? path : undefined }))} />
       <div class="product-detail__grid">
-        <ProductGallery images={product.images} productName={product.name} />
+        <ProductGallery images={product.images} productName={product.name} productSlug={product.slug} />
         <div class="product-detail__content">
           <span class="eyebrow">{product.categoryName}</span>
           <h1>{product.name}</h1>

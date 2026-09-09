@@ -6,9 +6,6 @@ import { getMeetingHref } from '../lib/whatsapp';
 
 const meetingHref = getMeetingHref(company.contact.whatsappNumber);
 const whatsappReady = meetingHref.startsWith('https://wa.me/');
-const secondaryMeetingHref = company.contact.secondaryWhatsAppNumber
-  ? getMeetingHref(company.contact.secondaryWhatsAppNumber)
-  : undefined;
 ---
 
 <BaseLayout
@@ -32,10 +29,7 @@ const secondaryMeetingHref = company.contact.secondaryWhatsAppNumber
         <p>Pesan perkenalan sudah disiapkan agar pembicaraan dapat dimulai dengan konteks yang jelas. Anda tetap dapat mengedit pesan sebelum mengirim.</p>
         {whatsappReady ? (
           <div class="contact-actions">
-            <ButtonLink href={meetingHref} label={`WhatsApp ${company.contact.primaryContactName ?? 'Utama'}`} analyticsSource="contact-primary" external />
-            {secondaryMeetingHref && (
-              <ButtonLink href={secondaryMeetingHref} label={`WhatsApp ${company.contact.secondaryContactName ?? 'Alternatif'}`} variant="secondary" analyticsSource="contact-secondary" external />
-            )}
+            <ButtonLink href={meetingHref} label="WhatsApp" analyticsSource="contact-primary" external />
           </div>
         ) : (
           <p class="empty-note">Nomor WhatsApp resmi belum dikonfigurasi pada environment website.</p>
@@ -46,10 +40,9 @@ const secondaryMeetingHref = company.contact.secondaryWhatsAppNumber
         <h2>Informasi Perusahaan</h2>
         <dl>
           <div><dt>Perusahaan</dt><dd>{company.name}</dd></div>
+          <div><dt>Berdiri</dt><dd>Est. {company.establishedYear}</dd></div>
           {company.contact.email && <div><dt>Email</dt><dd><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></dd></div>}
           {company.contact.address && <div><dt>Alamat</dt><dd>{company.contact.address}</dd></div>}
-          <div><dt>Kontak utama</dt><dd>{company.contact.primaryContactName ?? 'WhatsApp bisnis'}</dd></div>
-          {company.contact.secondaryContactName && <div><dt>Kontak alternatif</dt><dd>{company.contact.secondaryContactName}</dd></div>}
           {company.contact.operatingHours && <div><dt>Jam operasional</dt><dd>{company.contact.operatingHours}</dd></div>}
         </dl>
         {!company.contact.email && !company.contact.address && (

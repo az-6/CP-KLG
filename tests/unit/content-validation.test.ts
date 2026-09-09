@@ -6,6 +6,7 @@ const validCompany: CompanyProfile = {
   name: 'PT Katalis Lintas Global',
   shortName: 'Katalis Lintas Global',
   slogan: 'Kualitas Terjaga, Spesifikasi Anda.',
+  establishedYear: 2020,
   heroTitle: 'Pasokan Ikan Berkualitas Konsisten untuk Bisnis Anda',
   heroDescription: 'Deskripsi',
   about: 'Tentang perusahaan',
@@ -24,13 +25,6 @@ describe('validateCompanyProfile', () => {
       ...validCompany,
       contact: { whatsappNumber: '+62 812' },
     })).toContain('whatsappNumber must contain international digits only');
-  });
-
-  it('rejects a non-numeric secondary WhatsApp number', () => {
-    expect(validateCompanyProfile({
-      ...validCompany,
-      contact: { whatsappNumber: '628123456789', secondaryWhatsAppNumber: '+62 815' },
-    })).toContain('secondaryWhatsAppNumber must contain international digits only');
   });
 });
 

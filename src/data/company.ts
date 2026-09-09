@@ -4,6 +4,7 @@ export const company: CompanyProfile = {
   name: 'PT Katalis Lintas Global',
   shortName: 'Katalis Lintas Global',
   slogan: 'Kualitas Terjaga, Spesifikasi Anda.',
+  establishedYear: 2020,
   heroTitle: 'Pasokan Ikan Berkualitas Konsisten untuk Bisnis Anda',
   heroDescription:
     'Kami menyediakan tuna dan beragam ikan dasar dengan penanganan higienis serta spesifikasi yang dapat disesuaikan untuk kebutuhan distributor dan pedagang besar.',
@@ -11,9 +12,6 @@ export const company: CompanyProfile = {
     'PT Katalis Lintas Global melayani kebutuhan pasokan ikan skala besar bagi distributor dan pedagang besar di Indonesia dengan fokus pada konsistensi mutu, kebersihan penanganan, dan spesifikasi buyer.',
   contact: {
     whatsappNumber: import.meta.env.PUBLIC_WHATSAPP_NUMBER || '6281319426006',
-    primaryContactName: import.meta.env.PUBLIC_WHATSAPP_CONTACT || 'Zuhud',
-    secondaryWhatsAppNumber: import.meta.env.PUBLIC_SECONDARY_WHATSAPP_NUMBER || '628151931083',
-    secondaryContactName: import.meta.env.PUBLIC_SECONDARY_WHATSAPP_CONTACT || 'Hanggi',
     email: import.meta.env.PUBLIC_COMPANY_EMAIL || undefined,
     address: import.meta.env.PUBLIC_COMPANY_ADDRESS || 'Muara Baru, Jakarta Utara',
     operatingHours: import.meta.env.PUBLIC_OPERATING_HOURS || undefined,

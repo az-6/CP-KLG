@@ -32,9 +32,6 @@ Salin `.env.example` menjadi `.env` untuk pengembangan lokal dan isi nilai resmi
 
 ```dotenv
 PUBLIC_WHATSAPP_NUMBER=6281319426006
-PUBLIC_WHATSAPP_CONTACT=Zuhud
-PUBLIC_SECONDARY_WHATSAPP_NUMBER=628151931083
-PUBLIC_SECONDARY_WHATSAPP_CONTACT=Hanggi
 PUBLIC_COMPANY_EMAIL=
 PUBLIC_COMPANY_ADDRESS=Muara Baru, Jakarta Utara
 PUBLIC_OPERATING_HOURS=
@@ -42,7 +39,7 @@ PUBLIC_MAP_URL=
 SITE_URL=https://domain-produksi-anda.example
 ```
 
-Nomor WhatsApp menggunakan format internasional berupa angka saja. Kontak Zuhud, Hanggi, dan alamat Muara Baru sudah menjadi nilai resmi bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
+Nomor WhatsApp menggunakan format internasional berupa angka saja. Tautan WhatsApp ditampilkan tanpa nama kontak. Nomor resmi dan alamat Muara Baru sudah menjadi nilai bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
 
 ## Sanity CMS
 

@@ -38,9 +38,6 @@ export interface ProcessStep {
 
 export interface ContactDetails {
   whatsappNumber: string;
-  primaryContactName?: string;
-  secondaryWhatsAppNumber?: string;
-  secondaryContactName?: string;
   email?: string;
   address?: string;
   operatingHours?: string;
@@ -51,6 +48,7 @@ export interface CompanyProfile {
   name: 'PT Katalis Lintas Global';
   shortName: 'Katalis Lintas Global';
   slogan: 'Kualitas Terjaga, Spesifikasi Anda.';
+  establishedYear: number;
   heroTitle: string;
   heroDescription: string;
   about: string;

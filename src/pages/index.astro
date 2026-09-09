@@ -9,6 +9,8 @@ import ProofCard from '../components/ProofCard.astro';
 import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { company } from '../data/company';
+import { tunaLoinHeroPhoto } from '../data/product-photos';
+import logoFull from '../assets/logo-klg-transparent.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { hasItems } from '../lib/optional-sections';
 import { getHomeFacts } from '../lib/sanity/evidence-repository';
@@ -32,10 +34,11 @@ const featuredProducts = products.slice(0, 4);
   canonicalPath="/"
 >
   <Hero
-    eyebrow="Pemasok ikan untuk bisnis Indonesia"
+    eyebrow={`Pemasok ikan untuk bisnis Indonesia · Est. ${company.establishedYear}`}
     title={company.heroTitle}
     description={company.heroDescription}
     primaryHref={meetingHref}
+    photo={tunaLoinHeroPhoto}
   />
 
   {hasItems(homeFacts) && (
@@ -114,9 +117,8 @@ const featuredProducts = products.slice(0, 4);
 
   <section class="section">
     <div class="container about-preview">
-      <div class="about-preview__visual" aria-hidden="true">
-        <span>KLG</span>
-        <div></div>
+      <div class="about-preview__visual">
+        <img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt={company.name} loading="lazy" decoding="async" />
       </div>
       <div>
         <span class="eyebrow">Tentang perusahaan</span>
@@ -325,29 +327,18 @@ const featuredProducts = products.slice(0, 4);
   }
 
   .about-preview__visual {
-    position: relative;
     display: grid;
     min-height: 31rem;
+    padding: clamp(2rem, 5vw, 3.5rem);
     place-items: center;
-    overflow: hidden;
-    border-radius: 10rem 10rem var(--radius-md) var(--radius-md);
-    color: rgba(255, 255, 255, 0.12);
-    background: linear-gradient(150deg, var(--ocean-500), var(--navy-950));
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--ice-50);
   }
 
-  .about-preview__visual span {
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(5rem, 16vw, 10rem);
-    font-weight: 800;
-  }
-
-  .about-preview__visual div {
-    position: absolute;
-    width: 70%;
-    aspect-ratio: 1;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    box-shadow: 0 0 0 3rem rgba(255, 255, 255, 0.04);
+  .about-preview__visual img {
+    width: min(20rem, 100%);
+    height: auto;
   }
 
   @media (max-width: 780px) {
