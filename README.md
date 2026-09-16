@@ -116,6 +116,12 @@ Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platf
 Properti terdaftar sebagai **URL prefix** `https://katalislintasglobal.com`,
 diverifikasi 16 September 2026 dengan metode **File HTML**.
 
+Verifikasi dilakukan dari akun `zhafariaditya76@gmail.com`, dan akun
+`zhafariaditya7@gmail.com` ditambahkan sebagai **Pemilik** terdelegasi pada
+tanggal yang sama. Keduanya melihat properti yang sama. Perhatikan bahwa kedua
+alamat hanya berbeda satu karakter; pastikan akun yang benar saat membuka
+Search Console.
+
 `public/google683bfbd009f7c223.html` adalah berkas verifikasi kepemilikan.
 **Jangan dihapus, dipindahkan, atau diubah isinya.** Google memeriksanya ulang
 secara berkala; bila berkas hilang, verifikasi dicabut dan akses ke data
