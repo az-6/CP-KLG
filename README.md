@@ -111,5 +111,29 @@ Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platf
 7. Environment variable hanya dibaca saat build. Setelah mengubah `SITE_URL`, wajib redeploy — deployment lama tetap memakai nilai lama.
 8. Aktifkan Vercel Web Analytics jika diperlukan.
 
+## Google Search Console
+
+Properti terdaftar sebagai **URL prefix** `https://katalislintasglobal.com`,
+diverifikasi 16 September 2026 dengan metode **File HTML**.
+
+`public/google683bfbd009f7c223.html` adalah berkas verifikasi kepemilikan.
+**Jangan dihapus, dipindahkan, atau diubah isinya.** Google memeriksanya ulang
+secara berkala; bila berkas hilang, verifikasi dicabut dan akses ke data
+Search Console ikut hilang.
+
+Peta situs `https://katalislintasglobal.com/sitemap-index.xml` sudah dikirim
+pada 16 September 2026.
+
+Dua pemeriksaan berikut baru bisa dilakukan setelah Google menjemput dan
+mengindeks, dan masih terbuka per 16 September 2026:
+
+- Status peta situs berubah dari `Tidak dapat mengambil peta situs` menjadi
+  berhasil dibaca dengan 7 halaman ditemukan. Peta situsnya sendiri sudah
+  diverifikasi sehat: HTTP 200, `Content-Type: application/xml`, dan tetap 200
+  saat diminta dengan user agent Googlebot.
+- Laporan **Pengindeksan halaman** bebas dari `Alternate page with proper
+  canonical tag` yang menunjuk ke `cp-klg.vercel.app`. Laporan ini masih
+  berstatus memproses data pada hari pendaftaran.
+
 Setiap pull request dapat menggunakan Preview Deployment. Branch `main` digunakan untuk deployment produksi.
 Setelah Deploy Hook dan webhook dikonfigurasi sesuai runbook, Publish atau Unpublish di Sanity akan memicu rebuild otomatis; staf tidak perlu melakukan push Git untuk perubahan konten.

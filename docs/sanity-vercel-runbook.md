@@ -77,20 +77,42 @@ Lakukan setelah project ID, Studio publik, Vercel project, dan webhook asli ters
 
 ### Catatan verifikasi nyata
 
-Status: **Belum dilakukan**.
+Status: **Terbukti aktif** (diverifikasi 16 September 2026).
 
-Alasan: project ID Sanity asli, URL Studio, Vercel project, Deploy Hook, dan akses akun belum tersedia pada sesi implementasi lokal. Jangan mengganti status ini tanpa bukti dari dashboard dan URL produksi.
+Bukti diambil dari attempt log webhook Sanity
+(`Webhooks` → `Vercel Production Deploy` → `Show attempt log`, hook id
+`7esFc4YQk3KEX1sm`) dan dicocokkan ke Vercel Deployments lewat job id yang
+dikembalikan Vercel pada body respons tiap attempt.
 
-| Pemeriksaan | Nilai |
-| --- | --- |
-| Tanggal/waktu Publish | Belum tersedia |
-| Delivery webhook Publish | Belum tersedia |
-| Vercel deployment ID Publish | Belum tersedia |
-| URL artikel + canonical/JSON-LD | Belum tersedia |
-| Tanggal/waktu Unpublish | Belum tersedia |
-| Delivery webhook Unpublish | Belum tersedia |
-| Vercel deployment ID Unpublish | Belum tersedia |
-| Konfirmasi route terhapus | Belum tersedia |
+Delapan attempt tercatat, seluruhnya `isFailure: false` dengan `resultCode: 201`,
+dan masing-masing menghasilkan tepat satu deployment produksi bertanda
+`deployHookName: "Sanity Production"` kurang dari dua detik sesudahnya.
+
+| Attempt webhook (WIB) | Jeda ke deployment | Vercel deployment ID |
+| --- | --- | --- |
+| 4 Sep 2026 19:12:52 | 0,90 detik | `dpl_4SLwebVmNZ1EjpEz8tt8p8fWViFt` |
+| 4 Sep 2026 19:12:56 | 1,56 detik | `dpl_A6SKC59tUkprF1VdbSzCQMPpeQqG` |
+| 4 Sep 2026 19:14:57 | 1,37 detik | `dpl_2ehGwqWTFRPLWyjhKphcQLjnJXfo` |
+| 4 Sep 2026 19:15:55 | 0,97 detik | `dpl_3B5tsarwYUpFkrW62bEgN5KCm26U` |
+| 9 Sep 2026 20:38:23 | 1,00 detik | `dpl_DxSvoRPaGS9oJPnvqpWzrucrgY3W` |
+| 9 Sep 2026 20:42:34 | 0,76 detik | `dpl_C8sryZPavy7hzD8RTNh6g14TYmv5` |
+| 9 Sep 2026 20:43:07 | 0,82 detik | `dpl_2y6Jd5q2Bob5fqdfpr2HjDaWTDvq` |
+| 9 Sep 2026 20:46:05 | 0,92 detik | `dpl_3Qe9a9o7GCQYmQHgt8BFxgZkrK2F` |
+
+Konfigurasi webhook saat verifikasi: dataset `production`, status `Enabled`,
+target Vercel Deploy Hook `Sanity Production` pada project `cp-klg`
+(`prj_ioV3T7f0iufbPpQzLeNOdOEZEjVn`). URL hook sengaja tidak dicatat di sini.
+
+Yang **belum** diverifikasi, dan masih perlu dijalankan sesuai Bagian 5 bila
+dibutuhkan bukti penuh:
+
+- Publish terkendali dengan artikel uji bernama, beserta pencatatan canonical
+  dan JSON-LD `NewsArticle` pada URL artikelnya.
+- Jalur Unpublish → deployment baru → URL artikel menghasilkan 404.
+
+Attempt log Sanity menyimpan riwayat terbatas, jadi salin bukti ke tabel ini
+setiap kali verifikasi diulang. Jangan mengganti status di atas tanpa bukti
+dari dashboard dan URL produksi.
 
 ## 6. Pemecahan masalah
 
