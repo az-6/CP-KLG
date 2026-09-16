@@ -39,6 +39,8 @@ PUBLIC_MAP_URL=
 SITE_URL=https://domain-produksi-anda.example
 ```
 
+Domain kanonis produksi adalah `https://katalislintasglobal.com` (apex, tanpa `www`). Nilai itu sudah menjadi cadangan di `astro.config.ts` untuk build dengan `VERCEL_ENV=production`, sehingga build produksi tidak pernah jatuh ke domain `*.vercel.app` meski `SITE_URL` lupa diisi. Untuk lokal isi `SITE_URL` dengan `http://localhost:4321`.
+
 Nomor WhatsApp menggunakan format internasional berupa angka saja. Tautan WhatsApp ditampilkan tanpa nama kontak. Nomor resmi dan alamat Muara Baru sudah menjadi nilai bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
 
 ## Sanity CMS
@@ -104,8 +106,10 @@ Jangan simpan token tulis di `.env`, repository, screenshot terminal, atau platf
 2. Gunakan framework preset **Astro**.
 3. Gunakan build command `npm run build` dan output directory `dist`.
 4. Pilih Node.js 22.x atau lebih baru.
-5. Atur `SITE_URL`, `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, dan `PUBLIC_SANITY_API_VERSION=2026-09-04` untuk Production dan Preview. Jangan memakai ID pengujian atau domain contoh di Production.
-6. Aktifkan Vercel Web Analytics jika diperlukan.
+5. Jadikan `katalislintasglobal.com` sebagai domain **Primary** dan `www.katalislintasglobal.com` sebagai **Redirect** ke apex, bukan sebaliknya. Canonical situs menunjuk apex, jadi arah redirect yang terbalik membuat kanonikalisasi bentrok.
+6. Atur `SITE_URL=https://katalislintasglobal.com` (tanpa trailing slash), `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, dan `PUBLIC_SANITY_API_VERSION=2026-09-04` untuk Production dan Preview. Jangan memakai ID pengujian atau domain contoh di Production.
+7. Environment variable hanya dibaca saat build. Setelah mengubah `SITE_URL`, wajib redeploy — deployment lama tetap memakai nilai lama.
+8. Aktifkan Vercel Web Analytics jika diperlukan.
 
 Setiap pull request dapat menggunakan Preview Deployment. Branch `main` digunakan untuk deployment produksi.
 Setelah Deploy Hook dan webhook dikonfigurasi sesuai runbook, Publish atau Unpublish di Sanity akan memicu rebuild otomatis; staf tidak perlu melakukan push Git untuk perubahan konten.

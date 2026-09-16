@@ -17,10 +17,10 @@ Tambahkan variabel berikut untuk **Production** dan **Preview**:
 PUBLIC_SANITY_PROJECT_ID=<project-id-asli-dari-Sanity-Manage>
 PUBLIC_SANITY_DATASET=production
 PUBLIC_SANITY_API_VERSION=2026-09-04
-SITE_URL=https://<domain-kanonis-produksi>
+SITE_URL=https://katalislintasglobal.com
 ```
 
-Salin project ID asli dari Sanity Manage dan domain kanonis dari Vercel. Nilai kosong, `test1234`, localhost, dan domain contoh dilarang di Production. Jangan menambahkan token tulis Sanity ke environment website.
+Salin project ID asli dari Sanity Manage. Domain kanonis produksi adalah apex `https://katalislintasglobal.com`, tanpa `www` dan tanpa trailing slash; `www` diset sebagai Redirect ke apex di Vercel Settings → Domains. Nilai kosong, `test1234`, localhost, dan domain contoh dilarang di Production. Jangan menambahkan token tulis Sanity ke environment website.
 
 ## 3. Membuat Vercel Deploy Hook
 
