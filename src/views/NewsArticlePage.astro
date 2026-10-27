@@ -1,0 +1,91 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PortableContent from '../components/PortableContent.astro';
+import SanityImage from '../components/SanityImage.astro';
+import { company } from '../data/company';
+import { newsAlternates, newsPath, routes, type Locale } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSanityImageSet } from '../lib/sanity/image';
+import { buildBreadcrumbJsonLd, buildNewsArticleJsonLd } from '../lib/seo';
+import type { NewsDocument } from '../types/sanity';
+
+interface Props {
+  locale: Locale;
+  article: NewsDocument;
+  articles: NewsDocument[];
+}
+
+const { locale, article, articles } = Astro.props;
+const isId = locale === 'id';
+const site = Astro.site ?? new URL('http://localhost:4321');
+const path = newsPath(locale, article.slug);
+const text = isId
+  ? { home: 'Beranda', news: 'Berita', related: 'Berita Lainnya' }
+  : { home: 'Home', news: 'News', related: 'More News' };
+const breadcrumbItems = [
+  { name: text.home, path: routes.home[locale] },
+  { name: text.news, path: routes.news[locale] },
+  { name: article.title, path },
+];
+const schemas = [
+  buildNewsArticleJsonLd(article, company, site, path),
+  buildBreadcrumbJsonLd(breadcrumbItems, site),
+];
+const relatedArticles = articles.filter((item) => item._id !== article._id).slice(0, 3);
+const publishedLabel = new Intl.DateTimeFormat(isId ? 'id-ID' : 'en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+}).format(new Date(article.publishedAt));
+const socialImage = article.seo?.socialImage ?? article.coverImage;
+---
+
+<BaseLayout
+  title={article.seo?.title ?? article.title}
+  description={article.seo?.description ?? article.excerpt}
+  canonicalPath={path}
+  image={getSanityImageSet(socialImage, [1200]).src}
+  jsonLd={schemas}
+  locale={locale}
+  alternates={newsAlternates(article.slug)}
+>
+  <article class="article section">
+    <div class="container article__container">
+      <Breadcrumbs items={breadcrumbItems.map(({ name, path }, index) => ({ name, href: index < breadcrumbItems.length - 1 ? path : undefined }))} />
+      <header class="article__header">
+        <h1>{article.title}</h1>
+        <time datetime={article.publishedAt}>{publishedLabel}</time>
+        <p class="lead">{article.excerpt}</p>
+      </header>
+      <figure class="article__cover">
+        <SanityImage image={article.coverImage} width={1200} height={800} widths={[480, 768, 1200]} sizes="(max-width: 900px) 100vw, 800px" loading="eager" />
+        {article.coverImage.caption && <figcaption>{article.coverImage.caption}</figcaption>}
+      </figure>
+      <PortableContent value={article.body} />
+    </div>
+  </article>
+
+  {relatedArticles.length > 0 && (
+    <section class="section section--shade" aria-labelledby="related-news-title">
+      <div class="container">
+        <h2 id="related-news-title">{text.related}</h2>
+        <div class="related-news">
+          {relatedArticles.map((related) => <NewsCard article={related} headingLevel="h3" locale={locale} />)}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .article { padding-top: clamp(2rem, 5vw, 4rem); }
+  .article__container { max-width: 54rem; }
+  .article__header { padding-bottom: 1.75rem; border-bottom: var(--rule-heavy) solid var(--ink); }
+  .article__header h1 { margin-block: 0 1rem; font-size: clamp(2.1rem, 5vw, 3.6rem); font-stretch: var(--stretch-plate); line-height: 1.05; text-transform: none; }
+  .article__header time { color: var(--hull-deep); font-size: 0.85rem; font-stretch: var(--stretch-plate); font-weight: 760; letter-spacing: 0.08em; text-transform: uppercase; }
+  .article__header .lead { margin: 1.25rem 0 0; }
+  .article__cover { margin: 2.5rem 0; }
+  .article__cover :global(img) { display: block; width: 100%; height: auto; border: var(--rule) solid var(--ink); }
+  .article__cover figcaption { margin-top: 0.6rem; color: var(--ink-soft); font-size: 0.88rem; }
+  .related-news { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.25rem, 2.5vw, 2rem); }
+  @media (max-width: 760px) { .related-news { grid-template-columns: 1fr; } }
+</style>

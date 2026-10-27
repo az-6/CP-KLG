@@ -1,0 +1,61 @@
+---
+import NewsCard from '../components/NewsCard.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { alternatesFor, routes, type Locale } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedNews } from '../lib/sanity/news-partner-repository';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const articles = await getPublishedNews(locale);
+const text = locale === 'id'
+  ? {
+      title: 'Berita',
+      description: 'Berita dan aktivitas terbaru PT Katalis Lintas Global.',
+      lede: 'Kabar dan aktivitas terbaru PT Katalis Lintas Global.',
+      section: 'Kabar Perusahaan',
+      sectionDescription: 'Informasi aktivitas yang dipublikasikan oleh tim kami.',
+      empty: 'Belum ada berita yang dipublikasikan.',
+    }
+  : {
+      title: 'News',
+      description: 'The latest news and activities of PT Katalis Lintas Global.',
+      lede: 'The latest news and activities of PT Katalis Lintas Global.',
+      section: 'Company News',
+      sectionDescription: 'Updates on activities published by our team.',
+      empty: 'No news has been published yet.',
+    };
+---
+
+<BaseLayout
+  title={text.title}
+  description={text.description}
+  canonicalPath={routes.news[locale]}
+  locale={locale}
+  alternates={alternatesFor('news')}
+>
+  <PageHero locale={locale} title={text.title} description={text.lede} port={false} />
+
+  <section class="section" data-draft>
+    <div class="container">
+      <SectionHeading title={text.section} description={text.sectionDescription} align="split" />
+      {articles.length ? (
+        <div class="news-grid">
+          {articles.map((article) => <NewsCard {article} locale={locale} />)}
+        </div>
+      ) : (
+        <p class="empty-note">{text.empty}</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .news-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem); }
+  @media (max-width: 900px) { .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .news-grid { grid-template-columns: 1fr; } }
+</style>

@@ -6,7 +6,9 @@ import type {
   OperationalMediaDocument,
 } from '../../types/sanity';
 import { sanityClient } from './client';
+import type { Locale } from '../../i18n';
 import { isSanityFixtureMode } from './config';
+import { localizeCredential, localizeFact, localizeMedia } from './localize';
 
 export interface EvidenceDataset {
   facts: CompanyFactDocument[];
@@ -16,13 +18,13 @@ export interface EvidenceDataset {
 
 export const EVIDENCE_QUERY = groq`{
   "facts": *[_type == "companyFact" && isActive == true] | order(order asc, label asc){
-    _id, label, value, description, placement, order, isActive
+    _id, label, value, description, placement, order, isActive, en
   },
   "media": *[_type == "operationalMedia" && isActive == true] | order(order asc, title asc){
     _id, title, image, documentationType, order, isActive
   },
   "credentials": *[_type == "credential" && isActive == true] | order(order asc, name asc){
-    _id, name, description, previewImage, order, isActive
+    _id, name, description, previewImage, order, isActive, en
   }
 }`;
 
@@ -49,25 +51,29 @@ export function groupEvidence(dataset: EvidenceDataset) {
   };
 }
 
-async function getEvidenceDataset(): Promise<EvidenceDataset> {
-  if (isSanityFixtureMode(import.meta.env, process.env)) {
-    return {
+async function getEvidenceDataset(locale: Locale): Promise<EvidenceDataset> {
+  const dataset: EvidenceDataset = isSanityFixtureMode(import.meta.env, process.env)
+    ? {
       facts: sanityFixtures.companyFacts,
       media: sanityFixtures.operationalMedia,
       credentials: sanityFixtures.credentials,
-    };
-  }
-  return sanityClient.fetch<EvidenceDataset>(EVIDENCE_QUERY);
+    }
+    : await sanityClient.fetch<EvidenceDataset>(EVIDENCE_QUERY);
+  return {
+    facts: dataset.facts.map((fact) => localizeFact(fact, locale)),
+    media: dataset.media.map((item) => localizeMedia(item, locale)),
+    credentials: dataset.credentials.map((credential) => localizeCredential(credential, locale)),
+  };
 }
 
-export async function getHomeFacts() {
-  return groupEvidence(await getEvidenceDataset()).homeFacts;
+export async function getHomeFacts(locale: Locale = 'id') {
+  return groupEvidence(await getEvidenceDataset(locale)).homeFacts;
 }
 
-export async function getAboutEvidence() {
-  return groupEvidence(await getEvidenceDataset()).about;
+export async function getAboutEvidence(locale: Locale = 'id') {
+  return groupEvidence(await getEvidenceDataset(locale)).about;
 }
 
-export async function getProcessEvidence() {
-  return groupEvidence(await getEvidenceDataset()).process;
+export async function getProcessEvidence(locale: Locale = 'id') {
+  return groupEvidence(await getEvidenceDataset(locale)).process;
 }

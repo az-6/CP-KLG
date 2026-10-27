@@ -1,0 +1,99 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import MediaGallery from '../components/MediaGallery.astro';
+import PageHero from '../components/PageHero.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import ProofLedger from '../components/ProofLedger.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { companyCopy, type Locale } from '../i18n';
+import { hasItems } from '../lib/optional-sections';
+import { getProcessEvidence } from '../lib/sanity/evidence-repository';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = companyCopy[locale];
+const evidence = await getProcessEvidence(locale);
+const processMedia = [...evidence.process, ...evidence.facilities];
+
+const text = locale === 'id'
+  ? {
+      title: 'Mutu dan Proses',
+      lede: 'Konsistensi produk dimulai dari proses yang jelas, kebersihan penanganan, dan perhatian pada rantai dingin.',
+      flow: 'Alur Penanganan Produk',
+      flowDescription: 'Tahapan berikut menggambarkan prinsip proses kami. Detail teknis dan dokumentasi dapat dibahas bersama calon buyer.',
+      focus: 'Tiga Fokus Utama',
+      focusDescription: 'Pendekatan kami berfokus pada kualitas, fleksibilitas spesifikasi, dan kebersihan penanganan.',
+      media: 'Proses dan Fasilitas',
+      mediaLabel: 'Dokumentasi proses dan fasilitas',
+      cta: 'Perlu Mendalami Standar Kami?',
+      ctaText: 'Jadwalkan pertemuan untuk membahas proses, dokumentasi, dan spesifikasi yang dibutuhkan bisnis Anda.',
+    }
+  : {
+      title: 'Quality and Process',
+      lede: 'Product consistency starts with a clear process, clean handling, and care for the cold chain.',
+      flow: 'How Product Is Handled',
+      flowDescription: 'These stages describe the principles of our process. Technical detail and documentation are discussed with prospective buyers.',
+      focus: 'Three Main Focus Areas',
+      focusDescription: 'Our approach centres on quality, specification flexibility, and clean handling.',
+      media: 'Process and Facilities',
+      mediaLabel: 'Process and facility documentation',
+      cta: 'Want to Look Closer at Our Standards?',
+      ctaText: 'Schedule a meeting to go through the process, documentation, and specifications your business needs.',
+    };
+---
+
+<PageHero locale={locale} title={text.title} description={text.lede} />
+
+<section class="section" data-draft>
+  <div class="container process-layout">
+    <div class="process-layout__heading">
+      <SectionHeading title={text.flow} description={text.flowDescription} />
+    </div>
+    <ProcessTimeline steps={copy.process} />
+  </div>
+</section>
+
+<section class="section section--shade" data-draft>
+  <div class="container">
+    <SectionHeading title={text.focus} description={text.focusDescription} align="split" />
+    <ProofLedger proofs={copy.proofs} locale={locale} />
+  </div>
+</section>
+
+{hasItems(processMedia) && (
+  <section class="section" data-draft>
+    <div class="container">
+      <SectionHeading title={text.media} />
+      <MediaGallery items={processMedia} label={text.mediaLabel} />
+    </div>
+  </section>
+)}
+
+<CtaBand locale={locale} title={text.cta} description={text.ctaText} analyticsSource="quality-final" />
+
+<style>
+  .process-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: clamp(2.5rem, 7vw, 7rem);
+  }
+
+  .process-layout__heading {
+    position: sticky;
+    top: 7rem;
+  }
+
+  @media (max-width: 860px) {
+    .process-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .process-layout__heading {
+      position: static;
+    }
+  }
+</style>

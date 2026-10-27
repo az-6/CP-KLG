@@ -1,0 +1,15 @@
+---
+import { alternatesFor } from '../../i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutView from '../../views/AboutView.astro';
+---
+
+<BaseLayout
+  title="About PT Katalis Lintas Global"
+  description="PT Katalis Lintas Global supplies tuna and demersal fish to distributors and wholesalers, with branches in Padang, Kupang, Bitung, Manokwari, and Jayapura."
+  canonicalPath="/en/about"
+  locale="en"
+  alternates={alternatesFor('about')}
+>
+  <AboutView locale="en" />
+</BaseLayout>

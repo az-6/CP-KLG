@@ -1,0 +1,205 @@
+---
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<template id="draft-rail-template" data-label={ui[locale].sectionIndex}></template>
+
+<script>
+  // Skala draft di tepi kiri: indeks bagian halaman dengan garis air yang
+  // berpindah ke bagian yang sedang dibaca. Hanya peningkatan progresif;
+  // tanpa JavaScript halaman tetap lengkap.
+  const MIN_SECTIONS = 3;
+  const desktop = window.matchMedia('(min-width: 1360px)');
+  const label = document.getElementById('draft-rail-template')?.dataset.label ?? '';
+  let rail: HTMLElement | null = null;
+  let observer: IntersectionObserver | null = null;
+
+  const sections = () => [...document.querySelectorAll<HTMLElement>('main [data-draft]')];
+  // Tinggi header termasuk garis bawahnya: garis air diam disejajarkan ke sini.
+  const headerLine = () => document.querySelector('.site-header')?.getBoundingClientRect().height ?? 83;
+
+  const build = () => {
+    const targets = sections();
+    if (targets.length < MIN_SECTIONS || rail) return;
+
+    rail = document.createElement('nav');
+    rail.className = 'draft-rail';
+    rail.setAttribute('aria-label', label);
+
+    const water = document.createElement('span');
+    water.className = 'draft-rail__water';
+    water.setAttribute('aria-hidden', 'true');
+
+    const list = document.createElement('ol');
+    const marks = targets.map((section, index) => {
+      if (!section.id) section.id = `bagian-${index + 1}`;
+      const heading = section.querySelector('h1, h2')?.textContent?.trim() ?? section.dataset.draft ?? '';
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `#${section.id}`;
+      link.className = 'draft-rail__mark';
+      link.setAttribute('aria-label', `${index + 1}. ${heading}`);
+      link.innerHTML = `<span class="draft-num" aria-hidden="true">${index + 1}</span><span class="draft-rail__label"></span>`;
+      link.querySelector('.draft-rail__label')!.textContent = heading;
+      item.append(link);
+      list.append(item);
+      return link;
+    });
+
+    rail.append(water, list);
+    document.body.append(rail);
+    document.documentElement.classList.add('has-rail');
+
+    const setActive = (active: number) => {
+      marks.forEach((mark, index) => {
+        mark.classList.toggle('is-submerged', index >= active);
+        if (index === active) mark.setAttribute('aria-current', 'location');
+        else mark.removeAttribute('aria-current');
+      });
+      // Garis air menempel tepat di atas tanda aktif; untuk tanda pertama ia
+      // jatuh pada garis tinta header.
+      const railBox = rail!.getBoundingClientRect();
+      const top = active === 0 ? railBox.top + headerLine() : marks[active].getBoundingClientRect().top - 6;
+      water.style.height = `${railBox.bottom - top}px`;
+    };
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (!visible.length) return;
+        const index = targets.indexOf(visible[0].target as HTMLElement);
+        if (index >= 0) setActive(index);
+      },
+      { rootMargin: '-35% 0px -60% 0px' },
+    );
+    targets.forEach((section) => observer!.observe(section));
+    setActive(0);
+  };
+
+  const destroy = () => {
+    observer?.disconnect();
+    observer = null;
+    rail?.remove();
+    rail = null;
+    document.documentElement.classList.remove('has-rail');
+  };
+
+  const sync = () => (desktop.matches ? build() : destroy());
+  desktop.addEventListener('change', sync);
+  sync();
+</script>
+
+<style is:global>
+  html.has-rail {
+    --rail: 4.5rem;
+  }
+
+  .draft-rail {
+    position: fixed;
+    z-index: 60;
+    inset: 0 auto 0 0;
+    width: var(--rail);
+    overflow: hidden;
+    border-right: var(--rule) solid var(--ink);
+    background: var(--paint);
+  }
+
+  .draft-rail ol {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0;
+    /* Tanda pertama tepat di bawah garis header, sehingga garis air saat diam menyambung dengannya. */
+    padding: calc(5rem + var(--rule) + 0.4rem) 0 1.5rem;
+    list-style: none;
+  }
+
+  .draft-rail__water {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    border-top: var(--rule) solid var(--on-hull);
+    background: var(--hull);
+    transition: height 700ms var(--ease-out);
+  }
+
+  /* Garis air: strip tinta di atas strip putih, seperti boot-topping lambung. */
+  .draft-rail__water::before {
+    position: absolute;
+    top: calc(-2 * var(--rule));
+    right: 0;
+    left: 0;
+    height: var(--rule);
+    background: var(--ink);
+    content: '';
+  }
+
+  .draft-rail__mark {
+    position: relative;
+    display: grid;
+    min-height: 2.75rem;
+    color: var(--ink);
+    text-decoration: none;
+    place-items: center;
+    transition: color 400ms var(--ease-out);
+  }
+
+  .draft-rail__mark .draft-num {
+    font-size: 1.85rem;
+  }
+
+  .draft-rail__mark .draft-num::after {
+    display: block;
+    width: 1.1rem;
+    height: 4px;
+    margin: 0.2rem auto 0;
+    background: currentColor;
+    content: '';
+  }
+
+  .draft-rail__mark.is-submerged {
+    color: var(--on-hull);
+  }
+
+  .draft-rail__mark:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .draft-rail__label {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .draft-rail__mark:hover .draft-rail__label,
+  .draft-rail__mark:focus-visible .draft-rail__label {
+    position: fixed;
+    left: calc(var(--rail) + 0.5rem);
+    clip: auto;
+    width: auto;
+    height: auto;
+    padding: 0.45rem 0.75rem;
+    border: var(--rule) solid var(--ink);
+    color: var(--ink);
+    background: var(--paint);
+    font-size: 0.8rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 760;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transform: translateY(-50%);
+  }
+</style>

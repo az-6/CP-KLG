@@ -36,6 +36,7 @@ const categories: ProductCategoryDocument[] = [
     description: 'Kategori pengujian untuk produk Tuna.',
     order: 0,
     isActive: true,
+    en: { name: 'Tuna Category', description: 'Test category for Tuna products.' },
   },
   {
     _id: 'category-ikan-dasar',
@@ -57,10 +58,15 @@ const products: ProductDocument[] = [
     categorySlug: 'tuna',
     excerpt: 'Informasi pengujian produk Tuna untuk memvalidasi tampilan katalog.',
     description: [paragraph('tuna-description', 'Deskripsi pengujian produk Tuna.')],
-    images: [image('tuna', 'Foto pengujian produk Tuna')],
+    images: [{ ...image('tuna', 'Foto pengujian produk Tuna'), altEn: 'Test photo of the Tuna product' }],
     availabilityStatus: 'Tersedia berdasarkan konfirmasi',
     order: 0,
     isActive: true,
+    en: {
+      name: 'Tuna',
+      excerpt: 'Test information for the Tuna product to validate the catalog layout.',
+      description: [paragraph('tuna-description-en', 'Test description of the Tuna product.')],
+    },
   },
   {
     _id: 'product-ikan-dasar',
@@ -92,6 +98,14 @@ const news: NewsDocument[] = [
       image('news-inline', 'Foto pengujian di dalam artikel'),
     ],
     isActive: true,
+    en: {
+      title: 'Test News',
+      excerpt: 'Test content to check that the news list and article pages render correctly.',
+      body: [
+        paragraph('news-body-en', 'Test article body for checking the website layout.'),
+        { ...image('news-inline-en', 'Foto pengujian di dalam artikel'), altEn: 'Test photo inside the article' },
+      ],
+    },
   },
 ];
 
@@ -130,6 +144,7 @@ const credentials: CredentialDocument[] = [
     previewImage: image('credential', 'Pratinjau pengujian dokumen legalitas'),
     order: 0,
     isActive: true,
+    en: { name: 'Test Legal Document', description: 'Test preview, not a company legal document or claim.' },
   },
 ];
 
@@ -151,6 +166,7 @@ const companyFacts: CompanyFactDocument[] = [
     placement: 'about',
     order: 0,
     isActive: true,
+    en: { label: 'Test fact About', value: 'Test data', description: 'Not a production claim.' },
   },
 ];
 

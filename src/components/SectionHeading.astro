@@ -1,41 +1,53 @@
 ---
 interface Props {
-  eyebrow: string;
   title: string;
   description?: string;
-  align?: 'left' | 'center';
+  id?: string;
+  align?: 'left' | 'split';
 }
 
-const { eyebrow, title, description, align = 'left' } = Astro.props;
+const { title, description, id, align = 'left' } = Astro.props;
 ---
 
 <header class:list={['section-heading', `section-heading--${align}`]}>
-  <span class="eyebrow">{eyebrow}</span>
-  <h2>{title}</h2>
+  <h2 id={id}>{title}</h2>
   {description && <p>{description}</p>}
 </header>
 
 <style>
   .section-heading {
-    max-width: 48rem;
-    margin-bottom: clamp(2.25rem, 5vw, 4rem);
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
   }
 
   .section-heading h2 {
-    margin-bottom: 1rem;
+    max-width: 18ch;
   }
 
   .section-heading p {
-    color: var(--slate);
-    font-size: 1.08rem;
+    max-width: 46rem;
+    margin-bottom: 0;
+    color: var(--ink-soft);
+    font-size: clamp(1.02rem, 1.5vw, 1.15rem);
   }
 
-  .section-heading--center {
-    margin-inline: auto;
-    text-align: center;
+  :global(.hull) .section-heading p {
+    color: var(--on-hull-soft);
   }
 
-  .section-heading--center .eyebrow {
-    justify-content: center;
+  .section-heading--split {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: 1rem clamp(2rem, 5vw, 5rem);
+  }
+
+  .section-heading--split h2 {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 860px) {
+    .section-heading--split {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

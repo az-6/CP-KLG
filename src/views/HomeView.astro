@@ -1,0 +1,311 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import CompanyFacts from '../components/CompanyFacts.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Hero from '../components/Hero.astro';
+import LocationsMap from '../components/LocationsMap.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PartnerGrid from '../components/PartnerGrid.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import ProductCard from '../components/ProductCard.astro';
+import ProofLedger from '../components/ProofLedger.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CompanyPlate from '../components/CompanyPlate.astro';
+import { companyCopy, meetingHrefFor, routes, type Locale } from '../i18n';
+import { hasItems } from '../lib/optional-sections';
+import { getHomeFacts } from '../lib/sanity/evidence-repository';
+import { getActivePartners, getLatestNews } from '../lib/sanity/news-partner-repository';
+import { getProductCatalog } from '../lib/sanity/product-repository';
+import { isWhatsAppHref } from '../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = companyCopy[locale];
+const meetingHref = meetingHrefFor(locale);
+const isId = locale === 'id';
+
+const [{ products }, latestNews, partners, homeFacts] = await Promise.all([
+  getProductCatalog(locale),
+  getLatestNews(3, locale),
+  getActivePartners(locale),
+  getHomeFacts(locale),
+]);
+const featuredProducts = products.slice(0, 4);
+
+const text = isId
+  ? {
+      partners: 'Mitra Kerja',
+      partnersDescription: 'Perusahaan yang bekerja sama dengan PT Katalis Lintas Global.',
+      products: 'Produk untuk Kebutuhan Bisnis Anda',
+      productsDescription: 'Produk aktif kami. Buka detailnya untuk membahas kebutuhan pasokan Anda.',
+      productsLink: 'Lihat Semua Produk',
+      proofs: 'Kepercayaan Dibangun dari Bukti',
+      proofsDescription: 'Setiap janji utama dikaitkan dengan proses operasional yang dapat dijelaskan dalam pertemuan bisnis.',
+      process: 'Mutu dari Penerimaan hingga Pengiriman',
+      processDescription: 'Lima tahap yang menjaga konsistensi produk dari penerimaan sampai distribusi.',
+      processLink: 'Pelajari Mutu & Proses',
+      spec: 'Spesifikasi Mengikuti Kebutuhan Buyer',
+      specText:
+        'Setiap distributor punya kebutuhan yang berbeda. Pertemuan awal dipakai untuk menyelaraskan lima hal berikut sebelum pembahasan berlanjut.',
+      specCta: 'Diskusikan Kebutuhan Anda',
+      specFields: [
+        ['Ukuran & grade', 'Rentang ukuran dan grade yang Anda butuhkan.'],
+        ['Bentuk produk', 'Bentuk potongan yang sesuai penggunaan di bisnis Anda.'],
+        ['Kondisi produk', 'Kondisi produk saat sampai di tempat Anda.'],
+        ['Pengemasan', 'Jenis dan ukuran kemasan.'],
+        ['Volume & distribusi', 'Volume dan pola pengiriman.'],
+      ],
+      map: 'Lokasi Kami',
+      about: 'Kemitraan Pasokan yang Berorientasi Jangka Panjang',
+      aboutLink: 'Kenali Perusahaan Kami',
+      news: 'Berita Terbaru',
+      newsDescription: 'Kabar terbaru dari aktivitas PT Katalis Lintas Global.',
+      newsLink: 'Lihat Semua Berita',
+      cta: 'Mari Bahas Kebutuhan Pasokan Anda',
+      ctaText: 'Jadwalkan percakapan awal untuk membahas jenis produk, spesifikasi, volume, dan kebutuhan distribusi bisnis Anda.',
+    }
+  : {
+      partners: 'Partners',
+      partnersDescription: 'Companies that work with PT Katalis Lintas Global.',
+      products: 'Products for Your Business',
+      productsDescription: 'Our active products. Open the details to discuss your supply needs.',
+      productsLink: 'See All Products',
+      proofs: 'Trust Built on Evidence',
+      proofsDescription: 'Each main promise is tied to an operational process we can walk you through in a business meeting.',
+      process: 'Quality from Receiving to Dispatch',
+      processDescription: 'Five stages that keep the product consistent from receiving to distribution.',
+      processLink: 'Read Quality & Process',
+      spec: 'Specifications Follow the Buyer',
+      specText:
+        'Every distributor needs something different. The first meeting is used to agree on these five points before anything else.',
+      specCta: 'Discuss Your Requirements',
+      specFields: [
+        ['Size & grade', 'The size range and grade you need.'],
+        ['Product form', 'The cut that fits how your business uses it.'],
+        ['Product condition', 'The condition the product arrives in.'],
+        ['Packing', 'Pack type and pack size.'],
+        ['Volume & distribution', 'Volume and delivery pattern.'],
+      ],
+      map: 'Our Locations',
+      about: 'A Supply Partnership Built for the Long Term',
+      aboutLink: 'About the Company',
+      news: 'Latest News',
+      newsDescription: 'Recent updates on the activities of PT Katalis Lintas Global.',
+      newsLink: 'See All News',
+      cta: "Let's Discuss Your Supply Needs",
+      ctaText: 'Book a first conversation about product type, specification, volume, and the distribution your business needs.',
+    };
+---
+
+<Hero
+  locale={locale}
+  title={copy.heroTitle}
+  description={copy.heroDescription}
+  primaryHref={meetingHref}
+/>
+
+{hasItems(homeFacts) && (
+  <section class="facts-strip">
+    <div class="container"><CompanyFacts facts={homeFacts} label={isId ? 'Ringkasan perusahaan' : 'Company summary'} /></div>
+  </section>
+)}
+
+{hasItems(partners) && (
+  <section class="section section--shade" aria-labelledby="partners-title" data-draft>
+    <div class="container">
+      <SectionHeading id="partners-title" title={text.partners} description={text.partnersDescription} align="split" />
+      <PartnerGrid {partners} />
+    </div>
+  </section>
+)}
+
+<section class="section" data-draft>
+  <div class="container products-split">
+    <div class="products-split__intro">
+      <SectionHeading title={text.products} description={text.productsDescription} />
+      <ButtonLink href={routes.products[locale]} label={text.productsLink} variant="text" />
+    </div>
+    <div class="product-grid">
+      {featuredProducts.map((product) => (
+        <ProductCard
+          product={product}
+          headingLevel="h3"
+          locale={locale}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section section--shade" data-draft>
+  <div class="container">
+    <SectionHeading title={text.proofs} description={text.proofsDescription} align="split" />
+    <ProofLedger proofs={copy.proofs} locale={locale} />
+  </div>
+</section>
+
+<section class="section hull" data-draft>
+  <div class="container">
+    <SectionHeading title={text.process} description={text.processDescription} align="split" />
+    <ProcessTimeline steps={copy.process} compact />
+    <div class="section-link">
+      <ButtonLink href={routes.quality[locale]} label={text.processLink} variant="text" />
+    </div>
+  </div>
+</section>
+
+<section class="section spec" data-draft>
+  <div class="container spec__grid">
+    <div class="spec__copy">
+      <h2>{text.spec}</h2>
+      <p class="lead">{text.specText}</p>
+      <ButtonLink href={meetingHref} label={text.specCta} analyticsSource="specification" external={isWhatsAppHref(meetingHref)} />
+    </div>
+    <dl class="spec-sheet">
+      {text.specFields.map(([label, hint]) => (
+        <div>
+          <dt>{label}</dt>
+          <dd>{hint}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<section class="section hull" aria-labelledby="locations-title" data-draft>
+  <div class="container">
+    <SectionHeading id="locations-title" title={text.map} />
+    <LocationsMap locale={locale} titleId="locations-title" />
+  </div>
+</section>
+
+<section class="section" data-draft>
+  <div class="container about-preview">
+    <CompanyPlate locale={locale} />
+    <div>
+      <h2>{text.about}</h2>
+      <p class="lead">{copy.about}</p>
+      <ButtonLink href={routes.about[locale]} label={text.aboutLink} variant="text" />
+    </div>
+  </div>
+</section>
+
+{hasItems(latestNews) && (
+  <section class="section section--shade" aria-labelledby="latest-news-title" data-latest-news data-draft>
+    <div class="container">
+      <SectionHeading id="latest-news-title" title={text.news} description={text.newsDescription} align="split" />
+      <div class="news-grid">
+        {latestNews.map((article) => <NewsCard {article} headingLevel="h3" locale={locale} />)}
+      </div>
+      <div class="section-link"><ButtonLink href={routes.news[locale]} label={text.newsLink} variant="text" /></div>
+    </div>
+  </section>
+)}
+
+<CtaBand locale={locale} title={text.cta} description={text.ctaText} analyticsSource="home-final" />
+
+<style>
+  .facts-strip {
+    padding-block: 2.5rem 0;
+  }
+
+  /* Pengantar di kiri, kartu produk di kanan: satu produk tetap berukuran kartu. */
+  .products-split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .products-split__intro :global(.section-heading) {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .spec__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: start;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  .spec__copy h2 {
+    max-width: 13ch;
+  }
+
+  .spec__copy .lead {
+    margin-bottom: 2rem;
+  }
+
+  /* Lembar spesifikasi: kolom yang diisi bersama buyer di pertemuan. */
+  .spec-sheet {
+    margin: 0;
+    border: var(--rule-heavy) solid var(--ink);
+    background: var(--paint);
+  }
+
+  .spec-sheet > div {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 0.5rem 1.5rem;
+    padding: 1.15rem 1.35rem 1.25rem;
+  }
+
+  .spec-sheet > div + div {
+    border-top: var(--rule) solid var(--ink);
+  }
+
+  .spec-sheet dt {
+    font-size: 0.86rem;
+    font-stretch: var(--stretch-hull);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .spec-sheet dd {
+    margin: 0;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px dashed var(--ink-soft);
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+  }
+
+  .about-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+
+  .about-preview h2 {
+    max-width: 16ch;
+  }
+
+  @media (max-width: 860px) {
+    .spec__grid,
+    .products-split,
+    .about-preview,
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .spec-sheet > div {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

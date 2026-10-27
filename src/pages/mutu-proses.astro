@@ -1,65 +1,15 @@
 ---
-import ButtonLink from '../components/ButtonLink.astro';
-import MediaGallery from '../components/MediaGallery.astro';
-import ProcessTimeline from '../components/ProcessTimeline.astro';
-import ProofCard from '../components/ProofCard.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import { company } from '../data/company';
+import { alternatesFor } from '../i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { hasItems } from '../lib/optional-sections';
-import { getProcessEvidence } from '../lib/sanity/evidence-repository';
-import { getMeetingHref } from '../lib/whatsapp';
-
-const meetingHref = getMeetingHref(company.contact.whatsappNumber);
-const evidence = await getProcessEvidence();
-const processMedia = [...evidence.process, ...evidence.facilities];
+import QualityView from '../views/QualityView.astro';
 ---
 
 <BaseLayout
   title="Mutu dan Proses Penanganan Ikan"
   description="Pelajari pendekatan mutu, penanganan higienis, sortasi, cold chain, pengemasan, dan distribusi PT Katalis Lintas Global."
   canonicalPath="/mutu-proses"
+  locale="id"
+  alternates={alternatesFor('quality')}
 >
-  <section class="page-hero">
-    <div class="container">
-      <span class="eyebrow">Standar operasional</span>
-      <h1>Mutu dan Proses</h1>
-      <p>Konsistensi produk dimulai dari proses yang jelas, kebersihan penanganan, serta perhatian pada rantai dingin.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container process-layout">
-      <div><SectionHeading eyebrow="Dari awal hingga pengiriman" title="Alur Penanganan Produk" description="Tahapan berikut menggambarkan prinsip proses kami. Detail teknis dan dokumentasi dapat dibahas bersama calon buyer." /></div>
-      <ProcessTimeline steps={company.process} />
-    </div>
-  </section>
-
-  <section class="section section--soft">
-    <div class="container">
-      <SectionHeading eyebrow="Fokus mutu" title="Tiga Fokus Utama" description="Pendekatan kami berfokus pada kualitas, fleksibilitas spesifikasi, dan kebersihan penanganan." />
-      <div class="grid grid--3">{company.proofs.map((proof) => <ProofCard {...proof} />)}</div>
-    </div>
-  </section>
-
-  {hasItems(processMedia) && (
-    <section class="section">
-      <div class="container">
-        <SectionHeading eyebrow="Dokumentasi operasional" title="Proses dan Fasilitas" />
-        <MediaGallery items={processMedia} label="Dokumentasi proses dan fasilitas" />
-      </div>
-    </section>
-  )}
-
-  <section class="section">
-    <div class="container cta-panel">
-      <div><h2>Perlu Mendalami Standar Kami?</h2><p>Jadwalkan pertemuan untuk membahas proses, dokumentasi, dan spesifikasi yang dibutuhkan bisnis Anda.</p></div>
-      <ButtonLink href={meetingHref} label="Jadwalkan Pertemuan" analyticsSource="quality-final" external={meetingHref.startsWith('https://wa.me/')} />
-    </div>
-  </section>
+  <QualityView locale="id" />
 </BaseLayout>
-
-<style>
-  .process-layout { display: grid; grid-template-columns: 0.9fr 1fr; gap: clamp(3rem, 8vw, 7rem); }
-  @media (max-width: 780px) { .process-layout { grid-template-columns: 1fr; } }
-</style>

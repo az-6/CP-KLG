@@ -5,6 +5,7 @@ interface Props {
   external?: boolean;
   analyticsSource?: string;
   productSlug?: string;
+  hreflang?: string;
   label: string;
 }
 
@@ -14,6 +15,7 @@ const {
   external = false,
   analyticsSource,
   productSlug,
+  hreflang,
   label,
 } = Astro.props;
 ---
@@ -21,6 +23,7 @@ const {
 <a
   class:list={['button-link', `button-link--${variant}`]}
   href={href}
+  hreflang={hreflang}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
   data-whatsapp-source={analyticsSource}
@@ -28,51 +31,93 @@ const {
 >
   <span>{label}</span>
   <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18">
-    <path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+    <path d="M3 10h12.5M10.5 5l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2.4" />
   </svg>
 </a>
 
 <style>
   .button-link {
     display: inline-flex;
-    min-height: 3rem;
+    min-height: 3.25rem;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    padding: 0.78rem 1.2rem;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-weight: 700;
-    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    gap: 0.85rem;
+    padding: 0.85rem 1.4rem;
+    border: var(--rule) solid transparent;
+    font-size: 0.95rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 780;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out), border-color 220ms var(--ease-out);
   }
 
-  .button-link:hover {
-    transform: translateY(-2px);
+  .button-link svg {
+    flex: none;
+    transition: transform 260ms var(--ease-out);
+  }
+
+  .button-link:hover svg {
+    transform: translateX(4px);
   }
 
   .button-link--primary {
-    color: var(--white);
-    background: var(--ocean-600);
-    box-shadow: 0 10px 24px rgba(8, 126, 164, 0.24);
+    border-color: var(--hull);
+    color: var(--on-hull);
+    background: var(--hull);
   }
 
   .button-link--primary:hover {
-    background: var(--ocean-500);
+    border-color: var(--ink);
+    background: var(--ink);
   }
 
   .button-link--secondary {
-    color: var(--navy-950);
-    border-color: var(--line);
-    background: var(--white);
+    border-color: var(--ink);
+    color: var(--ink);
+    background: transparent;
   }
 
   .button-link--secondary:hover {
-    border-color: var(--ocean-500);
+    color: var(--on-hull);
+    background: var(--ink);
   }
 
   .button-link--text {
     min-height: 2.75rem;
     padding-inline: 0;
-    color: var(--ocean-600);
+    border-width: 0 0 var(--rule);
+    border-color: currentColor;
+    color: var(--hull-deep);
+  }
+
+  .button-link--text:hover {
+    color: var(--ink);
+  }
+
+  /* Di atas bidang lambung: pelat putih dan garis putih. */
+  :global(.hull) .button-link--primary {
+    border-color: var(--on-hull);
+    color: var(--ink);
+    background: var(--on-hull);
+  }
+
+  :global(.hull) .button-link--primary:hover {
+    border-color: var(--ink);
+    color: var(--on-hull);
+    background: var(--ink);
+  }
+
+  :global(.hull) .button-link--secondary,
+  :global(.hull) .button-link--text {
+    border-color: var(--on-hull);
+    color: var(--on-hull);
+  }
+
+  :global(.hull) .button-link--secondary:hover {
+    color: var(--hull-deep);
+    background: var(--on-hull);
   }
 </style>

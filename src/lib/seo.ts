@@ -23,13 +23,18 @@ export function buildOrganizationJsonLd(company: CompanyProfile, site: URL) {
   };
 }
 
-export function buildProductJsonLd(product: ProductDocument, company: CompanyProfile, site: URL) {
+export function buildProductJsonLd(
+  product: ProductDocument,
+  company: CompanyProfile,
+  site: URL,
+  path = `/produk/${product.slug}`,
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.seo?.description ?? product.excerpt,
-    url: new URL(`/produk/${product.slug}`, site).toString(),
+    url: new URL(path, site).toString(),
     brand: { '@type': 'Brand', name: company.name },
     ...(product.images.length
       ? { image: product.images.map((image) => getSanityImageSet(image, [1200]).src) }
@@ -55,7 +60,12 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[], site: URL) {
   };
 }
 
-export function buildNewsArticleJsonLd(article: NewsDocument, company: CompanyProfile, site: URL) {
+export function buildNewsArticleJsonLd(
+  article: NewsDocument,
+  company: CompanyProfile,
+  site: URL,
+  path = `/berita/${article.slug}`,
+) {
   const organization = { '@type': 'Organization', name: company.name };
   return {
     '@context': 'https://schema.org',
@@ -64,7 +74,7 @@ export function buildNewsArticleJsonLd(article: NewsDocument, company: CompanyPr
     description: article.seo?.description ?? article.excerpt,
     datePublished: article.publishedAt,
     dateModified: article._updatedAt,
-    mainEntityOfPage: new URL(`/berita/${article.slug}`, site).toString(),
+    mainEntityOfPage: new URL(path, site).toString(),
     author: organization,
     publisher: organization,
     ...(article.coverImage ? { image: getSanityImageSet(article.coverImage, [1200]).src } : {}),

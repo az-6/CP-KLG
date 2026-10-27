@@ -1,0 +1,173 @@
+---
+import CompanyFacts from '../components/CompanyFacts.astro';
+import CredentialGallery from '../components/CredentialGallery.astro';
+import CtaBand from '../components/CtaBand.astro';
+import LocationsMap from '../components/LocationsMap.astro';
+import MediaGallery from '../components/MediaGallery.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CompanyPlate from '../components/CompanyPlate.astro';
+import { companyCopy, type Locale } from '../i18n';
+import { hasItems } from '../lib/optional-sections';
+import { getAboutEvidence } from '../lib/sanity/evidence-repository';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isId = locale === 'id';
+const copy = companyCopy[locale];
+const evidence = await getAboutEvidence(locale);
+
+const text = isId
+  ? {
+      title: 'Tentang PT Katalis Lintas Global',
+      lede: 'Kami membangun kemitraan pasokan melalui mutu yang konsisten, penanganan higienis, dan komunikasi yang memahami kebutuhan buyer.',
+      who: 'Mitra Pasokan untuk Pertumbuhan Bisnis',
+      approach:
+        'Pendekatan kami dimulai dari memahami kebutuhan buyer sebelum masuk ke pembahasan spesifikasi, kapasitas, dan pola distribusi. Dengan begitu, komunikasi bisnis berfokus pada kecocokan kebutuhan dan kemampuan pasokan.',
+      map: 'Lokasi Kami',
+      values: 'Prinsip yang Menjaga Kemitraan',
+      valueItems: [
+        ['Konsistensi', 'Menjaga perhatian terhadap standar mutu pada setiap tahapan operasional.'],
+        ['Keterbukaan', 'Membahas kemampuan, spesifikasi, dan kebutuhan secara jelas sejak awal.'],
+        ['Fleksibilitas', 'Mencari bentuk pemenuhan yang sesuai dengan kebutuhan buyer.'],
+      ],
+      team: 'Tim Kami',
+      teamLabel: 'Dokumentasi tim',
+      fleet: 'Armada',
+      fleetLabel: 'Dokumentasi armada',
+      activities: 'Aktivitas',
+      activitiesLabel: 'Dokumentasi aktivitas',
+      credentials: 'Legalitas dan Sertifikasi',
+      credentialsDescription: 'Pratinjau dokumen publik yang telah disetujui untuk ditampilkan.',
+      cta: 'Bangun Kemitraan Bersama Kami',
+      ctaText: 'Mulai dengan pertemuan singkat untuk mengenal kebutuhan bisnis dan kemampuan pasokan yang relevan.',
+    }
+  : {
+      title: 'About PT Katalis Lintas Global',
+      lede: 'We build supply partnerships on consistent quality, hygienic handling, and conversations that start from what the buyer needs.',
+      who: 'A Supply Partner for Growing Businesses',
+      approach:
+        'We start by understanding what the buyer needs before discussing specification, capacity, and distribution. That keeps the conversation on whether your requirements and our supply are a fit.',
+      map: 'Our Locations',
+      values: 'Principles That Keep the Partnership Working',
+      valueItems: [
+        ['Consistency', 'Keeping quality standards in view at every operational stage.'],
+        ['Openness', 'Talking plainly about capability, specification, and needs from the start.'],
+        ['Flexibility', 'Finding the way of supplying that fits the buyer.'],
+      ],
+      team: 'Our Team',
+      teamLabel: 'Team documentation',
+      fleet: 'Fleet',
+      fleetLabel: 'Fleet documentation',
+      activities: 'Activities',
+      activitiesLabel: 'Activity documentation',
+      credentials: 'Legal Documents and Certifications',
+      credentialsDescription: 'Previews of public documents approved for display.',
+      cta: 'Build a Partnership with Us',
+      ctaText: 'Start with a short meeting to understand your business needs and the supply that fits them.',
+    };
+---
+
+<PageHero locale={locale} title={text.title} description={text.lede} />
+
+<section class="section" data-draft>
+  <div class="container story">
+    <CompanyPlate locale={locale} />
+    <div>
+      <h2>{text.who}</h2>
+      <p class="lead">{copy.about}</p>
+      <p>{text.approach}</p>
+    </div>
+  </div>
+</section>
+
+{hasItems(evidence.facts) && (
+  <section class="section section--tight">
+    <div class="container"><CompanyFacts facts={evidence.facts} label={isId ? 'Fakta perusahaan' : 'Company facts'} /></div>
+  </section>
+)}
+
+<section class="section hull" aria-labelledby="about-locations-title" data-draft>
+  <div class="container">
+    <SectionHeading id="about-locations-title" title={text.map} />
+    <LocationsMap locale={locale} titleId="about-locations-title" />
+  </div>
+</section>
+
+<section class="section" data-draft>
+  <div class="container">
+    <SectionHeading title={text.values} />
+    <ul class="ledger">
+      {text.valueItems.map(([title, description]) => (
+        <li>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+{hasItems(evidence.team) && (
+  <section class="section section--shade" data-draft>
+    <div class="container">
+      <SectionHeading title={text.team} />
+      <MediaGallery items={evidence.team} label={text.teamLabel} />
+    </div>
+  </section>
+)}
+
+{hasItems(evidence.fleet) && (
+  <section class="section" data-draft>
+    <div class="container">
+      <SectionHeading title={text.fleet} />
+      <MediaGallery items={evidence.fleet} label={text.fleetLabel} />
+    </div>
+  </section>
+)}
+
+{hasItems(evidence.activities) && (
+  <section class="section section--shade" data-draft>
+    <div class="container">
+      <SectionHeading title={text.activities} />
+      <MediaGallery items={evidence.activities} label={text.activitiesLabel} />
+    </div>
+  </section>
+)}
+
+{hasItems(evidence.credentials) && (
+  <section class="section" data-draft>
+    <div class="container">
+      <SectionHeading title={text.credentials} description={text.credentialsDescription} align="split" />
+      <CredentialGallery credentials={evidence.credentials} locale={locale} />
+    </div>
+  </section>
+)}
+
+<CtaBand locale={locale} title={text.cta} description={text.ctaText} analyticsSource="about-final" />
+
+<style>
+  .section--tight {
+    padding-block: 0 var(--section-space);
+  }
+
+  .story {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+
+  .story h2 {
+    max-width: 16ch;
+  }
+
+  @media (max-width: 860px) {
+    .story {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

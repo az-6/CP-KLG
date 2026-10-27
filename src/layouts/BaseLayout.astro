@@ -1,38 +1,56 @@
 ---
+import '@fontsource-variable/archivo/wdth.css';
 import { company } from '../data/company';
+import { ui, type Alternates, type Locale } from '../i18n';
 import { buildOrganizationJsonLd, serializeJsonLd, type PageMetadata } from '../lib/seo';
 import '../styles/global.css';
 import Analytics from '../components/Analytics.astro';
+import DraftRail from '../components/DraftRail.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import favicon from '../assets/favicon.png';
 
 interface Props extends PageMetadata {
   jsonLd?: unknown[];
+  locale?: Locale;
+  /** Pasangan halaman per bahasa untuk hreflang dan tombol bahasa. */
+  alternates?: Alternates;
 }
 
 const DEFAULT_SOCIAL_IMAGE = '/social-card.png';
-const { title, description, canonicalPath, image = DEFAULT_SOCIAL_IMAGE, jsonLd = [] } = Astro.props;
+const {
+  title,
+  description,
+  canonicalPath,
+  image = DEFAULT_SOCIAL_IMAGE,
+  jsonLd = [],
+  locale = 'id',
+  alternates = {},
+} = Astro.props;
+const t = ui[locale];
 const site = Astro.site ?? new URL('http://localhost:4321');
 const canonical = new URL(canonicalPath, site);
 const socialImage = new URL(image, site);
 const usesDefaultSocialImage = image === DEFAULT_SOCIAL_IMAGE;
 const fullTitle = title.includes(company.shortName) ? title : `${title} | ${company.shortName}`;
 const schemas = [buildOrganizationJsonLd(company, site), ...jsonLd];
+const hreflangLinks = Object.entries(alternates).map(([lang, path]) => ({ lang, href: new URL(path, site) }));
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang={t.htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#061a2f" />
+    <meta name="theme-color" content="#0b6aa8" />
     <link rel="canonical" href={canonical} />
+    {hreflangLinks.map(({ lang, href }) => <link rel="alternate" hreflang={lang} href={href} />)}
+    {alternates.id && <link rel="alternate" hreflang="x-default" href={new URL(alternates.id, site)} />}
     <link rel="icon" type="image/png" href={favicon.src} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale" content={t.ogLocale} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -51,12 +69,13 @@ const schemas = [buildOrganizationJsonLd(company, site), ...jsonLd];
     {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />)}
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
-    <Header />
+    <a class="skip-link" href="#main-content">{t.skipLink}</a>
+    <Header locale={locale} alternates={alternates} />
     <main id="main-content">
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
+    <DraftRail locale={locale} />
     <Analytics />
   </body>
 </html>

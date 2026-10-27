@@ -12,7 +12,7 @@ export const company: CompanyProfile = {
     'PT Katalis Lintas Global melayani kebutuhan pasokan ikan skala besar bagi distributor dan pedagang besar di Indonesia dengan fokus pada konsistensi mutu, kebersihan penanganan, dan spesifikasi buyer.',
   contact: {
     whatsappNumber: import.meta.env.PUBLIC_WHATSAPP_NUMBER || '6281319426006',
-    email: import.meta.env.PUBLIC_COMPANY_EMAIL || undefined,
+    email: import.meta.env.PUBLIC_COMPANY_EMAIL || 'admin@katalislintasglobal.com',
     address: import.meta.env.PUBLIC_COMPANY_ADDRESS || 'Muara Baru, Jakarta Utara',
     operatingHours: import.meta.env.PUBLIC_OPERATING_HOURS || undefined,
     mapUrl: import.meta.env.PUBLIC_MAP_URL || undefined,

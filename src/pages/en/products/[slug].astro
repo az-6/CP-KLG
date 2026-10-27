@@ -1,0 +1,15 @@
+---
+import { getActiveProducts } from '../../../lib/sanity/product-repository';
+import type { ProductDocument } from '../../../types/sanity';
+import ProductDetailPage from '../../../views/ProductDetailPage.astro';
+
+export async function getStaticPaths() {
+  const products = await getActiveProducts('en');
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+interface Props { product: ProductDocument }
+const { product } = Astro.props as Props;
+---
+
+<ProductDetailPage locale="en" product={product} />

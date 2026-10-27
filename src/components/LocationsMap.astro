@@ -1,0 +1,282 @@
+---
+import { indonesiaPath, MAP_BOUNDS, MAP_HEIGHT, MAP_WIDTH, neighbourPath } from '../data/indonesia-map';
+import { branchList, locationKindLabel, locations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  titleId: string;
+}
+
+const { locale, titleId } = Astro.props;
+const kindLabel = locationKindLabel[locale];
+
+/** Arah label terhadap penanda, dipilih agar label tidak bertabrakan di peta. */
+const labelSide: Record<string, 'n' | 's' | 'w' | 'e'> = {
+  'muara-baru': 's',
+  padang: 'w',
+  kupang: 'w',
+  bitung: 'n',
+  manokwari: 'n',
+  jayapura: 's',
+};
+
+const { west, east, north, south } = MAP_BOUNDS;
+const toX = (lon: number) => ((lon - west) / (east - west)) * MAP_WIDTH;
+const toY = (lat: number) => ((north - lat) / (north - south)) * MAP_HEIGHT;
+
+const meridians = [95, 100, 105, 110, 115, 120, 125, 130, 135, 140];
+const parallels = [5, 0, -5, -10];
+
+const points = locations.map((location, index) => ({
+  ...location,
+  number: index + 1,
+  left: (toX(location.lon) / MAP_WIDTH) * 100,
+  top: (toY(location.lat) / MAP_HEIGHT) * 100,
+  side: labelSide[location.id] ?? 'n',
+}));
+
+const mapTitle =
+  locale === 'en'
+    ? `Map of Indonesia showing the head office in Muara Baru, Jakarta, and branches in ${branchList('en')}`
+    : `Peta Indonesia yang menunjukkan kantor pusat di Muara Baru, Jakarta, dan cabang di ${branchList('id')}`;
+const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
+---
+
+<div class="locations">
+  <div class="locations__chart">
+    <svg viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-labelledby={`${titleId}-map`} preserveAspectRatio="xMidYMid meet">
+      <title id={`${titleId}-map`}>{mapTitle}</title>
+      <g class="locations__graticule">
+        {meridians.map((lon) => <line x1={toX(lon)} x2={toX(lon)} y1="0" y2={MAP_HEIGHT} />)}
+        {parallels.map((lat) => <line class:list={{ 'is-equator': lat === 0 }} x1="0" x2={MAP_WIDTH} y1={toY(lat)} y2={toY(lat)} />)}
+      </g>
+      <path class="locations__neighbours" d={neighbourPath} />
+      <path class="locations__land" d={indonesiaPath} />
+      <g class="locations__degrees" aria-hidden="true">
+        {meridians.filter((lon) => lon % 10 === 0).map((lon) => <text x={toX(lon) + 4} y={MAP_HEIGHT - 6}>{lon}°{locale === 'en' ? 'E' : 'BT'}</text>)}
+        <text x={MAP_WIDTH - 8} y={toY(0) - 6} text-anchor="end">0° {equator}</text>
+      </g>
+    </svg>
+
+    {points.map((point) => (
+      <span
+        class:list={['locations__marker', `locations__marker--${point.kind}`, `locations__marker--${point.side}`]}
+        style={`left: min(${point.left.toFixed(2)}%, calc(100% - 1.15rem)); top: min(${point.top.toFixed(2)}%, calc(100% - 1.15rem))`}
+        aria-hidden="true"
+      >
+        <span class="locations__pin draft-num">{point.number}</span>
+        <span class="locations__tag">
+          <strong>{point.city}</strong>
+          <small>{kindLabel[point.kind]}</small>
+        </span>
+      </span>
+    ))}
+  </div>
+
+  <ol class="locations__list">
+    {points.map((point) => (
+      <li class:list={[`locations__item--${point.kind}`]}>
+        <span class="draft-num" aria-hidden="true">{point.number}</span>
+        <strong>{point.city}</strong>
+        <span>{point.region}</span>
+        <small>{kindLabel[point.kind]}</small>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .locations__chart {
+    position: relative;
+    border: var(--rule) solid var(--on-hull);
+    background: var(--hull-deep);
+  }
+
+  .locations__chart svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .locations__graticule line {
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .locations__graticule line.is-equator {
+    stroke: rgba(255, 255, 255, 0.45);
+    stroke-dasharray: 6 5;
+  }
+
+  .locations__neighbours {
+    fill: rgba(255, 255, 255, 0.16);
+  }
+
+  .locations__land {
+    fill: var(--paint);
+  }
+
+  .locations__degrees text {
+    fill: var(--on-hull-soft);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .locations__marker {
+    position: absolute;
+    display: grid;
+    width: 0;
+    height: 0;
+    place-items: center;
+  }
+
+  .locations__pin {
+    display: grid;
+    width: 1.55rem;
+    height: 1.55rem;
+    border: 3px solid var(--paint);
+    color: var(--on-hull);
+    background: var(--ink);
+    font-size: 0.95rem;
+    place-items: center;
+  }
+
+  .locations__marker--address .locations__pin {
+    width: 2.1rem;
+    height: 2.1rem;
+    background: var(--oxide);
+    font-size: 1.2rem;
+  }
+
+  .locations__tag {
+    position: absolute;
+    display: grid;
+    padding: 0.3rem 0.55rem 0.35rem;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    background: var(--paint);
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .locations__tag strong {
+    font-size: 0.85rem;
+    font-stretch: var(--stretch-hull);
+    font-weight: 820;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .locations__tag small {
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    font-weight: 620;
+  }
+
+  .locations__marker--n .locations__tag {
+    bottom: 1.25rem;
+  }
+
+  .locations__marker--s .locations__tag {
+    top: 1.25rem;
+  }
+
+  .locations__marker--address.locations__marker--s .locations__tag {
+    top: 1.6rem;
+  }
+
+  .locations__marker--e .locations__tag {
+    left: 1.25rem;
+  }
+
+  .locations__marker--w .locations__tag {
+    right: 1.25rem;
+  }
+
+  /* Jayapura dekat tepi kanan peta: label ditahan di dalam bingkai. */
+  .locations__marker:last-child .locations__tag {
+    right: -1.5rem;
+  }
+
+  .locations__list {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    border: var(--rule) solid var(--on-hull);
+    border-top: 0;
+    list-style: none;
+  }
+
+  .locations__list li {
+    display: grid;
+    align-content: start;
+    gap: 0.15rem;
+    padding: 1.1rem 1.1rem 1.25rem;
+    border-right: 1px solid var(--seam);
+  }
+
+  .locations__list li:last-child {
+    border-right: 0;
+  }
+
+  .locations__list .draft-num {
+    margin-bottom: 0.35rem;
+    font-size: 2rem;
+  }
+
+  .locations__list strong {
+    font-size: 1.05rem;
+    font-stretch: var(--stretch-hull);
+    font-weight: 820;
+    text-transform: uppercase;
+  }
+
+  .locations__list span:not(.draft-num),
+  .locations__list small {
+    color: var(--on-hull-soft);
+    font-size: 0.88rem;
+  }
+
+  .locations__item--address {
+    background: var(--oxide);
+  }
+
+  @media (max-width: 860px) {
+    .locations__tag {
+      display: none;
+    }
+
+    .locations__pin {
+      width: 1.3rem;
+      height: 1.3rem;
+      border-width: 2px;
+      font-size: 0.8rem;
+    }
+
+    .locations__marker--address .locations__pin {
+      width: 1.6rem;
+      height: 1.6rem;
+      font-size: 0.95rem;
+    }
+
+    .locations__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .locations__list li {
+      border-bottom: 1px solid var(--seam);
+    }
+
+    .locations__list li:nth-child(even) {
+      border-right: 0;
+    }
+
+    .locations__degrees {
+      display: none;
+    }
+  }
+</style>

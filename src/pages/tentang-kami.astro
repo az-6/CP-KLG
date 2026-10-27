@@ -1,117 +1,15 @@
 ---
-import ButtonLink from '../components/ButtonLink.astro';
-import CompanyFacts from '../components/CompanyFacts.astro';
-import CredentialGallery from '../components/CredentialGallery.astro';
-import MediaGallery from '../components/MediaGallery.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import { company } from '../data/company';
-import logoFull from '../assets/logo-klg-transparent.png';
+import { alternatesFor } from '../i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { hasItems } from '../lib/optional-sections';
-import { getAboutEvidence } from '../lib/sanity/evidence-repository';
-import { getMeetingHref } from '../lib/whatsapp';
-
-const meetingHref = getMeetingHref(company.contact.whatsappNumber);
-const evidence = await getAboutEvidence();
+import AboutView from '../views/AboutView.astro';
 ---
 
 <BaseLayout
   title="Tentang PT Katalis Lintas Global"
-  description="Kenali PT Katalis Lintas Global, pemasok tuna dan ikan dasar untuk distributor serta pedagang besar di Indonesia."
+  description="Kenali PT Katalis Lintas Global, pemasok tuna dan ikan dasar untuk distributor serta pedagang besar, dengan cabang di Padang, Kupang, Bitung, Manokwari, dan Jayapura."
   canonicalPath="/tentang-kami"
+  locale="id"
+  alternates={alternatesFor('about')}
 >
-  <section class="page-hero">
-    <div class="container">
-      <span class="eyebrow">Profil perusahaan</span>
-      <h1>Tentang PT Katalis Lintas Global</h1>
-      <p>Kami membangun kemitraan pasokan melalui mutu yang konsisten, penanganan higienis, dan komunikasi yang memahami kebutuhan buyer.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container story-grid">
-      <div class="story-visual">
-        <img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt={company.name} loading="lazy" decoding="async" />
-      </div>
-      <div>
-        <SectionHeading eyebrow="Siapa kami" title="Mitra Pasokan untuk Pertumbuhan Bisnis" />
-        <p class="lead">{company.about}</p>
-        <p>Pendekatan kami dimulai dari memahami kebutuhan buyer sebelum masuk ke pembahasan spesifikasi, kapasitas, dan pola distribusi. Dengan begitu, komunikasi bisnis berfokus pada kecocokan kebutuhan dan kemampuan pasokan.</p>
-      </div>
-    </div>
-  </section>
-
-  {hasItems(evidence.facts) && (
-    <section class="section">
-      <div class="container"><CompanyFacts facts={evidence.facts} label="Fakta perusahaan" /></div>
-    </section>
-  )}
-
-  <section class="section section--soft">
-    <div class="container">
-      <SectionHeading eyebrow="Nilai kerja" title="Prinsip yang Menjaga Kemitraan" align="center" />
-      <div class="values">
-        <article><span>01</span><h2>Konsistensi</h2><p>Menjaga perhatian terhadap standar mutu pada setiap tahapan operasional.</p></article>
-        <article><span>02</span><h2>Keterbukaan</h2><p>Membahas kemampuan, spesifikasi, dan kebutuhan secara jelas sejak awal.</p></article>
-        <article><span>03</span><h2>Fleksibilitas</h2><p>Mencari bentuk pemenuhan yang sesuai dengan kebutuhan buyer.</p></article>
-      </div>
-    </div>
-  </section>
-
-  {hasItems(evidence.team) && (
-    <section class="section">
-      <div class="container">
-        <SectionHeading eyebrow="Orang di balik operasional" title="Tim Kami" />
-        <MediaGallery items={evidence.team} label="Dokumentasi tim" />
-      </div>
-    </section>
-  )}
-
-  {hasItems(evidence.fleet) && (
-    <section class="section section--soft">
-      <div class="container">
-        <SectionHeading eyebrow="Dukungan distribusi" title="Armada" />
-        <MediaGallery items={evidence.fleet} label="Dokumentasi armada" />
-      </div>
-    </section>
-  )}
-
-  {hasItems(evidence.activities) && (
-    <section class="section">
-      <div class="container">
-        <SectionHeading eyebrow="Kegiatan perusahaan" title="Aktivitas" />
-        <MediaGallery items={evidence.activities} label="Dokumentasi aktivitas" />
-      </div>
-    </section>
-  )}
-
-  {hasItems(evidence.credentials) && (
-    <section class="section section--soft">
-      <div class="container">
-        <SectionHeading eyebrow="Kredibilitas" title="Legalitas dan Sertifikasi" description="Pratinjau dokumen publik yang telah disetujui untuk ditampilkan." />
-        <CredentialGallery credentials={evidence.credentials} />
-      </div>
-    </section>
-  )}
-
-  <section class="section">
-    <div class="container cta-panel">
-      <div><h2>Bangun Kemitraan Bersama Kami</h2><p>Mulai dengan pertemuan singkat untuk mengenal kebutuhan bisnis dan kemampuan pasokan yang relevan.</p></div>
-      <ButtonLink href={meetingHref} label="Jadwalkan Pertemuan" analyticsSource="about-final" external={meetingHref.startsWith('https://wa.me/')} />
-    </div>
-  </section>
+  <AboutView locale="id" />
 </BaseLayout>
-
-<style>
-  .story-grid { display: grid; grid-template-columns: 0.8fr 1fr; align-items: center; gap: clamp(3rem, 8vw, 7rem); }
-  .story-visual { display: grid; min-height: 34rem; padding: clamp(2rem,5vw,3.5rem); place-items: center; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--ice-50); }
-  .story-visual img { width: min(22rem, 100%); height: auto; }
-  .values { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-  .values article { padding: 2rem; border-radius: var(--radius-md); background: var(--white); box-shadow: var(--shadow-sm); }
-  .values span { color: var(--ocean-600); font-size: .75rem; font-weight: 800; }
-  .values h2 { margin-top: 3.5rem; font-size: 1.5rem; }
-  .values p { margin-bottom: 0; color: var(--slate); }
-  .company-evidence { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding-block: 3rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .company-evidence p { color: var(--slate); font-size: 1.1rem; }
-  @media(max-width:780px){.story-grid,.values,.company-evidence{grid-template-columns:1fr}.story-visual{min-height:25rem}}
-</style>

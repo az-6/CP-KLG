@@ -1,0 +1,40 @@
+---
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Tampilkan garis pelabuhan asal di bawah judul. */
+  port?: boolean;
+}
+
+const { locale, title, description, port = true } = Astro.props;
+const t = ui[locale];
+---
+
+<section class="page-hero hull hull--seams" data-draft>
+  <div class="container page-hero__inner">
+    <h1>{title}</h1>
+    {port && <p class="port-line"><span>{t.port}</span><span>{t.since}</span></p>}
+    <p class="page-hero__lede">{description}</p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-hero__inner {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .page-hero h1 {
+    max-width: 16ch;
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+  }
+
+  .page-hero__lede {
+    max-width: 44rem;
+    margin-bottom: 0;
+    font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  }
+</style>

@@ -1,8 +1,10 @@
 import groq from 'groq';
 import { sanityFixtures } from '../../data/sanity-fixtures';
+import type { Locale } from '../../i18n';
 import type { ProductCategoryDocument, ProductDocument } from '../../types/sanity';
 import { sanityClient } from './client';
 import { isSanityFixtureMode } from './config';
+import { localizeCategory, localizeProduct } from './localize';
 
 export interface ProductCatalog {
   categories: ProductCategoryDocument[];
@@ -16,7 +18,8 @@ export const PRODUCT_CATALOG_QUERY = groq`{
     "slug": slug.current,
     description,
     order,
-    isActive
+    isActive,
+    en
   },
   "products": *[
     _type == "product" &&
@@ -41,7 +44,8 @@ export const PRODUCT_CATALOG_QUERY = groq`{
     availabilityStatus,
     order,
     isActive,
-    seo
+    seo,
+    en
   }
 }`;
 
@@ -76,14 +80,23 @@ export function normalizeCatalog(
   return { categories: visibleCategories, products: visibleProducts };
 }
 
-export async function getProductCatalog(): Promise<ProductCatalog> {
+/** Urutan dan penyaringan memakai data Bahasa Indonesia; bahasa hanya mengganti teks. */
+export function localizeCatalog(catalog: ProductCatalog, locale: Locale): ProductCatalog {
+  if (locale === 'id') return catalog;
+  return {
+    categories: catalog.categories.map((category) => localizeCategory(category, locale)),
+    products: catalog.products.map((product) => localizeProduct(product, locale, catalog.categories)),
+  };
+}
+
+export async function getProductCatalog(locale: Locale = 'id'): Promise<ProductCatalog> {
   const catalog = isSanityFixtureMode(import.meta.env, process.env)
     ? { categories: sanityFixtures.categories, products: sanityFixtures.products }
     : await sanityClient.fetch<ProductCatalog>(PRODUCT_CATALOG_QUERY);
 
-  return normalizeCatalog(catalog.categories, catalog.products);
+  return localizeCatalog(normalizeCatalog(catalog.categories, catalog.products), locale);
 }
 
-export async function getActiveProducts(): Promise<ProductDocument[]> {
-  return (await getProductCatalog()).products;
+export async function getActiveProducts(locale: Locale = 'id'): Promise<ProductDocument[]> {
+  return (await getProductCatalog(locale)).products;
 }

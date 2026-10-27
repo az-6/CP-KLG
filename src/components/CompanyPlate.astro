@@ -1,0 +1,82 @@
+---
+import { company } from '../data/company';
+import { locations, type Locale } from '../i18n';
+import EmailText from './EmailText.astro';
+
+interface Props {
+  locale: Locale;
+  /** Judul pelat; dikosongkan bila bagian sekitarnya sudah berjudul. */
+  title?: string;
+}
+
+const { locale, title } = Astro.props;
+const branches = locations.filter((location) => location.kind === 'branch').map((location) => location.city);
+const label = locale === 'id'
+  ? { company: 'Perusahaan', founded: 'Berdiri', email: 'Email', address: 'Alamat', branches: 'Cabang', hours: 'Jam operasional' }
+  : { company: 'Company', founded: 'Founded', email: 'Email', address: 'Address', branches: 'Branches', hours: 'Opening hours' };
+---
+
+<div class="company-plate">
+  {title && <h2>{title}</h2>}
+  <dl>
+    <div><dt>{label.company}</dt><dd>{company.name}</dd></div>
+    <div><dt>{label.founded}</dt><dd>Est. {company.establishedYear}</dd></div>
+    {company.contact.email && <div><dt>{label.email}</dt><dd><a href={`mailto:${company.contact.email}`}><EmailText email={company.contact.email} /></a></dd></div>}
+    {company.contact.address && <div><dt>{label.address}</dt><dd>{company.contact.address}</dd></div>}
+    <div><dt>{label.branches}</dt><dd>{branches.join(', ')}</dd></div>
+    {company.contact.operatingHours && <div><dt>{label.hours}</dt><dd>{company.contact.operatingHours}</dd></div>}
+  </dl>
+</div>
+
+<style>
+  .company-plate {
+    border: var(--rule-heavy) solid var(--ink);
+    background: var(--paint);
+  }
+
+  .company-plate h2 {
+    margin: 0;
+    padding: 1.1rem 1.35rem;
+    border-bottom: var(--rule) solid var(--ink);
+    font-size: 1.1rem;
+  }
+
+  .company-plate dl {
+    margin: 0;
+  }
+
+  .company-plate dl > div {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2.4fr);
+    gap: 1rem;
+    padding: 1rem 1.35rem;
+  }
+
+  .company-plate dl > div + div {
+    border-top: 1px solid var(--seam-dark);
+  }
+
+  .company-plate dt {
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 760;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .company-plate dd {
+    min-width: 0;
+    margin: 0;
+    font-weight: 620;
+    overflow-wrap: break-word;
+  }
+
+  /* Ponsel: label di atas nilai, agar nilai panjang (email) punya lebar penuh. */
+  @media (max-width: 520px) {
+    .company-plate dl > div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

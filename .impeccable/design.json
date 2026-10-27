@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T00:00:00Z",
+  "title": "Design System: PT Katalis Lintas Global",
+  "extensions": {
+    "colorMeta": {
+      "hull": {
+        "role": "primary",
+        "displayName": "Hull Blue",
+        "canonical": "#0b6aa8",
+        "tonalRamp": [
+          "oklch(18% 0.04 245)",
+          "oklch(28% 0.07 245)",
+          "oklch(38% 0.10 245)",
+          "oklch(51% 0.13 245)",
+          "oklch(60% 0.12 245)",
+          "oklch(70% 0.09 245)",
+          "oklch(82% 0.05 245)",
+          "oklch(95% 0.015 245)"
+        ]
+      },
+      "hull-deep": {
+        "role": "primary",
+        "displayName": "Deep Hull",
+        "canonical": "#08497a",
+        "tonalRamp": [
+          "oklch(15% 0.03 248)",
+          "oklch(25% 0.06 248)",
+          "oklch(40% 0.10 248)",
+          "oklch(50% 0.11 248)",
+          "oklch(60% 0.10 248)",
+          "oklch(70% 0.08 248)",
+          "oklch(82% 0.04 248)",
+          "oklch(95% 0.012 248)"
+        ]
+      },
+      "logo-blue": {
+        "role": "primary",
+        "displayName": "Logo Blue",
+        "canonical": "#0582c6",
+        "tonalRamp": [
+          "oklch(18% 0.04 242)",
+          "oklch(30% 0.08 242)",
+          "oklch(42% 0.12 242)",
+          "oklch(57% 0.14 242)",
+          "oklch(66% 0.12 242)",
+          "oklch(75% 0.09 242)",
+          "oklch(85% 0.05 242)",
+          "oklch(96% 0.015 242)"
+        ]
+      },
+      "oxide": {
+        "role": "tertiary",
+        "displayName": "Antifouling Oxide",
+        "canonical": "#9e3a26",
+        "tonalRamp": [
+          "oklch(18% 0.04 35)",
+          "oklch(28% 0.08 35)",
+          "oklch(38% 0.11 35)",
+          "oklch(47% 0.14 35)",
+          "oklch(57% 0.13 35)",
+          "oklch(68% 0.10 35)",
+          "oklch(82% 0.05 35)",
+          "oklch(94% 0.02 35)"
+        ]
+      },
+      "on-oxide-soft": {
+        "role": "tertiary",
+        "displayName": "Keel Wash",
+        "canonical": "#f6e3dd",
+        "tonalRamp": [
+          "oklch(20% 0.02 35)",
+          "oklch(35% 0.03 35)",
+          "oklch(50% 0.04 35)",
+          "oklch(65% 0.04 35)",
+          "oklch(78% 0.03 35)",
+          "oklch(87% 0.025 35)",
+          "oklch(93% 0.02 35)",
+          "oklch(97% 0.008 35)"
+        ]
+      },
+      "paint": {
+        "role": "neutral",
+        "displayName": "Superstructure White",
+        "canonical": "#f3f6f8",
+        "tonalRamp": [
+          "oklch(18% 0.005 230)",
+          "oklch(30% 0.006 230)",
+          "oklch(45% 0.006 230)",
+          "oklch(60% 0.006 230)",
+          "oklch(75% 0.006 230)",
+          "oklch(88% 0.005 230)",
+          "oklch(94% 0.005 230)",
+          "oklch(97.4% 0.004 230)"
+        ]
+      },
+      "paint-shade": {
+        "role": "neutral",
+        "displayName": "Shaded Deck",
+        "canonical": "#e3eaef",
+        "tonalRamp": [
+          "oklch(18% 0.01 235)",
+          "oklch(30% 0.012 235)",
+          "oklch(45% 0.013 235)",
+          "oklch(60% 0.013 235)",
+          "oklch(75% 0.012 235)",
+          "oklch(85% 0.011 235)",
+          "oklch(93.4% 0.01 235)",
+          "oklch(97% 0.005 235)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#1a2633",
+        "tonalRamp": [
+          "oklch(15% 0.025 250)",
+          "oklch(25.5% 0.03 250)",
+          "oklch(35% 0.03 250)",
+          "oklch(45% 0.028 250)",
+          "oklch(57% 0.024 250)",
+          "oklch(70% 0.018 250)",
+          "oklch(84% 0.01 250)",
+          "oklch(95% 0.005 250)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#3f4d5a",
+        "tonalRamp": [
+          "oklch(16% 0.02 245)",
+          "oklch(26% 0.022 245)",
+          "oklch(41% 0.025 245)",
+          "oklch(50% 0.024 245)",
+          "oklch(60% 0.02 245)",
+          "oklch(72% 0.015 245)",
+          "oklch(85% 0.008 245)",
+          "oklch(95% 0.004 245)"
+        ]
+      },
+      "on-hull": {
+        "role": "neutral",
+        "displayName": "On-Hull White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(40% 0 0)",
+          "oklch(53% 0 0)",
+          "oklch(66% 0 0)",
+          "oklch(79% 0 0)",
+          "oklch(91% 0 0)",
+          "oklch(100% 0 0)"
+        ]
+      },
+      "on-hull-soft": {
+        "role": "neutral",
+        "displayName": "On-Hull Mist",
+        "canonical": "#e1eef8",
+        "tonalRamp": [
+          "oklch(18% 0.015 240)",
+          "oklch(30% 0.02 240)",
+          "oklch(45% 0.022 240)",
+          "oklch(60% 0.022 240)",
+          "oklch(75% 0.02 240)",
+          "oklch(86% 0.018 240)",
+          "oklch(94% 0.016 240)",
+          "oklch(98% 0.006 240)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (hull lettering)",
+        "purpose": "h1 only, wide 125 heavy uppercase. Hero tightens to clamp(2.1rem, 4.85vw, 4.6rem)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "h2 section titles, wide 125 heavy uppercase, 13 to 18ch."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "h3 in plates and timelines, wdth 112, sentence case."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text at normal width, paragraphs capped at 68ch."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Section and hero ledes, capped at 44rem."
+      },
+      "port-line": {
+        "displayName": "Port Line",
+        "purpose": "Home-port line written under a hero title or the footer name, never above."
+      },
+      "label": {
+        "displayName": "Plate Label",
+        "purpose": "Buttons, filters, tags, spec keys, definition terms, dates. Uppercase, tracked 0.05 to 0.08em."
+      },
+      "draft-numeral": {
+        "displayName": "Draft Numeral",
+        "purpose": "Condensed wdth 62 tabular figures for real indices and counts only: draft rail, process steps, locations, meeting steps."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The single easing curve for every transition."
+      },
+      {
+        "name": "plate-color",
+        "value": "220ms",
+        "purpose": "Background, color, and border shifts on buttons, header CTA, filters, menu bars."
+      },
+      {
+        "name": "arrow-nudge",
+        "value": "260ms, translateX(4px)",
+        "purpose": "Button arrow moves forward on hover."
+      },
+      {
+        "name": "draft-mark",
+        "value": "400ms",
+        "purpose": "Draft rail numeral color flips as it goes under the waterline."
+      },
+      {
+        "name": "waterline",
+        "value": "700ms",
+        "purpose": "Waterline height travels to the active section in the draft rail."
+      },
+      {
+        "name": "photo-scale",
+        "value": "900ms, scale(1.03)",
+        "purpose": "Product card photo on card hover."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animation and transition durations collapse under prefers-reduced-motion; smooth scroll is disabled."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "logo-mark",
+        "value": "420px"
+      },
+      {
+        "name": "footer-single",
+        "value": "520px"
+      },
+      {
+        "name": "ledger-stack",
+        "value": "780px"
+      },
+      {
+        "name": "map-tags",
+        "value": "860px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "900px"
+      },
+      {
+        "name": "process-stack",
+        "value": "960px"
+      },
+      {
+        "name": "nav-collapse",
+        "value": "1180px"
+      },
+      {
+        "name": "draft-rail",
+        "value": "1360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Hull-blue plate with an arrow; the main action on paint backgrounds.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\"><span>Jadwalkan Pertemuan</span><svg aria-hidden=\"true\" viewBox=\"0 0 20 20\" width=\"18\" height=\"18\"><path d=\"M3 10h12.5M10.5 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"square\" stroke-width=\"2.4\"/></svg></a>",
+      "css": ".ds-btn { display: inline-flex; min-height: 3.25rem; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.85rem 1.4rem; border: 3px solid transparent; border-radius: 0; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; font-size: 0.95rem; font-stretch: 112%; font-weight: 780; letter-spacing: 0.05em; line-height: 1.2; text-decoration: none; text-transform: uppercase; transition: background-color 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1), border-color 220ms cubic-bezier(0.16,1,0.3,1); } .ds-btn svg { flex: none; transition: transform 260ms cubic-bezier(0.16,1,0.3,1); } .ds-btn:hover svg { transform: translateX(4px); } .ds-btn:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; } .ds-btn-primary { border-color: #0b6aa8; color: #ffffff; background: #0b6aa8; } .ds-btn-primary:hover { border-color: #1a2633; background: #1a2633; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ink-outlined plate that fills with ink on hover.",
+      "html": "<a class=\"ds-btn2\" href=\"#\"><span>Lihat Produk Kami</span><svg aria-hidden=\"true\" viewBox=\"0 0 20 20\" width=\"18\" height=\"18\"><path d=\"M3 10h12.5M10.5 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"square\" stroke-width=\"2.4\"/></svg></a>",
+      "css": ".ds-btn2 { display: inline-flex; min-height: 3.25rem; align-items: center; gap: 0.85rem; padding: 0.85rem 1.4rem; border: 3px solid #1a2633; border-radius: 0; color: #1a2633; background: transparent; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; font-size: 0.95rem; font-stretch: 112%; font-weight: 780; letter-spacing: 0.05em; line-height: 1.2; text-decoration: none; text-transform: uppercase; transition: background-color 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1); } .ds-btn2 svg { transition: transform 260ms cubic-bezier(0.16,1,0.3,1); } .ds-btn2:hover { color: #ffffff; background: #1a2633; } .ds-btn2:hover svg { transform: translateX(4px); } .ds-btn2:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; }"
+    },
+    {
+      "name": "Hull Field with Buttons",
+      "kind": "custom",
+      "refersTo": "button-on-hull-primary",
+      "description": "Open hull field with the sixths seam grid, wide caps title, port line, and inverted white and outline plates.",
+      "html": "<section class=\"ds-hull\"><h2>Mari Bicarakan Pasokan Anda</h2><p class=\"ds-port\"><span>Muara Baru · Jakarta</span></p><div class=\"ds-hull-actions\"><a class=\"ds-hbtn ds-hbtn-primary\" href=\"#\">Jadwalkan Pertemuan</a><a class=\"ds-hbtn ds-hbtn-secondary\" href=\"#\">Lihat Produk</a></div></section>",
+      "css": ".ds-hull { padding: 3rem 2rem; color: #ffffff; background-color: #0b6aa8; background-image: linear-gradient(90deg, rgba(255,255,255,0.13) 1px, transparent 1px); background-size: calc(100% / 6) 100%; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; } .ds-hull h2 { margin: 0 0 1rem; color: #ffffff; font-size: 2.4rem; font-stretch: 125%; font-weight: 850; letter-spacing: -0.012em; line-height: 1; text-transform: uppercase; } .ds-port { margin: 0 0 1.75rem; font-size: 1rem; font-stretch: 125%; font-weight: 780; letter-spacing: 0.14em; text-transform: uppercase; } .ds-hull-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; } .ds-hbtn { display: inline-flex; min-height: 3.25rem; align-items: center; padding: 0.85rem 1.4rem; border: 3px solid #ffffff; font-size: 0.95rem; font-stretch: 112%; font-weight: 780; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; transition: background-color 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1), border-color 220ms cubic-bezier(0.16,1,0.3,1); } .ds-hbtn-primary { color: #1a2633; background: #ffffff; } .ds-hbtn-primary:hover { border-color: #1a2633; color: #ffffff; background: #1a2633; } .ds-hbtn-secondary { color: #ffffff; background: transparent; } .ds-hbtn-secondary:hover { color: #08497a; background: #ffffff; } .ds-hbtn:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "header-cta",
+      "description": "Paint superstructure header with ink rule, underlined current link, language switch, and ink CTA plate.",
+      "html": "<header class=\"ds-nav\"><strong class=\"ds-nav-brand\">PT. KATALIS LINTAS GLOBAL</strong><nav><a href=\"#\" aria-current=\"page\">Beranda</a><a href=\"#\">Produk</a><a href=\"#\">Mutu &amp; Proses</a><a href=\"#\">Hubungi Kami</a><a class=\"ds-nav-lang\" href=\"#\">English</a><a class=\"ds-nav-cta\" href=\"#\">Jadwalkan Pertemuan</a></nav></header>",
+      "css": ".ds-nav { display: flex; min-height: 5rem; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0 1.5rem; border-bottom: 3px solid #1a2633; color: #1a2633; background: #f3f6f8; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; } .ds-nav-brand { color: #0582c6; font-size: 0.85rem; } .ds-nav nav { display: flex; align-items: center; gap: 0.25rem; } .ds-nav nav a { display: inline-flex; min-height: 2.75rem; align-items: center; padding-inline: 0.62rem; color: inherit; font-size: 0.9rem; font-weight: 620; text-decoration: none; } .ds-nav nav a:hover, .ds-nav nav a[aria-current='page'] { color: #08497a; text-decoration: underline; text-decoration-color: #0b6aa8; text-decoration-thickness: 3px; text-underline-offset: 0.22em; } .ds-nav nav .ds-nav-lang { font-size: 0.84rem; font-weight: 700; letter-spacing: 0.04em; } .ds-nav nav .ds-nav-cta { min-height: 2.9rem; margin-left: 0.75rem; padding-inline: 1.1rem; color: #ffffff; background: #1a2633; font-size: 0.82rem; font-stretch: 112%; font-weight: 780; letter-spacing: 0.05em; text-transform: uppercase; transition: background-color 220ms cubic-bezier(0.16,1,0.3,1); } .ds-nav nav .ds-nav-cta:hover { color: #ffffff; background: #0b6aa8; text-decoration: none; } .ds-nav a:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Plates",
+      "kind": "chip",
+      "refersTo": "filter-plate",
+      "description": "Run of square paint plates joined by ink rules; pressed plate fills hull blue.",
+      "html": "<div class=\"ds-filters\"><button type=\"button\" aria-pressed=\"true\">Semua</button><button type=\"button\" aria-pressed=\"false\">Tuna</button><button type=\"button\" aria-pressed=\"false\">Ikan Dasar</button></div>",
+      "css": ".ds-filters { display: flex; flex-wrap: wrap; width: fit-content; border-top: 3px solid #1a2633; border-left: 3px solid #1a2633; } .ds-filters button { min-height: 3rem; padding-inline: 1.15rem; border: 0; border-right: 3px solid #1a2633; border-bottom: 3px solid #1a2633; border-radius: 0; color: #1a2633; background: #f3f6f8; cursor: pointer; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; font-size: 0.85rem; font-stretch: 112%; font-weight: 760; letter-spacing: 0.05em; text-transform: uppercase; transition: background-color 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1); } .ds-filters button:hover { background: #e3eaef; } .ds-filters button[aria-pressed='true'] { color: #ffffff; background: #0b6aa8; } .ds-filters button:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "product-card",
+      "description": "Paint plate in a 3px ink frame, photo with pinned ink category tag, wide caps product name.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-media\"><span class=\"ds-card-tag\">Tuna</span><div class=\"ds-card-photo\"></div></div><div class=\"ds-card-body\"><h3>Tuna Loin</h3><p>Loin tuna dengan spesifikasi sesuai kebutuhan buyer.</p><a href=\"#\">Lihat Detail</a></div></article>",
+      "css": ".ds-card { display: grid; max-width: 22rem; border: 3px solid #1a2633; border-radius: 0; color: #1a2633; background: #f3f6f8; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; } .ds-card-media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-bottom: 3px solid #1a2633; background: #e3eaef; } .ds-card-photo { width: 100%; height: 100%; background: #0b6aa8; transition: transform 900ms cubic-bezier(0.16,1,0.3,1); } .ds-card:hover .ds-card-photo { transform: scale(1.03); } .ds-card-tag { position: absolute; z-index: 1; top: 0; left: 0; padding: 0.45rem 0.75rem; color: #ffffff; background: #1a2633; font-size: 0.74rem; font-stretch: 112%; font-weight: 760; letter-spacing: 0.08em; text-transform: uppercase; } .ds-card-body { padding: 1.5rem; } .ds-card-body h3 { margin: 0 0 0.6rem; font-size: 1.9rem; font-stretch: 125%; font-weight: 850; line-height: 1; text-transform: uppercase; } .ds-card-body p { color: #3f4d5a; } .ds-card-body a { color: #08497a; font-size: 0.95rem; font-stretch: 112%; font-weight: 780; letter-spacing: 0.05em; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 0.3em; text-transform: uppercase; } .ds-card-body a:hover { color: #1a2633; } .ds-card-body a:focus-visible { outline: 3px solid #0582c6; outline-offset: 3px; }"
+    },
+    {
+      "name": "Claim Ledger",
+      "kind": "custom",
+      "refersTo": "ledger",
+      "description": "Claim-to-evidence table: 6px ink top rule, 3px row joins, wide caps claim beside soft-ink evidence.",
+      "html": "<ul class=\"ds-ledger\"><li><h3>Penanganan Higienis</h3><p>Area kerja dibersihkan sebelum dan sesudah penanganan, <strong>dicatat per batch</strong>.</p></li><li><h3>Spesifikasi Buyer</h3><p>Ukuran dan grade disepakati di pertemuan, <strong>tertulis di lembar spesifikasi</strong>.</p></li></ul>",
+      "css": ".ds-ledger { margin: 0; padding: 0; border-top: 6px solid #1a2633; list-style: none; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; color: #1a2633; } .ds-ledger li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1rem 2.5rem; padding-block: 1.75rem; border-bottom: 3px solid #1a2633; } .ds-ledger h3 { margin: 0; font-size: 1.6rem; font-stretch: 125%; font-weight: 820; line-height: 1.1; text-transform: uppercase; } .ds-ledger p { margin: 0; color: #3f4d5a; line-height: 1.6; } .ds-ledger strong { color: #08497a; font-stretch: 112%; font-weight: 750; }"
+    },
+    {
+      "name": "Welded Process Plates",
+      "kind": "custom",
+      "refersTo": "process-plates",
+      "description": "Row of plates on a hull field inside a white frame, each opened by a condensed draft numeral.",
+      "html": "<ol class=\"ds-plates\"><li><span class=\"ds-num\">1</span><h3>Penerimaan</h3><p>Ikan diperiksa saat tiba.</p></li><li><span class=\"ds-num\">2</span><h3>Sortasi</h3><p>Dipilah menurut ukuran dan grade.</p></li><li><span class=\"ds-num\">3</span><h3>Pengiriman</h3><p>Dikemas dan dikirim ke buyer.</p></li></ol>",
+      "css": ".ds-plates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; border: 3px solid #ffffff; color: #ffffff; background: #0b6aa8; list-style: none; font-family: 'Archivo Variable', 'Archivo', system-ui, sans-serif; } .ds-plates li { padding: 1.5rem; } .ds-plates li + li { border-left: 1px solid rgba(255,255,255,0.35); } .ds-num { display: block; margin-bottom: 1.25rem; font-size: 4.5rem; font-stretch: 62%; font-variant-numeric: tabular-nums lining-nums; font-weight: 820; line-height: 1; } .ds-plates h3 { margin: 0 0 0.35rem; color: #ffffff; font-size: 1.3rem; font-stretch: 112%; font-weight: 760; line-height: 1.2; } .ds-plates p { margin: 0; color: #e1eef8; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Lambung Muara Baru (the painted hull at Muara Baru)",
+    "overview": "Every page reads like the side of a steel fish carrier, top to bottom: a white superstructure header with an ink rule under it, full-width hull-blue fields lettered in wide heavy capitals with the home port written beneath the name, white welded plates of specs and evidence bolted between them, and an oxide-red keel as the footer. Color owns whole horizontal bands; it never arrives as a tint, a badge, or a gradient wash.\n\nThe material is flat painted steel. Plates are square, joined by heavy ink rules (3px and 6px) and thin seam lines. Depth comes from band changes (paint, paint-shade, hull, keel) and from rule weight, never from shadow. Numerals are draft marks: condensed, tall, and only ever a real index or count (section order, process step, location number).\n\nThe density is a working document's, not a brochure's. Claims sit in a ledger beside their evidence, the specification sheet lists what a buyer agrees in the meeting, and the six locations sit on a real chart of Indonesia. The system rejects the navy-gradient corporate hero with a floating photo and a row of equal rounded cards.",
+    "keyCharacteristics": [
+      "Full-width color bands in a fixed vertical order: paint header, hull fields, paint and paint-shade plates, oxide keel.",
+      "Archivo on its width axis: 125 wide heavy caps for hull lettering, 112 for plate labels, 100 for reading, 62 condensed for draft numerals.",
+      "Square corners everywhere; heavy ink rules as the joinery.",
+      "One seam grid, in sixths of the content container, only on open hull fields.",
+      "Draft-mark section rail with a travelling waterline on wide screens."
+    ],
+    "rules": [
+      {
+        "name": "The Waterline Rule",
+        "body": "Oxide red lives at and below the waterline: the footer keel and the single Muara Baru home-port mark (map pin and list cell). Never use it for buttons, alerts, links, or emphasis anywhere above.",
+        "section": "colors"
+      },
+      {
+        "name": "The Whole-Band Rule",
+        "body": "Color is applied as full-width horizontal bands or whole plates. No tinted cards floating on a different tint, no colored chips, no partial washes.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hull Lettering Rule",
+        "body": "Wide 125 heavy caps belong to h1, h2, ledger claims, product names, location names, and the footer name. Body copy and h3 never go wide.",
+        "section": "typography"
+      },
+      {
+        "name": "The Real Numeral Rule",
+        "body": "A condensed draft numeral must be a true index or count. Never use one as decoration or as a fake statistic.",
+        "section": "typography"
+      },
+      {
+        "name": "The Port-Below Rule",
+        "body": "Supporting identity lines go under the title they belong to. No eyebrow or kicker text above headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Welded Plate Rule",
+        "body": "Separate things with ink rules and band changes, never with shadow or blur. If an element needs to stand out, give it a heavier rule or a full band, not a lift.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lay color as full-width bands in hull order: paint header, hull fields, paint plates, oxide keel.",
+      "Do join plates with ink rules at 3px (`spacing.rule`) and 6px (`spacing.rule-heavy`), and keep every corner square.",
+      "Do put the seam grid (sixths of the container, thirds below 780px) only on open hull fields: hero, page hero, CTA band, 404.",
+      "Do use wide 125 heavy caps for names and titles, normal width for reading, and condensed 62 numerals only for real indices and counts.",
+      "Do write the port line under the title it belongs to.",
+      "Do mark every top-level page section with `data-draft` so the draft rail can index it."
+    ],
+    "donts": [
+      "Don't use oxide red anywhere above the keel except the single Muara Baru mark.",
+      "Don't add eyebrows or kicker lines above headings.",
+      "Don't round corners, add shadows, or paint soft or decorative gradients; the only gradients are hard-stop seam and stripe lines.",
+      "Don't lay seams over plate structures on a hull field; plates carry their own dividers, never a second grid.",
+      "Don't use em dashes in visible copy.",
+      "Don't use draft numerals as decoration or invented statistics.",
+      "Don't float a photo on a navy gradient or line up a row of equal rounded cards as a hero."
+    ]
+  }
+}

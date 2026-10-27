@@ -1,0 +1,52 @@
+---
+import { meetingHrefFor, ui, type Locale } from '../i18n';
+import { isWhatsAppHref } from '../lib/whatsapp';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  analyticsSource: string;
+}
+
+const { locale, title, description, analyticsSource } = Astro.props;
+const meetingHref = meetingHrefFor(locale);
+---
+
+<section class="cta-band hull hull--seams" data-draft>
+  <div class="container cta-band__inner">
+    <div>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+    <ButtonLink href={meetingHref} label={ui[locale].meeting} analyticsSource={analyticsSource} external={isWhatsAppHref(meetingHref)} />
+  </div>
+</section>
+
+<style>
+  .cta-band__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2rem clamp(2rem, 6vw, 6rem);
+    padding-block: clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .cta-band h2 {
+    max-width: 16ch;
+  }
+
+  .cta-band p {
+    max-width: 40rem;
+    margin-bottom: 0;
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  }
+
+  @media (max-width: 780px) {
+    .cta-band__inner {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+</style>

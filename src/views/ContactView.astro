@@ -1,0 +1,170 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CompanyPlate from '../components/CompanyPlate.astro';
+import EmailText from '../components/EmailText.astro';
+import { company } from '../data/company';
+import { meetingHrefFor, ui, type Locale } from '../i18n';
+import { isWhatsAppHref } from '../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isId = locale === 'id';
+const meetingHref = meetingHrefFor(locale);
+const whatsappReady = isWhatsAppHref(meetingHref);
+const emailSubject = isId ? 'Permintaan pertemuan bisnis' : 'Business meeting request';
+const emailHref = company.contact.email
+  ? `mailto:${company.contact.email}?subject=${encodeURIComponent(emailSubject)}`
+  : undefined;
+
+const text = isId
+  ? {
+      title: 'Mari Diskusikan Kebutuhan Pasokan Anda',
+      lede: 'Pertemuan awal membantu kami memahami jenis produk, spesifikasi, volume, dan kebutuhan distribusi bisnis Anda.',
+      anchor: 'kontak',
+      start: 'Mulai Percakapan melalui WhatsApp',
+      startText: 'Pesan perkenalan sudah disiapkan agar pembicaraan dimulai dengan konteks yang jelas. Anda tetap dapat mengubah pesan sebelum mengirim.',
+      notConfigured: 'Nomor WhatsApp resmi belum dikonfigurasi pada environment website.',
+      email: 'Kirim Email',
+      emailNote: 'Lebih nyaman lewat email? Tulis ke',
+      details: 'Informasi Perusahaan',
+      detailsLabel: 'Informasi perusahaan',
+      steps: 'Alur Pertemuan',
+      stepItems: [
+        ['Perkenalan', 'Sampaikan nama, perusahaan, dan jenis usaha Anda.'],
+        ['Kebutuhan', 'Berikan gambaran produk, volume, dan spesifikasi yang dicari.'],
+        ['Pertemuan', 'Sepakati waktu untuk membahas kebutuhan dan kemampuan pasokan.'],
+      ],
+    }
+  : {
+      title: "Let's Discuss Your Supply Needs",
+      lede: 'A first meeting helps us understand the product type, specification, volume, and distribution your business needs.',
+      anchor: 'contact',
+      start: 'Start the Conversation on WhatsApp',
+      startText: 'An introduction message is prepared so the conversation starts with clear context. You can edit it before sending.',
+      notConfigured: 'The official WhatsApp number is not configured for this website.',
+      email: 'Send an Email',
+      emailNote: 'Prefer email? Write to',
+      details: 'Company Details',
+      detailsLabel: 'Company details',
+      steps: 'How the Meeting Works',
+      stepItems: [
+        ['Introduction', 'Tell us your name, company, and line of business.'],
+        ['Requirements', 'Outline the product, volume, and specification you are looking for.'],
+        ['Meeting', 'Agree on a time to go through your needs and our supply.'],
+      ],
+    };
+---
+
+<PageHero locale={locale} title={text.title} description={text.lede} port={false} />
+
+<section id={text.anchor} class="section" data-draft>
+  <div class="container contact-grid">
+    <div class="contact-primary">
+      <h2>{text.start}</h2>
+      <p class="lead">{text.startText}</p>
+      {!whatsappReady && <p class="empty-note">{text.notConfigured}</p>}
+      <div class="contact-actions">
+        {whatsappReady && <ButtonLink href={meetingHref} label={ui[locale].whatsapp} analyticsSource="contact-primary" external />}
+        {emailHref && <ButtonLink href={emailHref} label={text.email} variant="secondary" />}
+      </div>
+      {company.contact.email && <p class="contact-email">{text.emailNote} <a href={emailHref}><EmailText email={company.contact.email} /></a></p>}
+    </div>
+
+    <aside aria-label={text.detailsLabel}>
+      <CompanyPlate locale={locale} title={text.details} />
+    </aside>
+  </div>
+</section>
+
+<section class="section hull" data-draft>
+  <div class="container">
+    <SectionHeading title={text.steps} />
+    <ol class="meeting-steps">
+      {text.stepItems.map(([title, description], index) => (
+        <li>
+          <span class="draft-num" aria-hidden="true">{index + 1}</span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  .contact-primary h2 {
+    max-width: 15ch;
+  }
+
+  .contact-primary .lead {
+    margin-bottom: 2rem;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .contact-email {
+    margin: 1.5rem 0 0;
+    color: var(--ink-soft);
+  }
+
+  .contact-email a {
+    color: var(--hull-deep);
+    font-weight: 650;
+    overflow-wrap: break-word;
+  }
+
+  .meeting-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    border: var(--rule) solid var(--on-hull);
+    list-style: none;
+  }
+
+  .meeting-steps li {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .meeting-steps li + li {
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .meeting-steps .draft-num {
+    display: block;
+    margin-bottom: 1.5rem;
+    font-size: clamp(3.5rem, 6vw, 5rem);
+  }
+
+  .meeting-steps p {
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .contact-grid,
+    .meeting-steps {
+      grid-template-columns: 1fr;
+    }
+
+    .meeting-steps li + li {
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      border-left: 0;
+    }
+  }
+</style>

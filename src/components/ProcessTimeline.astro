@@ -3,16 +3,17 @@ import type { ProcessStep } from '../types/content';
 
 interface Props {
   steps: ProcessStep[];
+  /** Deretan pelat horizontal di bidang lambung (beranda); tanpanya, daftar vertikal. */
   compact?: boolean;
 }
 
 const { steps, compact = false } = Astro.props;
 ---
 
-<ol class:list={['process', { 'process--compact': compact }]}>
-  {steps.map((step) => (
+<ol class:list={['process', { 'process--plates': compact }]}>
+  {steps.map((step, index) => (
     <li class="process__item">
-      <span class="process__number">{step.number}</span>
+      <span class="process__number draft-num" aria-hidden="true">{index + 1}</span>
       <div>
         <h3>{step.title}</h3>
         <p>{step.description}</p>
@@ -23,71 +24,84 @@ const { steps, compact = false } = Astro.props;
 
 <style>
   .process {
-    display: grid;
     margin: 0;
     padding: 0;
+    border-top: var(--rule-heavy) solid var(--ink);
     list-style: none;
   }
 
   .process__item {
-    position: relative;
     display: grid;
-    grid-template-columns: 4rem 1fr;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
     gap: 1.25rem;
-    padding: 0 0 2.5rem;
-  }
-
-  .process__item:not(:last-child)::after {
-    position: absolute;
-    top: 3.25rem;
-    bottom: 0.5rem;
-    left: 1.5rem;
-    width: 1px;
-    background: var(--line);
-    content: '';
+    padding-block: 1.6rem;
+    border-bottom: var(--rule) solid var(--ink);
   }
 
   .process__number {
-    display: grid;
-    width: 3rem;
-    height: 3rem;
-    place-items: center;
-    border: 1px solid var(--ocean-500);
-    border-radius: 50%;
-    color: var(--ocean-600);
-    background: var(--white);
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 800;
+    color: var(--hull);
+    font-size: 3.6rem;
   }
 
   .process h3 {
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.35rem;
   }
 
   .process p {
     margin: 0;
-    color: var(--slate);
+    color: var(--ink-soft);
   }
 
-  @media (min-width: 900px) {
-    .process--compact {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 1rem;
-    }
+  /* Pelat yang dilas berdampingan di bidang lambung. */
+  .process--plates {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border: var(--rule) solid var(--on-hull);
+  }
 
-    .process--compact .process__item {
+  .process--plates .process__item {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    border-bottom: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .process--plates .process__item:last-child {
+    border-right: 0;
+  }
+
+  .process--plates .process__number {
+    color: var(--on-hull);
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+  }
+
+  .process--plates h3 {
+    color: var(--on-hull);
+  }
+
+  .process--plates p {
+    color: var(--on-hull-soft);
+  }
+
+  @media (max-width: 960px) {
+    .process--plates {
       grid-template-columns: 1fr;
-      padding: 0;
     }
 
-    .process--compact .process__item:not(:last-child)::after {
-      top: 1.5rem;
-      right: -1rem;
-      bottom: auto;
-      left: 3.5rem;
-      width: auto;
-      height: 1px;
+    .process--plates .process__item {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .process--plates .process__item:last-child {
+      border-bottom: 0;
+    }
+
+    .process--plates .process__number {
+      font-size: 3.6rem;
     }
   }
 </style>

@@ -27,12 +27,14 @@ npm run test:e2e
 - Kategori dan produk publik dikelola melalui Sanity; fixture lokal hanya digunakan saat pengujian otomatis.
 - `src/assets/` digunakan untuk foto produk, fasilitas, proses, tim, dan dokumen publik.
 - Jangan menambahkan klaim, kapasitas, sertifikasi, nama ilmiah, atau wilayah distribusi yang belum disetujui perusahaan.
+- `src/i18n/index.ts` menyimpan teks versi Bahasa Inggris, pasangan URL per bahasa, dan daftar lokasi (alamat Muara Baru serta cabang Padang, Kupang, Bitung, Manokwari, Jayapura). Seluruh halaman punya versi Bahasa Inggris di bawah `/en/`, termasuk produk (`/en/products`) dan berita (`/en/news`). Teks Inggris untuk konten Sanity diisi di grup **English (opsional)** pada setiap dokumen; kolom kosong memakai teks Bahasa Indonesia (lihat panduan editor). Fungsi tiap cabang belum dikonfirmasi, jadi cabang hanya diberi label "Cabang".
+- Peta Indonesia di `src/data/indonesia-map.ts` dibuat oleh `node scripts/generate-indonesia-map.mjs` dari data Natural Earth 1:50m. Jangan disunting manual; untuk menambah lokasi cukup ubah daftar `locations` beserta koordinatnya (teks daftar cabang di halaman ikut berubah otomatis).
 
 Salin `.env.example` menjadi `.env` untuk pengembangan lokal dan isi nilai resmi:
 
 ```dotenv
 PUBLIC_WHATSAPP_NUMBER=6281319426006
-PUBLIC_COMPANY_EMAIL=
+PUBLIC_COMPANY_EMAIL=admin@katalislintasglobal.com
 PUBLIC_COMPANY_ADDRESS=Muara Baru, Jakarta Utara
 PUBLIC_OPERATING_HOURS=
 PUBLIC_MAP_URL=
@@ -41,7 +43,7 @@ SITE_URL=https://domain-produksi-anda.example
 
 Domain kanonis produksi adalah `https://katalislintasglobal.com` (apex, tanpa `www`). Nilai itu sudah menjadi cadangan di `astro.config.ts` untuk build dengan `VERCEL_ENV=production`, sehingga build produksi tidak pernah jatuh ke domain `*.vercel.app` meski `SITE_URL` lupa diisi. Untuk lokal isi `SITE_URL` dengan `http://localhost:4321`.
 
-Nomor WhatsApp menggunakan format internasional berupa angka saja. Tautan WhatsApp ditampilkan tanpa nama kontak. Nomor resmi dan alamat Muara Baru sudah menjadi nilai bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan email, jam operasional, dan URL peta kosong sampai data publiknya disetujui.
+Nomor WhatsApp menggunakan format internasional berupa angka saja. Tautan WhatsApp ditampilkan tanpa nama kontak. Nomor resmi, alamat Muara Baru, dan email `admin@katalislintasglobal.com` sudah menjadi nilai bawaan. Environment variables dapat digunakan untuk menggantinya saat deployment. Biarkan jam operasional dan URL peta kosong sampai data publiknya disetujui.
 
 ## Sanity CMS
 

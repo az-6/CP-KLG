@@ -1,0 +1,149 @@
+---
+import PageHero from '../components/PageHero.astro';
+import ProductCard from '../components/ProductCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { alternatesFor, routes, type Locale } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProductCatalog } from '../lib/sanity/product-repository';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { categories, products } = await getProductCatalog(locale);
+const text = locale === 'id'
+  ? {
+      title: 'Produk Ikan untuk Distributor dan Pedagang Besar',
+      description: 'Jelajahi kategori tuna, ikan dasar, dan contoh kategori produk PT Katalis Lintas Global. Spesifikasi dibahas sesuai kebutuhan buyer.',
+      heroTitle: 'Produk untuk Kebutuhan Pasokan B2B',
+      heroLede: 'Kategori produk utama kami. Harga dan stok dibahas setelah kebutuhan, volume, serta spesifikasi buyer dipahami.',
+      catalog: 'Katalog Produk',
+      catalogDescription: 'Pilih kategori, lalu buka detail produk untuk membahas spesifikasi sesuai kebutuhan bisnis Anda.',
+      filterLabel: 'Filter kategori produk',
+      all: 'Semua',
+      note: 'Harga dan ketersediaan tidak ditampilkan secara real-time. Jadwalkan pertemuan untuk membahas kebutuhan pasokan Anda.',
+    }
+  : {
+      title: 'Fish Products for Distributors and Wholesalers',
+      description: 'Browse tuna, demersal fish, and the other product categories of PT Katalis Lintas Global. Specifications are agreed with each buyer.',
+      heroTitle: 'Products for B2B Supply',
+      heroLede: 'Our main product categories. Prices and stock are discussed once your requirements, volume, and specification are clear.',
+      catalog: 'Product Catalog',
+      catalogDescription: 'Choose a category, then open a product to discuss the specification your business needs.',
+      filterLabel: 'Filter product categories',
+      all: 'All',
+      note: 'Prices and availability are not shown in real time. Schedule a meeting to discuss your supply needs.',
+    };
+---
+
+<BaseLayout
+  title={text.title}
+  description={text.description}
+  canonicalPath={routes.products[locale]}
+  locale={locale}
+  alternates={alternatesFor('products')}
+>
+  <PageHero locale={locale} title={text.heroTitle} description={text.heroLede} />
+
+  <section class="section" data-draft>
+    <div class="container">
+      <SectionHeading title={text.catalog} description={text.catalogDescription} align="split" />
+
+      <div class="filters" role="group" aria-label={text.filterLabel}>
+        <button type="button" data-filter="all" aria-pressed="true">{text.all}</button>
+        {categories.map((category) => (
+          <button type="button" data-filter={category.slug} aria-pressed="false">{category.name}</button>
+        ))}
+      </div>
+
+      <div class="products-grid" aria-live="polite">
+        {products.map((product) => (
+          <div data-product-filter-item data-product-category={product.categorySlug}>
+            <ProductCard product={product} locale={locale} />
+          </div>
+        ))}
+      </div>
+
+      <p class="catalog-note">{text.note}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-product-filter-item]');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.filter;
+      buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      cards.forEach((card) => {
+        card.hidden = selected !== 'all' && card.dataset.productCategory !== selected;
+      });
+    });
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    border-top: var(--rule) solid var(--ink);
+    border-left: var(--rule) solid var(--ink);
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .filters button {
+    min-height: 3rem;
+    padding-inline: 1.15rem;
+    border: 0;
+    border-right: var(--rule) solid var(--ink);
+    border-bottom: var(--rule) solid var(--ink);
+    color: var(--ink);
+    background: var(--paint);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 760;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+  }
+
+  .filters button:hover {
+    background: var(--paint-shade);
+  }
+
+  .filters button[aria-pressed='true'] {
+    color: var(--on-hull);
+    background: var(--hull);
+  }
+
+  /* Kartu berukuran tetap kecil; produk tunggal tidak melebar memenuhi baris. */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .products-grid > [hidden] {
+    display: none;
+  }
+
+  .catalog-note {
+    max-width: none;
+    margin-top: 2rem;
+    padding: 1.1rem 1.35rem;
+    border: var(--rule) solid var(--ink);
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 400px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

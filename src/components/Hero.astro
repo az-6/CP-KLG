@@ -1,186 +1,108 @@
 ---
-import type { LocalPhoto } from '../data/product-photos';
+import { routes, ui, type Locale } from '../i18n';
+import { isWhatsAppHref } from '../lib/whatsapp';
 import ButtonLink from './ButtonLink.astro';
 
 interface Props {
-  eyebrow: string;
+  locale: Locale;
   title: string;
   description: string;
   primaryHref: string;
-  photo?: LocalPhoto;
 }
 
-const { eyebrow, title, description, primaryHref, photo } = Astro.props;
+// Hero sengaja hanya teks: pemilik berencana memakai video di sini nanti.
+const { locale, title, description, primaryHref } = Astro.props;
+const t = ui[locale];
+const productsLabel = locale === 'en' ? 'See Our Products' : 'Lihat Produk Kami';
 ---
 
-<section class="hero">
-  <div class="container hero__grid">
-    <div class="hero__copy">
-      <span class="hero__eyebrow">{eyebrow}</span>
-      <h1>{title}</h1>
-      <p>{description}</p>
+<section class="hero hull hull--seams" data-draft>
+  <div class="container hero__inner">
+    <h1>{title}</h1>
+    <div class="hero__deck">
+      <p class="port-line"><span>{t.port}</span><span>{t.since}</span></p>
+      <p class="hero__lede">{description}</p>
       <div class="hero__actions">
-        <ButtonLink href={primaryHref} label="Jadwalkan Pertemuan" analyticsSource="hero" external={primaryHref.startsWith('https://wa.me/')} />
-        <ButtonLink href="/produk" label="Lihat Produk Kami" variant="secondary" />
-      </div>
-    </div>
-
-    <div class="hero__visual">
-      <div class="hero__ring hero__ring--one"></div>
-      <div class="hero__ring hero__ring--two"></div>
-      {photo && (
-        <figure class="hero__photo">
-          <img
-            src={photo.src}
-            width={photo.width}
-            height={photo.height}
-            alt={photo.alt}
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </figure>
-      )}
-      <div class="hero__stamp">
-        <span>Higienis</span>
-        <span>•</span>
-        <span>Konsisten</span>
+        <ButtonLink href={primaryHref} label={t.meeting} analyticsSource="hero" external={isWhatsAppHref(primaryHref)} />
+        <ButtonLink href={routes.products[locale]} label={productsLabel} variant="secondary" />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    overflow: hidden;
-    min-height: min(52rem, calc(100vh - 5rem));
-    color: rgba(255, 255, 255, 0.76);
-    background:
-      radial-gradient(circle at 72% 20%, rgba(11, 159, 195, 0.35), transparent 28rem),
-      linear-gradient(125deg, var(--navy-950), var(--navy-800));
+  .hero__inner {
+    display: flex;
+    min-height: min(50rem, calc(100svh - 5rem));
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    padding-block: clamp(3.5rem, 8vw, 5.5rem) clamp(2.5rem, 6vw, 4.5rem);
   }
 
-  .hero__grid {
-    display: grid;
-    min-height: inherit;
-    grid-template-columns: 1.08fr 0.92fr;
-    align-items: center;
-    gap: clamp(2rem, 6vw, 6rem);
-    padding-block: 5rem;
-  }
-
-  .hero__copy {
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero__eyebrow {
-    display: inline-block;
-    margin-bottom: 1.25rem;
-    color: #7ce0f2;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
+  /* Nama di lambung: selebar kontainer, huruf lambung sebesar yang muat. */
   .hero h1 {
-    max-width: 12ch;
-    margin-bottom: 1.5rem;
-    color: var(--white);
+    max-width: 15ch;
+    margin: 0;
+    font-size: clamp(2.1rem, 6.6vw, 6rem);
+    line-height: 0.94;
   }
 
-  .hero__copy > p {
-    max-width: 39rem;
-    font-size: clamp(1.05rem, 2vw, 1.2rem);
+  /* Garis sheer putih; di bawahnya pelabuhan asal, keterangan, dan tindakan. */
+  .hero__deck {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) auto;
+    align-items: start;
+    gap: 1.5rem clamp(2rem, 4vw, 4rem);
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    border-top: var(--rule) solid var(--on-hull);
+  }
+
+  .hero .port-line {
+    flex-direction: column;
+    margin: 0;
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  }
+
+  .hero .port-line > span {
+    white-space: nowrap;
+  }
+
+  .hero .port-line > span + span::before {
+    content: none;
+  }
+
+  .hero__lede {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    line-height: 1.55;
   }
 
   .hero__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.85rem;
-    margin-top: 2rem;
   }
 
-  .hero__visual {
-    position: relative;
-    min-height: 36rem;
+  @media (max-width: 1100px) {
+    .hero__deck {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .hero__actions {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 
-  .hero__ring {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 50%;
-  }
+  @media (max-width: 700px) {
+    .hero__inner {
+      min-height: 0;
+    }
 
-  .hero__ring--one {
-    inset: 3rem 0 0 2rem;
-  }
-
-  .hero__ring--two {
-    inset: 8rem 5rem 4rem 6rem;
-  }
-
-  .hero__photo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: min(24rem, 76%);
-    margin: 0;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 12rem 12rem 1.25rem 1.25rem;
-    box-shadow: var(--shadow-lg);
-    transform: translate(-50%, -50%);
-  }
-
-  .hero__photo img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero__stamp {
-    position: absolute;
-    z-index: 3;
-    right: 4%;
-    bottom: 12%;
-    display: grid;
-    width: 7rem;
-    height: 7rem;
-    place-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 50%;
-    color: var(--white);
-    background: rgba(6, 26, 47, 0.72);
-    font-size: 0.67rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-align: center;
-    text-transform: uppercase;
-    backdrop-filter: blur(8px);
-  }
-
-  @media (max-width: 840px) {
-    .hero__grid {
+    .hero__deck {
       grid-template-columns: 1fr;
-      padding-top: 4rem;
-    }
-
-    .hero__visual {
-      min-height: 30rem;
-    }
-
-    .hero__photo {
-      width: min(19rem, 82%);
-    }
-
-    .hero__stamp {
-      right: 0;
-      bottom: 6%;
     }
   }
 </style>

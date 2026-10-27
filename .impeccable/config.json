@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-24T03:49:24.018Z",
+        "reason": "model decision: throwaway decision-round sketch under .impeccable/mocks/decision, not shipped; real build checked separately (detect returned [])"
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-24T03:49:24.476Z",
+        "reason": "model decision: throwaway decision-round sketch under .impeccable/mocks/decision, not shipped; real build checked separately (detect returned [])"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-24T03:49:24.933Z",
+        "reason": "model decision: throwaway decision-round sketch under .impeccable/mocks/decision, not shipped; real build checked separately (detect returned [])"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-dossier.html"
+        ],
+        "createdAt": "2026-10-24T04:18:07.694Z",
+        "reason": "model decision: unchosen decision-round sketch under .impeccable/mocks/decision, not shipped"
+      }
+    ]
+  }
+}

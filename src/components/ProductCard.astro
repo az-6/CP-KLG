@@ -1,6 +1,7 @@
 ---
 import type { ProductDocument } from '../types/sanity';
 import { getLocalProductPhotos } from '../data/product-photos';
+import { productPath, type Locale } from '../i18n';
 import { isSanityFixtureMode } from '../lib/sanity/config';
 import ButtonLink from './ButtonLink.astro';
 import SanityImage from './SanityImage.astro';
@@ -8,12 +9,15 @@ import SanityImage from './SanityImage.astro';
 interface Props {
   product: ProductDocument;
   headingLevel?: 'h2' | 'h3';
+  linkLabel?: string;
+  locale?: Locale;
 }
 
-const { product, headingLevel = 'h2' } = Astro.props;
+const { product, headingLevel = 'h2', locale = 'id' } = Astro.props;
+const linkLabel = Astro.props.linkLabel ?? (locale === 'en' ? `View ${product.name} details` : `Lihat detail ${product.name}`);
 const Heading = headingLevel;
 const primaryImage = product.images[0];
-const localPhoto = getLocalProductPhotos(product)[0];
+const localPhoto = getLocalProductPhotos(product, locale)[0];
 const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMode(import.meta.env, process.env));
 ---
 
@@ -22,17 +26,17 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
     {useLocalPhoto ? (
       <img src={localPhoto.src} width={localPhoto.width} height={localPhoto.height} alt={localPhoto.alt} loading="lazy" decoding="async" />
     ) : primaryImage ? (
-      <SanityImage image={primaryImage} width={720} height={480} widths={[480, 720]} sizes="(max-width: 720px) 100vw, 50vw" />
+      <SanityImage image={primaryImage} width={720} height={900} widths={[480, 720]} sizes="(max-width: 720px) 100vw, 50vw" />
     ) : (
-      <div class="product-card__fallback" aria-hidden="true">{product.name.slice(0, 1)}</div>
+      <div class="product-card__fallback hull" aria-hidden="true">{product.name.slice(0, 1)}</div>
     )}
     <span class="product-card__category">{product.categoryName}</span>
   </div>
   <div class="product-card__body">
-    <Heading>{product.name}</Heading>
+    <Heading class="product-card__name">{product.name}</Heading>
     {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
     <p>{product.excerpt}</p>
-    <ButtonLink href={`/produk/${product.slug}`} label={`Lihat detail ${product.name}`} variant="text" />
+    <ButtonLink href={productPath(locale, product.slug)} label={linkLabel} variant="text" />
   </div>
 </article>
 
@@ -40,55 +44,83 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   .product-card {
     display: grid;
     height: 100%;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--white);
-    box-shadow: var(--shadow-sm);
+    grid-template-rows: auto 1fr;
+    border: var(--rule) solid var(--ink);
+    background: var(--paint);
   }
+
   .product-card__media {
     position: relative;
-    min-height: 18rem;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: linear-gradient(150deg, var(--ocean-600), var(--navy-900));
+    border-bottom: var(--rule) solid var(--ink);
+    background: var(--paint-shade);
   }
+
   .product-card__media img,
   .product-card__media :global(img) {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 900ms var(--ease-out);
   }
+
+  .product-card:hover .product-card__media img,
+  .product-card:hover .product-card__media :global(img) {
+    transform: scale(1.03);
+  }
+
   .product-card__fallback {
     display: grid;
-    min-height: 18rem;
+    height: 100%;
+    font-size: clamp(6rem, 14vw, 10rem);
+    font-stretch: var(--stretch-hull);
+    font-weight: 880;
+    line-height: 1;
     place-items: center;
-    color: rgba(255, 255, 255, 0.15);
-    font-family: 'Manrope', sans-serif;
-    font-size: 10rem;
-    font-weight: 800;
+    text-transform: uppercase;
   }
+
   .product-card__category {
     position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    padding: 0.4rem 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 999px;
-    color: var(--white);
-    background: rgba(6, 26, 47, 0.75);
-    font-size: 0.72rem;
-    font-weight: 700;
-    backdrop-filter: blur(8px);
+    top: 0;
+    left: 0;
+    padding: 0.45rem 0.75rem;
+    color: var(--on-hull);
+    background: var(--ink);
+    font-size: 0.74rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 760;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
+
   .product-card__body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.6rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
   }
-  .product-card__body > p { color: var(--slate); }
-  .product-card__body :global(.button-link) { margin-top: auto; }
-  .product-card__scientific { margin: -0.5rem 0 1rem; font-style: italic; }
+
+  .product-card__name {
+    margin-bottom: 0.6rem;
+    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+    font-stretch: var(--stretch-hull);
+    font-weight: 850;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .product-card__body > p {
+    color: var(--ink-soft);
+  }
+
+  .product-card__body :global(.button-link) {
+    margin-top: auto;
+  }
+
+  .product-card__scientific {
+    margin-top: -0.2rem;
+    font-style: italic;
+  }
 </style>

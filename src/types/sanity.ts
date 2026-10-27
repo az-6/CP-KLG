@@ -5,6 +5,9 @@ export interface SanityImage {
   asset: { _ref: string; _type: 'reference' };
   alt: string;
   caption?: string;
+  /** Versi Inggris (opsional); kosong berarti memakai teks Bahasa Indonesia. */
+  altEn?: string;
+  captionEn?: string;
   crop?: { top: number; bottom: number; left: number; right: number };
   hotspot?: { x: number; y: number; height: number; width: number };
 }
@@ -15,6 +18,8 @@ export interface SeoFields {
   socialImage?: SanityImage;
 }
 
+export type PortableBody = Array<PortableTextBlock | SanityImage>;
+
 export interface ProductCategoryDocument {
   _id: string;
   name: string;
@@ -22,6 +27,7 @@ export interface ProductCategoryDocument {
   description?: string;
   order: number;
   isActive: boolean;
+  en?: { name?: string; description?: string };
 }
 
 export interface ProductDocument {
@@ -33,7 +39,7 @@ export interface ProductDocument {
   categorySlug: string;
   scientificName?: string;
   excerpt: string;
-  description: Array<PortableTextBlock | SanityImage>;
+  description: PortableBody;
   images: SanityImage[];
   sizes?: string[];
   forms?: string[];
@@ -44,6 +50,17 @@ export interface ProductDocument {
   order: number;
   isActive: boolean;
   seo?: SeoFields;
+  en?: {
+    name?: string;
+    excerpt?: string;
+    description?: PortableBody;
+    sizes?: string[];
+    forms?: string[];
+    condition?: string[];
+    packaging?: string[];
+    volume?: string;
+    seo?: SeoFields;
+  };
 }
 
 export interface NewsDocument {
@@ -54,9 +71,10 @@ export interface NewsDocument {
   _updatedAt: string;
   excerpt: string;
   coverImage: SanityImage;
-  body: Array<PortableTextBlock | SanityImage>;
+  body: PortableBody;
   seo?: SeoFields;
   isActive: boolean;
+  en?: { title?: string; excerpt?: string; body?: PortableBody; seo?: SeoFields };
 }
 
 export interface PartnerDocument {
@@ -85,6 +103,7 @@ export interface CredentialDocument {
   previewImage: SanityImage;
   order: number;
   isActive: boolean;
+  en?: { name?: string; description?: string };
 }
 
 export interface CompanyFactDocument {
@@ -95,4 +114,5 @@ export interface CompanyFactDocument {
   placement: 'home' | 'about';
   order: number;
   isActive: boolean;
+  en?: { label?: string; value?: string; description?: string };
 }

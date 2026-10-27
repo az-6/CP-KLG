@@ -1,0 +1,11 @@
+---
+interface Props {
+  email: string;
+}
+
+// Alamat email hanya boleh patah tepat setelah "@", bukan di tengah domain.
+const { email } = Astro.props;
+const at = email.indexOf('@');
+---
+
+{at > 0 ? <>{email.slice(0, at + 1)}<wbr />{email.slice(at + 1)}</> : email}

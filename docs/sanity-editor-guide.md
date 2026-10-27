@@ -41,6 +41,17 @@ Gunakan hanya foto, nama mitra, fakta perusahaan, dan dokumen yang sudah mendapa
 - **Fakta Perusahaan:** pilih penempatan Beranda atau Tentang Kami. Jangan memasukkan angka atau klaim yang belum disahkan.
 - **Legalitas & Sertifikasi:** unggah hanya gambar pratinjau publik. Jangan mengunggah PDF, tanda tangan, kontrak, atau dokumen internal.
 
+## Versi Bahasa Inggris
+
+Website punya versi Bahasa Inggris di alamat `/en/` (misalnya `/en/products` dan `/en/news`). Teksnya diambil dari grup **English (opsional)** yang ada di bagian bawah setiap Produk, Kategori Produk, Berita, Fakta Perusahaan, dan Legalitas & Sertifikasi.
+
+1. Isi dulu semua kolom Bahasa Indonesia seperti biasa; kolom itu tetap wajib.
+2. Buka grup **English (opsional)**, lalu isi terjemahannya: nama, ringkasan, deskripsi atau isi berita, dan spesifikasi bila ada.
+3. Untuk setiap gambar, isi juga **Teks alternatif (English)** dan, bila ada, **Keterangan (English)**.
+4. Kolom English yang dibiarkan kosong otomatis memakai teks Bahasa Indonesia di halaman Inggris. Website tidak akan kosong, tetapi halaman Inggris jadi bercampur bahasa; usahakan semua kolom diisi sebelum Publish.
+5. Slug dan foto dipakai bersama oleh kedua bahasa, jadi tidak perlu dibuat dua kali.
+6. Status ketersediaan dan label halaman (misalnya "Kategori", "Ukuran / grade") diterjemahkan otomatis oleh website.
+
 ## Setelah Publish
 
 1. Publish memicu build website otomatis. Perubahan tidak muncul seketika; tunggu sampai deployment Vercel selesai.

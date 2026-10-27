@@ -1,0 +1,15 @@
+---
+import { alternatesFor } from '../../i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomeView from '../../views/HomeView.astro';
+---
+
+<BaseLayout
+  title="PT Katalis Lintas Global | B2B Tuna & Demersal Fish Supplier"
+  description="PT Katalis Lintas Global supplies tuna and demersal fish to distributors and wholesalers in Indonesia, with consistent quality, hygienic handling, and buyer specifications."
+  canonicalPath="/en/"
+  locale="en"
+  alternates={alternatesFor('home')}
+>
+  <HomeView locale="en" />
+</BaseLayout>

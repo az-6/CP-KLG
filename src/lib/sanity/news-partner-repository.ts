@@ -1,8 +1,10 @@
 import groq from 'groq';
 import { sanityFixtures } from '../../data/sanity-fixtures';
+import type { Locale } from '../../i18n';
 import type { NewsDocument, PartnerDocument } from '../../types/sanity';
 import { sanityClient } from './client';
 import { isSanityFixtureMode } from './config';
+import { localizeNews, localizePartner } from './localize';
 
 export const NEWS_QUERY = groq`*[
   _type == "news" &&
@@ -18,7 +20,8 @@ export const NEWS_QUERY = groq`*[
   coverImage,
   body,
   seo,
-  isActive
+  isActive,
+  en
 }`;
 
 export const PARTNER_QUERY = groq`*[
@@ -44,20 +47,20 @@ export function normalizePartners(partners: PartnerDocument[]): PartnerDocument[
     .sort((left, right) => left.order - right.order || left.name.localeCompare(right.name, 'id'));
 }
 
-export async function getPublishedNews(): Promise<NewsDocument[]> {
+export async function getPublishedNews(locale: Locale = 'id'): Promise<NewsDocument[]> {
   const news = isSanityFixtureMode(import.meta.env, process.env)
     ? sanityFixtures.news
     : await sanityClient.fetch<NewsDocument[]>(NEWS_QUERY);
-  return normalizeNews(news);
+  return normalizeNews(news).map((article) => localizeNews(article, locale));
 }
 
-export async function getLatestNews(limit = 3): Promise<NewsDocument[]> {
-  return (await getPublishedNews()).slice(0, Math.max(0, limit));
+export async function getLatestNews(limit = 3, locale: Locale = 'id'): Promise<NewsDocument[]> {
+  return (await getPublishedNews(locale)).slice(0, Math.max(0, limit));
 }
 
-export async function getActivePartners(): Promise<PartnerDocument[]> {
+export async function getActivePartners(locale: Locale = 'id'): Promise<PartnerDocument[]> {
   const partners = isSanityFixtureMode(import.meta.env, process.env)
     ? sanityFixtures.partners
     : await sanityClient.fetch<PartnerDocument[]>(PARTNER_QUERY);
-  return normalizePartners(partners);
+  return normalizePartners(partners).map((partner) => localizePartner(partner, locale));
 }

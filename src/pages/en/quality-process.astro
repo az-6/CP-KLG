@@ -1,0 +1,15 @@
+---
+import { alternatesFor } from '../../i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QualityView from '../../views/QualityView.astro';
+---
+
+<BaseLayout
+  title="Quality and Fish Handling Process"
+  description="How PT Katalis Lintas Global approaches quality, hygienic handling, sorting, cold chain, packing, and distribution."
+  canonicalPath="/en/quality-process"
+  locale="en"
+  alternates={alternatesFor('quality')}
+>
+  <QualityView locale="en" />
+</BaseLayout>

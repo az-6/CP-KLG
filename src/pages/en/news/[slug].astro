@@ -1,0 +1,15 @@
+---
+import { getPublishedNews } from '../../../lib/sanity/news-partner-repository';
+import type { NewsDocument } from '../../../types/sanity';
+import NewsArticlePage from '../../../views/NewsArticlePage.astro';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedNews('en');
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article, articles } }));
+}
+
+interface Props { article: NewsDocument; articles: NewsDocument[] }
+const { article, articles } = Astro.props as Props;
+---
+
+<NewsArticlePage locale="en" article={article} articles={articles} />

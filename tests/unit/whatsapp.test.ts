@@ -13,5 +13,13 @@ describe('WhatsApp links', () => {
 
   it('falls back to the contact section when a number is not configured', () => {
     expect(getMeetingHref('')).toBe('/hubungi-kami#kontak');
+    expect(getMeetingHref('', undefined, 'en')).toBe('/en/contact#contact');
+  });
+
+  it('writes the meeting message in English for English pages', () => {
+    const message = buildMeetingMessage({ productName: 'Tuna' }, 'en');
+    expect(message).toContain('schedule a meeting');
+    expect(message).toContain('Tuna');
+    expect(message).not.toContain('menjadwalkan');
   });
 });

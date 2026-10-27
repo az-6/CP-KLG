@@ -1,77 +1,149 @@
 ---
 import { company } from '../data/company';
-import { navigation } from '../data/navigation';
-import { getMeetingHref } from '../lib/whatsapp';
+import { companyCopy, locations, meetingHrefFor, navigation, ui, type Locale } from '../i18n';
+import { isWhatsAppHref } from '../lib/whatsapp';
 import logoFull from '../assets/logo-klg-transparent.png';
+import EmailText from './EmailText.astro';
 
-const meetingHref = getMeetingHref(company.contact.whatsappNumber);
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+const meetingHref = meetingHrefFor(locale);
 ---
 
 <footer class="footer">
-  <div class="container footer__grid">
-    <div>
-      <span class="footer__brand"><img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt="PT Katalis Lintas Global" /></span>
-      <p>{company.slogan}</p>
-      <p class="footer__description">Pemasok ikan B2B untuk distributor dan pedagang besar di Indonesia.</p>
-    </div>
+  <div class="footer__boot" aria-hidden="true"></div>
+  <div class="footer__keel">
+    <div class="container">
+      <div class="footer__stern">
+        <p class="footer__name" aria-hidden="true">Katalis Lintas Global</p>
+        <p class="port-line footer__port"><span>{t.port}</span><span>{t.since}</span></p>
+      </div>
 
-    <div>
-      <h2>Navigasi</h2>
-      <ul>
-        {navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-      </ul>
-    </div>
+      <div class="footer__grid">
+        <div class="footer__plate">
+          <span class="footer__logo"><img src={logoFull.src} width={logoFull.width} height={logoFull.height} alt={company.name} loading="lazy" decoding="async" /></span>
+          <p class="footer__slogan">{companyCopy[locale].slogan}</p>
+          <p>{t.footerDescription}</p>
+        </div>
 
-    <div>
-      <h2>Kontak Bisnis</h2>
-      <ul>
-        {company.contact.email && <li><a href={`mailto:${company.contact.email}`}>{company.contact.email}</a></li>}
-        {company.contact.address && <li>{company.contact.address}</li>}
-        <li><a href={meetingHref} data-whatsapp-source="footer">WhatsApp</a></li>
-      </ul>
+        <div>
+          <h2>{t.footerNav}</h2>
+          <ul>
+            {navigation[locale].map((item) => <li><a href={item.href} hreflang={item.hreflang}>{item.label}</a></li>)}
+          </ul>
+        </div>
+
+        <div>
+          <h2>{t.footerContact}</h2>
+          <ul>
+            {company.contact.address && <li>{company.contact.address}</li>}
+            {company.contact.email && <li><a href={`mailto:${company.contact.email}`}><EmailText email={company.contact.email} /></a></li>}
+            <li>
+              <a
+                href={meetingHref}
+                target={isWhatsAppHref(meetingHref) ? '_blank' : undefined}
+                rel={isWhatsAppHref(meetingHref) ? 'noopener noreferrer' : undefined}
+                data-whatsapp-source="footer"
+              >{t.whatsapp}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2>{t.footerLocations}</h2>
+          <ul>
+            {locations.map((location) => <li>{location.city}<span>, {location.region}</span></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© {new Date().getFullYear()} {company.name}</span>
+        <span>{t.footerNote}</span>
+      </div>
     </div>
-  </div>
-  <div class="container footer__bottom">
-    <span>© {new Date().getFullYear()} PT Katalis Lintas Global · Est. {company.establishedYear}</span>
-    <span>Informasi produk mengikuti hasil diskusi dan kesepakatan bisnis.</span>
   </div>
 </footer>
 
 <style>
-  .footer {
-    padding-top: 4.5rem;
-    color: rgba(255, 255, 255, 0.68);
-    background: #041321;
+  .footer__boot {
+    height: 0.75rem;
+    border-top: var(--rule) solid var(--ink);
+    background: var(--paint);
+  }
+
+  .footer__keel {
+    padding-block: clamp(3.5rem, 7vw, 6rem) 2rem;
+    color: var(--on-hull);
+    --seam-span: min(calc(100% - 2 * var(--gutter)), var(--container));
+    background-color: var(--oxide);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-position: calc((100% - var(--seam-span)) / 2) 0;
+    background-size: calc(var(--seam-span) / 6) 100%;
+  }
+
+  .footer__stern {
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: var(--rule) solid rgba(255, 255, 255, 0.55);
+  }
+
+  .footer__name {
+    max-width: none;
+    margin: 0 0 0.75rem;
+    font-size: clamp(2rem, 7.4vw, 7rem);
+    font-stretch: var(--stretch-hull);
+    font-weight: 880;
+    letter-spacing: -0.015em;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+
+  .footer__port {
+    margin: 0;
+    color: var(--on-hull);
   }
 
   .footer__grid {
     display: grid;
-    grid-template-columns: 1.5fr 0.7fr 1fr;
-    gap: 3rem;
-    padding-bottom: 3.5rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.75fr) minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
   }
 
-  .footer__brand {
-    display: inline-flex;
-    padding: 0.65rem 0.8rem;
-    border-radius: var(--radius-sm);
-    background: var(--white);
+  .footer__plate p {
+    color: var(--on-oxide-soft);
   }
 
-  .footer__brand img {
-    width: min(13rem, 100%);
+  .footer__logo {
+    display: block;
+    width: min(17rem, 100%);
+    margin-bottom: 1.5rem;
+    padding: 0.9rem 1rem;
+    background: var(--paint);
+  }
+
+  .footer__logo img {
+    width: 100%;
     height: auto;
   }
 
-  .footer__description {
-    max-width: 25rem;
+  .footer__slogan {
+    margin-bottom: 0.5rem;
+    font-stretch: var(--stretch-plate);
+    font-weight: 760;
   }
 
   .footer h2 {
-    color: var(--white);
+    margin-bottom: 1rem;
+    color: var(--on-hull);
     font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-stretch: var(--stretch-hull);
+    font-weight: 780;
+    letter-spacing: 0.14em;
   }
 
   .footer ul {
@@ -82,30 +154,60 @@ const meetingHref = getMeetingHref(company.contact.whatsappNumber);
     list-style: none;
   }
 
+  .footer li {
+    color: var(--on-hull);
+    overflow-wrap: break-word;
+  }
+
+  .footer li span {
+    color: var(--on-oxide-soft);
+  }
+
+  .footer a {
+    text-decoration-color: rgba(255, 255, 255, 0.45);
+  }
+
   .footer a:hover {
-    color: #7ce0f2;
+    text-decoration-color: currentColor;
+  }
+
+  .footer :focus-visible {
+    outline-color: var(--on-hull);
   }
 
   .footer__bottom {
     display: flex;
-    min-height: 5rem;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.78rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--on-oxide-soft);
+    font-size: 0.86rem;
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer__plate {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 520px) {
     .footer__grid {
       grid-template-columns: 1fr;
     }
 
-    .footer__bottom {
-      align-items: flex-start;
+    /* Ditumpuk tanpa pemisah agar titik tidak tergantung di awal baris. */
+    .footer__port {
       flex-direction: column;
-      justify-content: center;
-      padding-block: 1.25rem;
+    }
+
+    .footer__port > span + span::before {
+      content: none;
     }
   }
 </style>

@@ -1,25 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+/*
+ * Lambung Muara Baru: halaman dibaca seperti sisi lambung kapal ikan baja,
+ * dari anjungan (header putih) sampai lunas (footer merah antifouling).
+ */
 
 :root {
-  --navy-950: #061a2f;
-  --navy-900: #0a2745;
-  --navy-800: #103a61;
-  --ocean-600: #056988;
-  --ocean-500: #0b9fc3;
-  --ocean-100: #dff6fb;
-  --ice-50: #f5fbfd;
-  --white: #ffffff;
-  --ink: #101820;
-  --slate: #52616e;
-  --line: #d7e2e8;
-  --success: #14785f;
-  --shadow-sm: 0 12px 35px rgba(6, 26, 47, 0.08);
-  --shadow-lg: 0 24px 70px rgba(6, 26, 47, 0.16);
-  --radius-sm: 0.75rem;
-  --radius-md: 1.25rem;
-  --radius-lg: 2rem;
-  --container: 74rem;
-  --section-space: clamp(4.5rem, 9vw, 8rem);
+  /* Cat */
+  --paint: #f3f6f8;
+  --paint-shade: #e3eaef;
+  --hull: #0b6aa8;
+  --hull-deep: #08497a;
+  --logo-blue: #0582c6;
+  --ink: #1a2633;
+  --ink-soft: #3f4d5a;
+  --oxide: #9e3a26;
+  --on-oxide-soft: #f6e3dd;
+  --on-hull: #ffffff;
+  --on-hull-soft: #e1eef8;
+  --seam: rgba(255, 255, 255, 0.13);
+  --seam-dark: rgba(26, 38, 51, 0.12);
+
+  /* Garis dan pelat */
+  --rule: 3px;
+  --rule-heavy: 6px;
+
+  /* Huruf */
+  --font: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --stretch-hull: 125%;
+  --stretch-plate: 112%;
+  --stretch-draft: 62%;
+
+  /* Ruang */
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --container: 84rem;
+  --section-space: clamp(4.5rem, 9vw, 8.5rem);
+  --rail: 0px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *,
@@ -29,21 +44,36 @@
 }
 
 html {
-  scroll-behavior: smooth;
   color-scheme: light;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  scrollbar-color: var(--hull) var(--paint-shade);
 }
 
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--white);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  line-height: 1.65;
+  background: var(--paint);
+  caret-color: var(--hull);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  font-stretch: 100%;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.has-rail body {
+  padding-left: var(--rail);
 }
 
 body.menu-open {
   overflow: hidden;
+}
+
+::selection {
+  color: var(--on-hull);
+  background: var(--hull);
 }
 
 img,
@@ -54,7 +84,8 @@ svg {
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
 }
 
 button,
@@ -69,40 +100,64 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--ocean-500);
-  outline-offset: 4px;
+  outline: 3px solid var(--logo-blue);
+  outline-offset: 3px;
 }
 
 h1,
 h2,
 h3,
-p {
+p,
+dl,
+dd,
+figure {
   margin-top: 0;
 }
 
 h1,
 h2,
 h3 {
-  font-family: 'Manrope', system-ui, sans-serif;
-  color: var(--navy-950);
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Huruf lambung: lebar, tebal, kapital. Hanya untuk h1 dan h2. */
+h1,
+h2,
+.hull-type {
+  font-stretch: var(--stretch-hull);
+  font-weight: 850;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
 }
 
 h1 {
-  font-size: clamp(2.7rem, 7vw, 5.6rem);
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.25rem, 5.4vw, 5.25rem);
+  line-height: 0.96;
 }
 
 h2 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: 1.25rem;
+  font-size: clamp(1.75rem, 3.5vw, 3.15rem);
+  line-height: 1;
 }
 
 h3 {
-  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  font-stretch: var(--stretch-plate);
+  font-weight: 760;
+  line-height: 1.2;
+}
+
+p {
+  max-width: 68ch;
+  text-wrap: pretty;
 }
 
 .container {
-  width: min(calc(100% - 2rem), var(--container));
+  width: min(calc(100% - 2 * var(--gutter)), var(--container));
   margin-inline: auto;
 }
 
@@ -110,56 +165,129 @@ h3 {
   padding-block: var(--section-space);
 }
 
-.section--soft {
-  background: var(--ice-50);
+.section--shade {
+  background: var(--paint-shade);
 }
 
-.section--dark {
-  color: rgba(255, 255, 255, 0.78);
-  background: var(--navy-950);
+/* Bidang lambung: biru logo yang diperdalam. */
+.hull {
+  color: var(--on-hull);
+  background-color: var(--hull);
 }
 
-.section--dark h2,
-.section--dark h3 {
-  color: var(--white);
+/*
+ * Sambungan pelat hanya pada bidang lambung terbuka (hero, CTA). Jaraknya
+ * seperenam lebar .container dan dimulai dari tepi kirinya, sehingga garis
+ * sambungan jatuh pada kolom yang sama dengan isi halaman.
+ */
+.hull--seams {
+  --seam-span: min(calc(100% - 2 * var(--gutter)), var(--container));
+  background-image: linear-gradient(90deg, var(--seam) 1px, transparent 1px);
+  background-position: calc((100% - var(--seam-span)) / 2) 0;
+  background-size: calc(var(--seam-span) / 6) 100%;
+  background-repeat: repeat-x;
 }
 
-.section--dark .eyebrow {
-  color: #7ce0f2;
+.hull h1,
+.hull h2,
+.hull h3 {
+  color: var(--on-hull);
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 1rem;
-  color: var(--ocean-600);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+.hull p {
+  color: var(--on-hull-soft);
+}
+
+.hull a:not([class]) {
+  color: var(--on-hull);
+}
+
+/* Garis pelabuhan asal: ditulis di bawah nama, seperti di buritan kapal. */
+.port-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin-bottom: 1.75rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
+  font-stretch: var(--stretch-hull);
+  font-weight: 780;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
-.eyebrow::before {
-  width: 2rem;
-  height: 2px;
-  background: currentColor;
-  content: '';
+.hull .port-line {
+  color: var(--on-hull);
+}
+
+.port-line > span + span::before {
+  margin-right: 1.25rem;
+  content: '·';
+}
+
+.draft-num {
+  font-stretch: var(--stretch-draft);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 820;
+  line-height: 1;
 }
 
 .lead {
   max-width: 44rem;
-  color: var(--slate);
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--ink-soft);
+  font-size: clamp(1.08rem, 1.7vw, 1.28rem);
+  line-height: 1.55;
 }
 
-.grid {
+.hull .lead {
+  color: var(--on-hull-soft);
+}
+
+/* Tabel klaim dan bukti, dipakai beranda dan halaman mutu. */
+.ledger {
+  margin: 0;
+  padding: 0;
+  border-top: var(--rule-heavy) solid var(--ink);
+  list-style: none;
+}
+
+.ledger > li {
   display: grid;
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 1rem clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  border-bottom: var(--rule) solid var(--ink);
 }
 
-.grid--3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.ledger h3 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-stretch: var(--stretch-hull);
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.ledger p {
+  margin-bottom: 0.4rem;
+}
+
+.ledger__evidence {
+  color: var(--ink-soft);
+}
+
+.ledger__evidence strong {
+  color: var(--hull-deep);
+  font-stretch: var(--stretch-plate);
+  font-weight: 750;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .skip-link {
@@ -168,8 +296,9 @@ h3 {
   top: 0.5rem;
   left: 0.5rem;
   padding: 0.75rem 1rem;
-  color: var(--white);
-  background: var(--navy-950);
+  color: var(--on-hull);
+  background: var(--ink);
+  font-weight: 700;
   transform: translateY(-150%);
 }
 
@@ -177,84 +306,36 @@ h3 {
   transform: translateY(0);
 }
 
-.page-hero {
-  position: relative;
-  overflow: hidden;
-  padding-block: clamp(5rem, 10vw, 8rem);
-  color: rgba(255, 255, 255, 0.76);
-  background:
-    radial-gradient(circle at 82% 20%, rgba(11, 159, 195, 0.35), transparent 28rem),
-    linear-gradient(135deg, var(--navy-950), var(--navy-800));
-}
-
-.page-hero::after {
-  position: absolute;
-  right: -8rem;
-  bottom: -12rem;
-  width: 32rem;
-  height: 32rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-  box-shadow: 0 0 0 4rem rgba(255, 255, 255, 0.025), 0 0 0 8rem rgba(255, 255, 255, 0.02);
-  content: '';
-}
-
-.page-hero h1 {
-  max-width: 55rem;
-  margin-bottom: 1.5rem;
-  color: var(--white);
-  font-size: clamp(2.6rem, 6vw, 4.8rem);
-}
-
-.page-hero p {
-  position: relative;
-  z-index: 1;
-  max-width: 44rem;
-  font-size: 1.16rem;
-}
-
-.cta-panel {
-  display: grid;
-  grid-template-columns: 1.3fr auto;
-  align-items: center;
-  gap: 2rem;
-  padding: clamp(2rem, 5vw, 4rem);
-  border-radius: var(--radius-lg);
-  color: rgba(255, 255, 255, 0.76);
-  background: linear-gradient(125deg, var(--navy-950), var(--navy-800));
-  box-shadow: var(--shadow-lg);
-}
-
-.cta-panel h2 {
-  margin-bottom: 0.8rem;
-  color: var(--white);
-}
-
 .empty-note {
   padding: 1rem 1.15rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  color: var(--slate);
-  background: var(--ice-50);
-  font-size: 0.92rem;
+  border: var(--rule) solid var(--ink);
+  color: var(--ink-soft);
+  background: var(--paint);
+  font-size: 0.95rem;
+}
+
+.section-link {
+  margin-top: 2rem;
 }
 
 @media (max-width: 780px) {
-  .grid--3,
-  .cta-panel {
+  .ledger > li {
     grid-template-columns: 1fr;
   }
 
-  .section {
-    padding-block: 4.25rem;
+  .hull--seams {
+    background-size: calc(var(--seam-span) / 3) 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

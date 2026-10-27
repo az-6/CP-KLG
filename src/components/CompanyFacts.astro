@@ -16,11 +16,48 @@ const { facts, label } = Astro.props;
 </div>
 
 <style>
-  .company-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
-  .company-facts__item { display: grid; gap: 0.25rem; padding: 1.75rem clamp(1rem, 4vw, 3rem); border: 1px solid var(--line); border-right: 0; background: var(--white); }
-  .company-facts__item:last-child { border-right: 1px solid var(--line); }
-  .company-facts strong { color: var(--navy-950); font-family: 'Manrope', sans-serif; font-size: 1.25rem; }
-  .company-facts span, .company-facts small { color: var(--slate); }
-  .company-facts small { font-size: 0.75rem; }
-  @media (max-width: 600px) { .company-facts__item { border-right: 1px solid var(--line); border-bottom: 0; } .company-facts__item:last-child { border-bottom: 1px solid var(--line); } }
+  .company-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    border-top: var(--rule-heavy) solid var(--ink);
+    border-bottom: var(--rule) solid var(--ink);
+  }
+
+  .company-facts__item {
+    display: grid;
+    align-content: start;
+    gap: 0.3rem;
+    padding: 1.5rem clamp(1rem, 2.5vw, 2rem) 1.6rem 0;
+  }
+
+  .company-facts__item + .company-facts__item {
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    border-left: var(--rule) solid var(--ink);
+  }
+
+  .company-facts strong {
+    color: var(--hull-deep);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-stretch: var(--stretch-hull);
+    font-weight: 860;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .company-facts span {
+    font-weight: 650;
+  }
+
+  .company-facts small {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 600px) {
+    .company-facts__item + .company-facts__item {
+      padding-left: 0;
+      border-top: var(--rule) solid var(--ink);
+      border-left: 0;
+    }
+  }
 </style>
