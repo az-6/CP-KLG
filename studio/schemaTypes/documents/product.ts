@@ -1,4 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { englishGroup } from '../objects/english';
+import { englishContentField } from '../objects/portableContent';
 
 const stringListField = (name: 'sizes' | 'forms' | 'condition' | 'packaging', title: string) => defineField({
   name,
@@ -35,5 +37,16 @@ export const product = defineType({
     defineField({ name: 'order', title: 'Urutan', type: 'number', initialValue: 0, validation: (rule) => rule.required().integer().min(0) }),
     defineField({ name: 'isActive', title: 'Tampilkan di website', type: 'boolean', initialValue: true, validation: (rule) => rule.required() }),
     defineField({ name: 'seo', title: 'SEO', type: 'seoFields' }),
+    englishGroup([
+      defineField({ name: 'name', title: 'Product name', type: 'string' }),
+      defineField({ name: 'excerpt', title: 'Summary', type: 'text', rows: 3, validation: (rule) => rule.max(240) }),
+      englishContentField('description', 'Full description'),
+      defineField({ name: 'sizes', title: 'Size / grade', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+      defineField({ name: 'forms', title: 'Product form', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+      defineField({ name: 'condition', title: 'Condition', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+      defineField({ name: 'packaging', title: 'Packing', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+      defineField({ name: 'volume', title: 'Volume', type: 'string' }),
+      defineField({ name: 'seo', title: 'SEO', type: 'seoFields' }),
+    ]),
   ],
 });

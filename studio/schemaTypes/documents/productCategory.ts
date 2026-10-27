@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { englishGroup } from '../objects/english';
 
 export const productCategory = defineType({
   name: 'productCategory',
@@ -10,5 +11,9 @@ export const productCategory = defineType({
     defineField({ name: 'description', title: 'Deskripsi', type: 'text', rows: 3 }),
     defineField({ name: 'order', title: 'Urutan', type: 'number', initialValue: 0, validation: (rule) => rule.required().integer().min(0) }),
     defineField({ name: 'isActive', title: 'Tampilkan di website', type: 'boolean', initialValue: true, validation: (rule) => rule.required() }),
+    englishGroup([
+      defineField({ name: 'name', title: 'Category name', type: 'string' }),
+      defineField({ name: 'description', title: 'Description', type: 'text', rows: 3 }),
+    ]),
   ],
 });

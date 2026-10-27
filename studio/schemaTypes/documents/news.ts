@@ -1,4 +1,6 @@
 import { defineField, defineType } from 'sanity';
+import { englishGroup } from '../objects/english';
+import { englishContentField } from '../objects/portableContent';
 
 export const news = defineType({
   name: 'news',
@@ -13,5 +15,11 @@ export const news = defineType({
     defineField({ name: 'body', title: 'Isi berita', type: 'portableContent', validation: (rule) => rule.required() }),
     defineField({ name: 'seo', title: 'SEO', type: 'seoFields' }),
     defineField({ name: 'isActive', title: 'Tampilkan di website', type: 'boolean', initialValue: true, validation: (rule) => rule.required() }),
+    englishGroup([
+      defineField({ name: 'title', title: 'Title', type: 'string' }),
+      defineField({ name: 'excerpt', title: 'Summary', type: 'text', rows: 3, validation: (rule) => rule.max(240) }),
+      englishContentField('body', 'Article body'),
+      defineField({ name: 'seo', title: 'SEO', type: 'seoFields' }),
+    ]),
   ],
 });
