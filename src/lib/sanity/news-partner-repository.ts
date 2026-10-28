@@ -5,6 +5,7 @@ import type { NewsDocument, PartnerDocument } from '../../types/sanity';
 import { sanityClient } from './client';
 import { isSanityFixtureMode } from './config';
 import { localizeNews, localizePartner } from './localize';
+import { sanitizeNews, sanitizePartners } from './sanitize';
 
 export const NEWS_QUERY = groq`*[
   _type == "news" &&
@@ -51,7 +52,7 @@ export async function getPublishedNews(locale: Locale = 'id'): Promise<NewsDocum
   const news = isSanityFixtureMode(import.meta.env, process.env)
     ? sanityFixtures.news
     : await sanityClient.fetch<NewsDocument[]>(NEWS_QUERY);
-  return normalizeNews(news).map((article) => localizeNews(article, locale));
+  return normalizeNews(sanitizeNews(news)).map((article) => localizeNews(article, locale));
 }
 
 export async function getLatestNews(limit = 3, locale: Locale = 'id'): Promise<NewsDocument[]> {
@@ -62,5 +63,5 @@ export async function getActivePartners(locale: Locale = 'id'): Promise<PartnerD
   const partners = isSanityFixtureMode(import.meta.env, process.env)
     ? sanityFixtures.partners
     : await sanityClient.fetch<PartnerDocument[]>(PARTNER_QUERY);
-  return normalizePartners(partners).map((partner) => localizePartner(partner, locale));
+  return normalizePartners(sanitizePartners(partners)).map((partner) => localizePartner(partner, locale));
 }

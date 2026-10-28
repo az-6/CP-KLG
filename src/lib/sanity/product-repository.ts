@@ -5,6 +5,7 @@ import type { ProductCategoryDocument, ProductDocument } from '../../types/sanit
 import { sanityClient } from './client';
 import { isSanityFixtureMode } from './config';
 import { localizeCategory, localizeProduct } from './localize';
+import { sanitizeProduct } from './sanitize';
 
 export interface ProductCatalog {
   categories: ProductCategoryDocument[];
@@ -94,7 +95,7 @@ export async function getProductCatalog(locale: Locale = 'id'): Promise<ProductC
     ? { categories: sanityFixtures.categories, products: sanityFixtures.products }
     : await sanityClient.fetch<ProductCatalog>(PRODUCT_CATALOG_QUERY);
 
-  return localizeCatalog(normalizeCatalog(catalog.categories, catalog.products), locale);
+  return localizeCatalog(normalizeCatalog(catalog.categories, catalog.products.map(sanitizeProduct)), locale);
 }
 
 export async function getActiveProducts(locale: Locale = 'id'): Promise<ProductDocument[]> {

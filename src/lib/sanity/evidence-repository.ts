@@ -9,6 +9,7 @@ import { sanityClient } from './client';
 import type { Locale } from '../../i18n';
 import { isSanityFixtureMode } from './config';
 import { localizeCredential, localizeFact, localizeMedia } from './localize';
+import { sanitizeCredentials, sanitizeMedia } from './sanitize';
 
 export interface EvidenceDataset {
   facts: CompanyFactDocument[];
@@ -61,8 +62,8 @@ async function getEvidenceDataset(locale: Locale): Promise<EvidenceDataset> {
     : await sanityClient.fetch<EvidenceDataset>(EVIDENCE_QUERY);
   return {
     facts: dataset.facts.map((fact) => localizeFact(fact, locale)),
-    media: dataset.media.map((item) => localizeMedia(item, locale)),
-    credentials: dataset.credentials.map((credential) => localizeCredential(credential, locale)),
+    media: sanitizeMedia(dataset.media).map((item) => localizeMedia(item, locale)),
+    credentials: sanitizeCredentials(dataset.credentials).map((credential) => localizeCredential(credential, locale)),
   };
 }
 
