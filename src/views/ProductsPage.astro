@@ -60,7 +60,7 @@ const text = locale === 'id'
       <div class="products-grid" aria-live="polite">
         {products.map((product) => (
           <div data-product-filter-item data-product-category={product.categorySlug}>
-            <ProductCard product={product} locale={locale} showExcerpt={false} />
+            <ProductCard product={product} locale={locale} />
           </div>
         ))}
       </div>

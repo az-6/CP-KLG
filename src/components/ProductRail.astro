@@ -26,59 +26,50 @@ const label = locale === 'en'
 
   <!-- Kontrol hanya muncul lewat JavaScript bila produk melebihi lebar rel; tanpa JS rel tetap bisa digeser. -->
   <div class="product-rail__controls" data-rail-controls hidden>
-    <p class="product-rail__count" aria-live="polite">
-      <span class="draft-num" data-rail-current>1</span>
-      <span class="product-rail__of">/</span>
-      <span class="draft-num">{products.length}</span>
-    </p>
-    <div class="product-rail__buttons">
-      <button type="button" class="product-rail__button" aria-label={label.prev} aria-controls={id} data-rail-prev disabled>
-        <svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20">
-          <path d="M17 10H4.5M9.5 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2.4" />
-        </svg>
-      </button>
-      <button type="button" class="product-rail__button" aria-label={label.next} aria-controls={id} data-rail-next>
-        <svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20">
-          <path d="M3 10h12.5M10.5 5l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2.4" />
-        </svg>
-      </button>
-    </div>
+    <button type="button" class="product-rail__button" aria-label={label.prev} aria-controls={id} data-rail-prev>
+      <svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20">
+        <path d="M17 10H4.5M9.5 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2.4" />
+      </svg>
+    </button>
+    <button type="button" class="product-rail__button" aria-label={label.next} aria-controls={id} data-rail-next>
+      <svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20">
+        <path d="M3 10h12.5M10.5 5l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2.4" />
+      </svg>
+    </button>
   </div>
 </div>
 
 <script>
+  // Rel berputar: di ujung kanan "berikutnya" kembali ke awal, di awal "sebelumnya" ke ujung.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
   document.querySelectorAll<HTMLElement>('[data-product-rail]').forEach((rail) => {
     const track = rail.querySelector<HTMLElement>('[data-rail-track]');
     const controls = rail.querySelector<HTMLElement>('[data-rail-controls]');
     const prev = rail.querySelector<HTMLButtonElement>('[data-rail-prev]');
     const next = rail.querySelector<HTMLButtonElement>('[data-rail-next]');
-    const current = rail.querySelector<HTMLElement>('[data-rail-current]');
-    if (!track || !controls || !prev || !next || !current) return;
+    if (!track || !controls || !prev || !next) return;
 
     const items = [...track.children] as HTMLElement[];
-    const step = () => {
-      if (items.length < 2) return track.clientWidth;
-      return items[1].offsetLeft - items[0].offsetLeft;
-    };
+    const behavior = (): ScrollBehavior => (reducedMotion.matches ? 'auto' : 'smooth');
+    const maxScroll = () => track.scrollWidth - track.clientWidth;
+    const step = () => (items.length < 2 ? track.clientWidth : items[1].offsetLeft - items[0].offsetLeft);
 
     const update = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      controls.hidden = max <= 2;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= max - 2;
-      current.textContent = String(Math.min(items.length, Math.round(track.scrollLeft / step()) + 1));
+      controls.hidden = maxScroll() <= 2;
     };
 
-    let frame = 0;
-    const schedule = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(update);
-    };
+    next.addEventListener('click', () => {
+      if (track.scrollLeft >= maxScroll() - 2) track.scrollTo({ left: 0, behavior: behavior() });
+      else track.scrollBy({ left: step(), behavior: behavior() });
+    });
 
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-    track.addEventListener('scroll', schedule, { passive: true });
-    new ResizeObserver(schedule).observe(track);
+    prev.addEventListener('click', () => {
+      if (track.scrollLeft <= 2) track.scrollTo({ left: maxScroll(), behavior: behavior() });
+      else track.scrollBy({ left: -step(), behavior: behavior() });
+    });
+
+    new ResizeObserver(update).observe(track);
     update();
   });
 </script>
@@ -127,9 +118,7 @@ const label = locale === 'en'
 
   .product-rail__controls {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: flex-end;
     margin-top: 0.75rem;
     padding-top: 1rem;
     border-top: var(--rule) solid var(--ink);
@@ -137,23 +126,6 @@ const label = locale === 'en'
 
   .product-rail__controls[hidden] {
     display: none;
-  }
-
-  .product-rail__count {
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
-    margin: 0;
-    font-size: 1.6rem;
-  }
-
-  .product-rail__of {
-    color: var(--ink-soft);
-    font-size: 1.1rem;
-  }
-
-  .product-rail__buttons {
-    display: flex;
   }
 
   /* Pelat persegi yang dilas berdampingan. */
@@ -173,16 +145,9 @@ const label = locale === 'en'
     border-left: 0;
   }
 
-  .product-rail__button:hover:not(:disabled) {
+  .product-rail__button:hover {
     color: var(--on-hull);
     background: var(--ink);
-  }
-
-  .product-rail__button:disabled {
-    color: var(--ink-soft);
-    background: var(--paint-shade);
-    cursor: default;
-    opacity: 0.55;
   }
 
   .product-rail__button:focus-visible {

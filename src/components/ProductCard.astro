@@ -11,11 +11,10 @@ interface Props {
   product: ProductDocument;
   headingLevel?: 'h2' | 'h3';
   locale?: Locale;
-  /** Tampilkan ringkasan (dipotong 3 baris). Katalog Produk hanya menampilkan nama. */
-  showExcerpt?: boolean;
 }
 
-const { product, headingLevel = 'h2', locale = 'id', showExcerpt = true } = Astro.props;
+// Kartu hanya menampilkan foto, kategori, dan nama agar tingginya seragam.
+const { product, headingLevel = 'h2', locale = 'id' } = Astro.props;
 // Label tampil singkat; nama produk tetap terbaca pembaca layar.
 const linkLabel = locale === 'en' ? 'View details' : 'Lihat detail';
 const linkSuffix = locale === 'en' ? `for ${product.name}` : product.name;
@@ -39,7 +38,6 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   <div class="product-card__body">
     <Heading class="product-card__name"><ProductName name={product.name} /></Heading>
     {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
-    {showExcerpt && <p class="product-card__excerpt">{product.excerpt}</p>}
     <ButtonLink href={productPath(locale, product.slug)} label={linkLabel} srSuffix={linkSuffix} variant="text" />
   </div>
 </article>
@@ -115,15 +113,6 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
     font-weight: 850;
     line-height: 1;
     text-transform: uppercase;
-  }
-
-  .product-card__excerpt {
-    display: -webkit-box;
-    overflow: hidden;
-    color: var(--ink-soft);
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
   }
 
   .product-card__body :global(.button-link) {
