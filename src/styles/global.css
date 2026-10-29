@@ -29,6 +29,24 @@
   --stretch-plate: 112%;
   --stretch-draft: 62%;
 
+  /* Skala huruf per peran. Ubah di sini, bukan di komponen. */
+  --text-display: clamp(2rem, 4.6vw, 4.5rem);
+  --text-title: clamp(1.85rem, 3.4vw, 3.25rem);
+  --text-headline: clamp(1.45rem, 2.5vw, 2.25rem);
+  --text-subhead: clamp(1.15rem, 1.6vw, 1.5rem);
+  --text-heading-sm: clamp(1.05rem, 1.2vw, 1.2rem);
+  --text-lead: clamp(1.02rem, 1.25vw, 1.15rem);
+  --text-reading: 1.0625rem;
+  --text-body: 1rem;
+  --text-nav: 0.875rem;
+  --text-small: 0.875rem;
+  --text-label: 0.8rem;
+  --text-port: clamp(0.85rem, 1.05vw, 1rem);
+  --text-stern: clamp(1.85rem, 5.2vw, 4.75rem);
+  --text-numeral: 1.5rem;
+  --text-numeral-lg: clamp(2.25rem, 3.6vw, 3.25rem);
+  --text-numeral-xxl: clamp(5rem, 14vw, 11rem);
+
   /* Ruang */
   --gutter: clamp(1rem, 4vw, 3.5rem);
   --container: 84rem;
@@ -56,7 +74,7 @@ body {
   background: var(--paint);
   caret-color: var(--hull);
   font-family: var(--font);
-  font-size: 1.0625rem;
+  font-size: var(--text-body);
   font-stretch: 100%;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
@@ -133,19 +151,19 @@ h2,
 
 h1 {
   margin-bottom: 1.5rem;
-  font-size: clamp(2.25rem, 5.4vw, 5.25rem);
+  font-size: var(--text-title);
   line-height: 0.96;
 }
 
 h2 {
   margin-bottom: 1.25rem;
-  font-size: clamp(1.75rem, 3.5vw, 3.15rem);
+  font-size: var(--text-headline);
   line-height: 1;
 }
 
 h3 {
   margin-bottom: 0.6rem;
-  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  font-size: var(--text-heading-sm);
   font-stretch: var(--stretch-plate);
   font-weight: 760;
   line-height: 1.2;
@@ -208,7 +226,7 @@ p {
   flex-wrap: wrap;
   gap: 0.35rem 1.25rem;
   margin-bottom: 1.75rem;
-  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
+  font-size: var(--text-port);
   font-stretch: var(--stretch-hull);
   font-weight: 780;
   letter-spacing: 0.14em;
@@ -235,7 +253,7 @@ p {
 .lead {
   max-width: 44rem;
   color: var(--ink-soft);
-  font-size: clamp(1.08rem, 1.7vw, 1.28rem);
+  font-size: var(--text-lead);
   line-height: 1.55;
 }
 
@@ -261,7 +279,7 @@ p {
 
 .ledger h3 {
   margin: 0;
-  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-size: var(--text-subhead);
   font-stretch: var(--stretch-hull);
   font-weight: 820;
   text-transform: uppercase;
@@ -311,7 +329,7 @@ p {
   border: var(--rule) solid var(--ink);
   color: var(--ink-soft);
   background: var(--paint);
-  font-size: 0.95rem;
+  font-size: var(--text-small);
 }
 
 .section-link {

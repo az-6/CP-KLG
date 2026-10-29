@@ -150,7 +150,7 @@ const isCurrent = (href: string) => {
     align-items: center;
     gap: 0.35rem;
     padding-inline: 0.62rem;
-    font-size: 0.9rem;
+    font-size: var(--text-nav);
     font-weight: 620;
     text-decoration: none;
   }
@@ -173,7 +173,7 @@ const isCurrent = (href: string) => {
     min-height: 2.75rem;
     align-items: center;
     padding-inline: 0.6rem;
-    font-size: 0.84rem;
+    font-size: var(--text-nav);
     font-weight: 700;
     letter-spacing: 0.04em;
     text-decoration: none;
@@ -191,7 +191,7 @@ const isCurrent = (href: string) => {
     padding-inline: 1.1rem;
     color: var(--on-hull);
     background: var(--ink);
-    font-size: 0.82rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-plate);
     font-weight: 780;
     letter-spacing: 0.05em;
@@ -276,7 +276,7 @@ const isCurrent = (href: string) => {
       min-height: 3.6rem;
       padding-inline: 0;
       border-bottom: 1px solid var(--seam);
-      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      font-size: var(--text-subhead);
       font-stretch: var(--stretch-hull);
       font-weight: 800;
       text-transform: uppercase;
@@ -292,7 +292,7 @@ const isCurrent = (href: string) => {
       min-height: 3.5rem;
       padding-inline: 0;
       color: var(--on-hull);
-      font-size: 1rem;
+      font-size: var(--text-body);
     }
 
     .header-cta {
@@ -301,7 +301,7 @@ const isCurrent = (href: string) => {
       margin-top: 1rem;
       color: var(--ink);
       background: var(--on-hull);
-      font-size: 0.95rem;
+      font-size: var(--text-nav);
     }
 
     .header-cta:hover {

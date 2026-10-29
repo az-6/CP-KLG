@@ -37,7 +37,7 @@ const { facts, label } = Astro.props;
 
   .company-facts strong {
     color: var(--hull-deep);
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-size: var(--text-subhead);
     font-stretch: var(--stretch-hull);
     font-weight: 860;
     line-height: 1;
@@ -50,7 +50,7 @@ const { facts, label } = Astro.props;
 
   .company-facts small {
     color: var(--ink-soft);
-    font-size: 0.85rem;
+    font-size: var(--text-small);
   }
 
   @media (max-width: 600px) {

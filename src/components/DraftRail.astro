@@ -155,7 +155,7 @@ const { locale } = Astro.props;
   }
 
   .draft-rail__mark .draft-num {
-    font-size: 1.85rem;
+    font-size: var(--text-numeral);
   }
 
   .draft-rail__mark .draft-num::after {
@@ -195,7 +195,7 @@ const { locale } = Astro.props;
     border: var(--rule) solid var(--ink);
     color: var(--ink);
     background: var(--paint);
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-plate);
     font-weight: 760;
     letter-spacing: 0.05em;

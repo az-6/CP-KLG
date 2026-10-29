@@ -33,7 +33,7 @@ const productsLabel = locale === 'en' ? 'See Our Products' : 'Lihat Produk Kami'
 <style>
   .hero__inner {
     display: flex;
-    min-height: min(50rem, calc(100svh - 5rem));
+    min-height: min(40rem, calc(100svh - 5rem));
     flex-direction: column;
     justify-content: flex-end;
     gap: clamp(2rem, 5vw, 3.5rem);
@@ -42,9 +42,9 @@ const productsLabel = locale === 'en' ? 'See Our Products' : 'Lihat Produk Kami'
 
   /* Nama di lambung: selebar kontainer, huruf lambung sebesar yang muat. */
   .hero h1 {
-    max-width: 15ch;
+    max-width: 20ch;
     margin: 0;
-    font-size: clamp(2.1rem, 6.6vw, 6rem);
+    font-size: var(--text-display);
     line-height: 0.94;
   }
 
@@ -61,7 +61,7 @@ const productsLabel = locale === 'en' ? 'See Our Products' : 'Lihat Produk Kami'
   .hero .port-line {
     flex-direction: column;
     margin: 0;
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    font-size: var(--text-port);
   }
 
   .hero .port-line > span {
@@ -74,7 +74,7 @@ const productsLabel = locale === 'en' ? 'See Our Products' : 'Lihat Produk Kami'
 
   .hero__lede {
     margin: 0;
-    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    font-size: var(--text-lead);
     line-height: 1.55;
   }
 

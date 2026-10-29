@@ -21,6 +21,6 @@ const { items, label } = Astro.props;
   .media-gallery__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
   .media-gallery figure { margin: 0; border: var(--rule) solid var(--ink); background: var(--paint); }
   .media-gallery :global(img) { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-  .media-gallery figcaption { padding: 0.7rem 0.85rem; border-top: var(--rule) solid var(--ink); color: var(--ink-soft); font-size: 0.88rem; }
+  .media-gallery figcaption { padding: 0.7rem 0.85rem; border-top: var(--rule) solid var(--ink); color: var(--ink-soft); font-size: var(--text-small); }
   @media (max-width: 620px) { .media-gallery__grid { grid-template-columns: 1fr; } }
 </style>

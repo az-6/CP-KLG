@@ -94,7 +94,7 @@ const meetingHref = meetingHrefFor(locale);
   .footer__name {
     max-width: none;
     margin: 0 0 0.75rem;
-    font-size: clamp(2rem, 7.4vw, 7rem);
+    font-size: var(--text-stern);
     font-stretch: var(--stretch-hull);
     font-weight: 880;
     letter-spacing: -0.015em;
@@ -140,7 +140,7 @@ const meetingHref = meetingHrefFor(locale);
   .footer h2 {
     margin-bottom: 1rem;
     color: var(--on-hull);
-    font-size: 0.82rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-hull);
     font-weight: 780;
     letter-spacing: 0.14em;
@@ -183,7 +183,7 @@ const meetingHref = meetingHrefFor(locale);
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.35);
     color: var(--on-oxide-soft);
-    font-size: 0.86rem;
+    font-size: var(--text-small);
   }
 
   @media (max-width: 900px) {

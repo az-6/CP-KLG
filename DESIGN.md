@@ -16,53 +16,53 @@ colors:
 typography:
   display:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, 5.4vw, 5.25rem)"
+    fontSize: "clamp(1.85rem, 3.4vw, 3.25rem)"
     fontWeight: 850
     lineHeight: 0.96
     letterSpacing: "-0.012em"
     fontVariation: "'wdth' 125"
   headline:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(1.75rem, 3.5vw, 3.15rem)"
+    fontSize: "clamp(1.45rem, 2.5vw, 2.25rem)"
     fontWeight: 850
     lineHeight: 1
     letterSpacing: "-0.012em"
     fontVariation: "'wdth' 125"
   title:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(1.15rem, 1.7vw, 1.4rem)"
+    fontSize: "clamp(1.05rem, 1.2vw, 1.2rem)"
     fontWeight: 760
     lineHeight: 1.2
     fontVariation: "'wdth' 112"
   body:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "1.0625rem"
+    fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
     fontVariation: "'wdth' 100"
   lead:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(1.08rem, 1.7vw, 1.28rem)"
+    fontSize: "clamp(1.02rem, 1.25vw, 1.15rem)"
     fontWeight: 400
     lineHeight: 1.55
     fontVariation: "'wdth' 100"
   port-line:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(0.95rem, 1.5vw, 1.35rem)"
+    fontSize: "clamp(0.85rem, 1.05vw, 1rem)"
     fontWeight: 780
     lineHeight: 1.2
     letterSpacing: "0.14em"
     fontVariation: "'wdth' 125"
   label:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "0.82rem"
+    fontSize: "0.8rem"
     fontWeight: 760
     lineHeight: 1.2
     letterSpacing: "0.06em"
     fontVariation: "'wdth' 112"
   draft-numeral:
     fontFamily: "'Archivo Variable', 'Archivo', system-ui, sans-serif"
-    fontSize: "clamp(3.5rem, 6vw, 5.5rem)"
+    fontSize: "clamp(2.25rem, 3.6vw, 3.25rem)"
     fontWeight: 820
     lineHeight: 1
     fontFeature: "'tnum' 1, 'lnum' 1"
@@ -227,6 +227,28 @@ Flat. There are no shadows anywhere in the build. Depth is carried by band order
 ## Shapes
 
 Square welded plates (0px radius) throughout: buttons, cards, tags, map pins, markers, dialogs, filters. Borders are solid ink or white at 3px or 6px; the only dashed lines are the fill-in rules of the spec sheet and the map's equator. Photos are cropped to fixed ratios (4:3 product cards, 3:2 news) and framed in paint on hull fields. Gradients appear only as hard-stop stripe devices: the seam lines and the waterline stripe on the draft rail. There are no soft or decorative gradients.
+
+### Type scale tokens
+
+Every font size in the build is a role token on `:root` in `src/styles/global.css` (owner asked for smaller type on 2026-10-29). Change a role there, never in a component.
+
+| Token | Value | Role |
+|---|---|---|
+| `--text-display` | clamp(2rem, 4.6vw, 4.5rem) | Beranda hero h1 |
+| `--text-title` | clamp(1.85rem, 3.4vw, 3.25rem) | Page h1, product and article titles |
+| `--text-headline` | clamp(1.45rem, 2.5vw, 2.25rem) | Section h2 |
+| `--text-subhead` | clamp(1.15rem, 1.6vw, 1.5rem) | Product names, ledger claims, fact values, mobile menu |
+| `--text-heading-sm` | clamp(1.05rem, 1.2vw, 1.2rem) | h3, news titles, plate titles |
+| `--text-lead` | clamp(1.02rem, 1.25vw, 1.15rem) | Ledes and section intros |
+| `--text-reading` | 1.0625rem | Article and product body copy |
+| `--text-body` | 1rem | Body |
+| `--text-nav` / `--text-small` | 0.875rem | Navigation and buttons / captions and meta |
+| `--text-label` | 0.8rem | Uppercase tracked labels |
+| `--text-port` | clamp(0.85rem, 1.05vw, 1rem) | Port-of-registry line |
+| `--text-stern` | clamp(1.85rem, 5.2vw, 4.75rem) | Footer stern name |
+| `--text-numeral` / `-lg` / `-xxl` | 1.5rem / clamp(2.25rem, 3.6vw, 3.25rem) / clamp(5rem, 14vw, 11rem) | Draft rail and map list / process and meeting steps / 404 and product fallback |
+
+Heading measures were widened with the smaller scale (section h2 24ch, page h1 22ch, hero h1 20ch) so titles run two or three lines, not four.
 
 ## Components
 

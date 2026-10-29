@@ -98,12 +98,12 @@ const facts = [
   .product-detail { padding-top: clamp(2rem, 5vw, 4rem); }
   .product-detail__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.8fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
   .product-detail__content { position: sticky; top: 7rem; }
-  .product-detail h1 { margin-bottom: 0.75rem; font-size: clamp(2.2rem, 5vw, 4.2rem); overflow-wrap: break-word; }
+  .product-detail h1 { margin-bottom: 0.75rem; font-size: var(--text-title); overflow-wrap: break-word; }
   .scientific-name { margin-top: -0.25rem; color: var(--ink-soft); font-style: italic; }
-  .availability { display: inline-flex; padding: 0.4rem 0.7rem; color: var(--on-hull); background: var(--hull); font-size: 0.8rem; font-stretch: var(--stretch-plate); font-weight: 760; letter-spacing: 0.06em; text-transform: uppercase; }
+  .availability { display: inline-flex; padding: 0.4rem 0.7rem; color: var(--on-hull); background: var(--hull); font-size: var(--text-label); font-stretch: var(--stretch-plate); font-weight: 760; letter-spacing: 0.06em; text-transform: uppercase; }
   .product-detail dl { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); margin-block: 1.5rem 2rem; border-top: var(--rule-heavy) solid var(--ink); }
   .product-detail dt, .product-detail dd { margin: 0; padding: 0.8rem 0; border-bottom: var(--rule) solid var(--ink); }
-  .product-detail dt { font-size: 0.82rem; font-stretch: var(--stretch-hull); font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+  .product-detail dt { font-size: var(--text-label); font-stretch: var(--stretch-hull); font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
   .product-detail dd { font-weight: 650; }
   .product-detail__description { max-width: 50rem; margin-top: clamp(3rem, 8vw, 6rem); padding-top: 2rem; border-top: var(--rule-heavy) solid var(--ink); }
   @media (max-width: 860px) {

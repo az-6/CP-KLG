@@ -46,7 +46,7 @@ const publishedLabel = new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'id-I
 
   .news-card time {
     color: var(--hull-deep);
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-plate);
     font-weight: 760;
     letter-spacing: 0.08em;
@@ -56,7 +56,7 @@ const publishedLabel = new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'id-I
   .news-card h2,
   .news-card h3 {
     margin-top: 0.5rem;
-    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    font-size: var(--text-heading-sm);
     font-stretch: var(--stretch-plate);
     font-weight: 760;
     letter-spacing: 0;

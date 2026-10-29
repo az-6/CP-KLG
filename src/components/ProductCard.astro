@@ -76,7 +76,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   .product-card__fallback {
     display: grid;
     height: 100%;
-    font-size: clamp(6rem, 14vw, 10rem);
+    font-size: var(--text-numeral-xxl);
     font-stretch: var(--stretch-hull);
     font-weight: 880;
     line-height: 1;
@@ -91,7 +91,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
     padding: 0.45rem 0.75rem;
     color: var(--on-hull);
     background: var(--ink);
-    font-size: 0.74rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-plate);
     font-weight: 760;
     letter-spacing: 0.08em;
@@ -108,7 +108,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   .product-card__name {
     overflow-wrap: break-word;
     margin-bottom: 0.6rem;
-    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+    font-size: var(--text-subhead);
     font-stretch: var(--stretch-hull);
     font-weight: 850;
     line-height: 1;

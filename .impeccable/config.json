@@ -38,6 +38,15 @@
         ],
         "createdAt": "2026-10-24T04:18:07.694Z",
         "reason": "model decision: unchosen decision-round sketch under .impeccable/mocks/decision, not shipped"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "11px",
+        "files": [
+          "src/components/LocationsMap.astro"
+        ],
+        "createdAt": "2026-10-29T02:19:09.899Z",
+        "reason": "model decision: SVG <text> in viewBox user units (1000-wide map), scales with the map; not a CSS type role"
       }
     ]
   }

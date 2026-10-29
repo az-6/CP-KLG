@@ -20,14 +20,14 @@ const { title, description, id, align = 'left' } = Astro.props;
   }
 
   .section-heading h2 {
-    max-width: 18ch;
+    max-width: 24ch;
   }
 
   .section-heading p {
     max-width: 46rem;
     margin-bottom: 0;
     color: var(--ink-soft);
-    font-size: clamp(1.02rem, 1.5vw, 1.15rem);
+    font-size: var(--text-lead);
   }
 
   :global(.hull) .section-heading p {

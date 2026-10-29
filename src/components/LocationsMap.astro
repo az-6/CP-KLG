@@ -140,7 +140,7 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
     border: 3px solid var(--paint);
     color: var(--on-hull);
     background: var(--ink);
-    font-size: 0.95rem;
+    font-size: var(--text-small);
     place-items: center;
   }
 
@@ -148,7 +148,7 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
     width: 2.1rem;
     height: 2.1rem;
     background: var(--oxide);
-    font-size: 1.2rem;
+    font-size: var(--text-heading-sm);
   }
 
   .locations__tag {
@@ -163,7 +163,7 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
   }
 
   .locations__tag strong {
-    font-size: 0.85rem;
+    font-size: var(--text-label);
     font-stretch: var(--stretch-hull);
     font-weight: 820;
     letter-spacing: 0.02em;
@@ -172,7 +172,7 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
 
   .locations__tag small {
     color: var(--ink-soft);
-    font-size: 0.72rem;
+    font-size: var(--text-label);
     font-weight: 620;
   }
 
@@ -225,11 +225,11 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
 
   .locations__list .draft-num {
     margin-bottom: 0.35rem;
-    font-size: 2rem;
+    font-size: var(--text-numeral);
   }
 
   .locations__list strong {
-    font-size: 1.05rem;
+    font-size: var(--text-heading-sm);
     font-stretch: var(--stretch-hull);
     font-weight: 820;
     text-transform: uppercase;
@@ -238,7 +238,7 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
   .locations__list span:not(.draft-num),
   .locations__list small {
     color: var(--on-hull-soft);
-    font-size: 0.88rem;
+    font-size: var(--text-small);
   }
 
   .locations__item--address {
@@ -254,13 +254,13 @@ const equator = locale === 'en' ? 'Equator' : 'Khatulistiwa';
       width: 1.3rem;
       height: 1.3rem;
       border-width: 2px;
-      font-size: 0.8rem;
+      font-size: var(--text-label);
     }
 
     .locations__marker--address .locations__pin {
       width: 1.6rem;
       height: 1.6rem;
-      font-size: 0.95rem;
+      font-size: var(--text-small);
     }
 
     .locations__list {
