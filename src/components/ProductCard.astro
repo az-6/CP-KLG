@@ -10,12 +10,15 @@ import SanityImage from './SanityImage.astro';
 interface Props {
   product: ProductDocument;
   headingLevel?: 'h2' | 'h3';
-  linkLabel?: string;
   locale?: Locale;
+  /** Tampilkan ringkasan (dipotong 3 baris). Katalog Produk hanya menampilkan nama. */
+  showExcerpt?: boolean;
 }
 
-const { product, headingLevel = 'h2', locale = 'id' } = Astro.props;
-const linkLabel = Astro.props.linkLabel ?? (locale === 'en' ? `View ${product.name} details` : `Lihat detail ${product.name}`);
+const { product, headingLevel = 'h2', locale = 'id', showExcerpt = true } = Astro.props;
+// Label tampil singkat; nama produk tetap terbaca pembaca layar.
+const linkLabel = locale === 'en' ? 'View details' : 'Lihat detail';
+const linkSuffix = locale === 'en' ? `for ${product.name}` : product.name;
 const Heading = headingLevel;
 const primaryImage = product.images[0];
 const localPhoto = getLocalProductPhotos(product, locale)[0];
@@ -36,8 +39,8 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   <div class="product-card__body">
     <Heading class="product-card__name"><ProductName name={product.name} /></Heading>
     {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
-    <p>{product.excerpt}</p>
-    <ButtonLink href={productPath(locale, product.slug)} label={linkLabel} variant="text" />
+    {showExcerpt && <p class="product-card__excerpt">{product.excerpt}</p>}
+    <ButtonLink href={productPath(locale, product.slug)} label={linkLabel} srSuffix={linkSuffix} variant="text" />
   </div>
 </article>
 
@@ -114,12 +117,18 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
     text-transform: uppercase;
   }
 
-  .product-card__body > p {
+  .product-card__excerpt {
+    display: -webkit-box;
+    overflow: hidden;
     color: var(--ink-soft);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 
   .product-card__body :global(.button-link) {
     margin-top: auto;
+    padding-top: 0.75rem;
   }
 
   .product-card__scientific {

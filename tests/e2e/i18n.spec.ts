@@ -31,7 +31,7 @@ test('English navigation stays in English for products and news', async ({ page 
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'All' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Tuna Category' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /View Tuna details/ })).toHaveAttribute('href', '/en/products/tuna');
+  await expect(page.getByRole('link', { name: /View details for Tuna/ })).toHaveAttribute('href', '/en/products/tuna');
 });
 
 test('English product detail uses English content and an English WhatsApp message', async ({ page }) => {

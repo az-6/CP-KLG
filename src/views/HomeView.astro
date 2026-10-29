@@ -7,7 +7,7 @@ import LocationsMap from '../components/LocationsMap.astro';
 import NewsCard from '../components/NewsCard.astro';
 import PartnerGrid from '../components/PartnerGrid.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
-import ProductCard from '../components/ProductCard.astro';
+import ProductRail from '../components/ProductRail.astro';
 import ProofLedger from '../components/ProofLedger.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CompanyPlate from '../components/CompanyPlate.astro';
@@ -33,7 +33,7 @@ const [{ products }, latestNews, partners, homeFacts] = await Promise.all([
   getActivePartners(locale),
   getHomeFacts(locale),
 ]);
-const featuredProducts = products.slice(0, 4);
+const featuredProducts = products.slice(0, 12);
 
 const text = isId
   ? {
@@ -128,15 +128,7 @@ const text = isId
       <SectionHeading title={text.products} description={text.productsDescription} />
       <ButtonLink href={routes.products[locale]} label={text.productsLink} variant="text" />
     </div>
-    <div class="product-grid">
-      {featuredProducts.map((product) => (
-        <ProductCard
-          product={product}
-          headingLevel="h3"
-          locale={locale}
-        />
-      ))}
-    </div>
+    <ProductRail products={featuredProducts} locale={locale} id="home-products" />
   </div>
 </section>
 
@@ -212,7 +204,7 @@ const text = isId
     padding-block: 2.5rem 0;
   }
 
-  /* Pengantar di kiri, kartu produk di kanan: satu produk tetap berukuran kartu. */
+  /* Pengantar di kiri, rel produk yang bisa digeser di kanan. */
   .products-split {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -222,12 +214,6 @@ const text = isId
 
   .products-split__intro :global(.section-heading) {
     margin-bottom: 1.5rem;
-  }
-
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
   }
 
   .news-grid {
