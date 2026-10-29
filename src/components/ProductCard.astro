@@ -4,6 +4,7 @@ import { getLocalProductPhotos } from '../data/product-photos';
 import { productPath, type Locale } from '../i18n';
 import { isSanityFixtureMode } from '../lib/sanity/config';
 import ButtonLink from './ButtonLink.astro';
+import ProductName from './ProductName.astro';
 import SanityImage from './SanityImage.astro';
 
 interface Props {
@@ -33,7 +34,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
     <span class="product-card__category">{product.categoryName}</span>
   </div>
   <div class="product-card__body">
-    <Heading class="product-card__name">{product.name}</Heading>
+    <Heading class="product-card__name"><ProductName name={product.name} /></Heading>
     {product.scientificName && <p class="product-card__scientific">{product.scientificName}</p>}
     <p>{product.excerpt}</p>
     <ButtonLink href={productPath(locale, product.slug)} label={linkLabel} variant="text" />
@@ -43,6 +44,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
 <style>
   .product-card {
     display: grid;
+    min-width: 0;
     height: 100%;
     grid-template-rows: auto 1fr;
     border: var(--rule) solid var(--ink);
@@ -103,6 +105,7 @@ const useLocalPhoto = Boolean(localPhoto) && (!primaryImage || isSanityFixtureMo
   }
 
   .product-card__name {
+    overflow-wrap: break-word;
     margin-bottom: 0.6rem;
     font-size: clamp(1.5rem, 2.6vw, 2.2rem);
     font-stretch: var(--stretch-hull);

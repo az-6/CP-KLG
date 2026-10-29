@@ -1,0 +1,12 @@
+---
+interface Props {
+  name: string;
+}
+
+// Nama seperti "Tuna Loin Fresh/Natural Frozen" boleh patah setelah "/";
+// tanpa ini "FRESH/NATURAL" menjadi satu kata panjang yang melebarkan kartu.
+const { name } = Astro.props;
+const parts = name.split('/');
+---
+
+{parts.map((part, index) => (index < parts.length - 1 ? <>{part}/<wbr /></> : part))}

@@ -3,6 +3,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ButtonLink from '../components/ButtonLink.astro';
 import PortableContent from '../components/PortableContent.astro';
 import ProductGallery from '../components/ProductGallery.astro';
+import ProductName from '../components/ProductName.astro';
 import { company } from '../data/company';
 import { meetingHrefFor, productAlternates, productPath, routes, type Locale } from '../i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -66,7 +67,7 @@ const facts = [
       <div class="product-detail__grid">
         <ProductGallery images={product.images} productName={product.name} productSlug={product.slug} locale={locale} />
         <div class="product-detail__content">
-          <h1>{product.name}</h1>
+          <h1><ProductName name={product.name} /></h1>
           {product.scientificName && <p class="scientific-name">{product.scientificName}</p>}
           <p class="lead">{product.excerpt}</p>
           <p class="availability">{availability[product.availabilityStatus] ?? product.availabilityStatus}</p>
@@ -97,7 +98,7 @@ const facts = [
   .product-detail { padding-top: clamp(2rem, 5vw, 4rem); }
   .product-detail__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.8fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
   .product-detail__content { position: sticky; top: 7rem; }
-  .product-detail h1 { margin-bottom: 0.75rem; font-size: clamp(2.4rem, 5.5vw, 4.5rem); }
+  .product-detail h1 { margin-bottom: 0.75rem; font-size: clamp(2.2rem, 5vw, 4.2rem); overflow-wrap: break-word; }
   .scientific-name { margin-top: -0.25rem; color: var(--ink-soft); font-style: italic; }
   .availability { display: inline-flex; padding: 0.4rem 0.7rem; color: var(--on-hull); background: var(--hull); font-size: 0.8rem; font-stretch: var(--stretch-plate); font-weight: 760; letter-spacing: 0.06em; text-transform: uppercase; }
   .product-detail dl { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); margin-block: 1.5rem 2rem; border-top: var(--rule-heavy) solid var(--ink); }
